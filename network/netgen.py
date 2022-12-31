@@ -10,22 +10,20 @@ import lidakinetics.kineticsfunctions as kf
 import lidakinetics.lidakinetics as lk
 import lidakinetics.conf as c 
 
-def slide_strands_general(seq1,seq2,min_nucleation):
+def slide_strands_general(seq1, seq2, min_nucleation):
     l1 = len(seq1)
     l2 = len(seq2)
     n = min_nucleation
-    nodes = []
-    for b in range(n,l1):
+    for b in range(n, l1):
         if b < l1:
             s1 = seq1[0:b]
             s2 = seq2[::-1][0:b][::-1]
-            nodes.append([s1,s2])
-    nodes.append([seq1,seq2])
-    for b in range(1,l1-n+1):
-        s1 = seq1[b:]
-        s2 = seq2[0:l2-b]
-        nodes.append([s1,s2])
-    return nodes
+            yield s1, s2
+    yield seq1, seq2
+    for b, (c1, c2) in enumerate(zip(seq1, seq2), start=1):
+        s1 = c1 + seq1[b:]
+        s2 = seq2[:b] + c2
+        yield s1, s2
 
 def getnodes(strand1,strand2,mincore):
     slids = slide_strands_general(strand1,strand2,mincore)
