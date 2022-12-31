@@ -1,0 +1,4 @@
+                nucleation rate,    zipping rate,   sequence,   temperature,    salt,   notes 
+craig71,        2e6,                None,           AAAAAAA,    25,             None,   dimer formation kinetics between two complementary oligonucleotides of length between 4 and 7 made only of A and U;
+porsche71,      8.5e6,              2e7,            AAAAAAAAA,  25,             None,   
+christensen2001,2e7,                None,           TGCTCCTG,   25,       0.1 M NaCl,   and 0.01 M MgCl2
