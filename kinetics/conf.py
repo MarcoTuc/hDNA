@@ -5,9 +5,9 @@ sys.path.insert(0, 'dnapoly')
 sys.path.insert(0, '..')
 sys.path.insert(0, '.')
 
-from lidakinetics.values import *
-from lidakinetics.kineticsfunctions import *
-from dnapoly import dnageometry
+from kinetics.values import *
+from kinetics.kineticsfunctions import *
+from polymer import dnageometry
 #from NaqviCollinsKimball import naqvi_integral
 
 # GENERAL PARAMETERS

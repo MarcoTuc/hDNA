@@ -6,11 +6,11 @@ import sys
 sys.path.insert(0, '..')
 sys.path.insert(0, '.')
 
-import lidakinetics.kineticsfunctions as kf
-import lidakinetics.lidakinetics as lk
-import lidakinetics.conf as c 
+import kinetics.kineticsfunctions as kf
+import kinetics.lidakinetics as lk
+import kinetics.conf as c 
 
-def slide_strands_general(seq1,seq2,min_nucleation):
+def slide_strands_general(seq1, seq2, min_nucleation) -> list:
     l1 = len(seq1)
     l2 = len(seq2)
     n = min_nucleation

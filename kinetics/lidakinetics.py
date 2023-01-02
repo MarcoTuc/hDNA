@@ -3,9 +3,9 @@ import sys
 sys.path.insert(0, '..')
 sys.path.insert(0, '.')
 
-from lidakinetics.values import *
-from lidakinetics.kineticsfunctions import *
-from lidakinetics.conf import *
+from kinetics.values import *
+from kinetics.kineticsfunctions import *
+from kinetics.conf import *
 
 
 def iswc(n1,n2):
