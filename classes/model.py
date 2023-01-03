@@ -3,8 +3,8 @@ class Model(object):
     def __init__(   self, 
                     material, 
                     space_dimensionality,
-                    Na=0.1, 
-                    Mg=0.1, 
+                    Na=1.0, 
+                    Mg=0.0, 
                     celsius=26):
         """ I will use this class for passing experimental conditions """
        

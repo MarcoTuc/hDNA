@@ -36,11 +36,32 @@ function condition(y)
     return 1 == y
 end
 
+function getfpts(results, timedata, duplexindex)
+    fptslist = []
+    for (index, data) in enumerate(results)
+        fpt = get_fptforfpts(data, timedata[index], duplexindex)   
+        push!(fptslist, fpt)
+    end 
+    return fptslist 
+end      
+
+function get_fptforfpts(result,time,duplexindex)
+    index_r = findfirst(condition,result[:,duplexindex])
+    if index_r === nothing
+        # Handle the case where no element satisfies the condition
+        firstpassage = 1
+    else
+        firstpassage = time[index_r]
+    end
+    return firstpassage
+end
+
 function get_fpt(r,t,index,duplexindex)
     index_r = findfirst(condition,r[index][:,duplexindex])
     firstpassage = t[index][index_r]
     return firstpassage
 end
+
 
 function fpts(r,t,d)
     # r = simulation results
