@@ -6,6 +6,7 @@ import re
 from classes.strand import Strand
 from classes.model import Model
 
+
 class Complex(object):
     
     def __init__(   self, 
@@ -26,7 +27,12 @@ class Complex(object):
         self.l1 = s1.length
         self.l2 = s2.length
 
+        # Think of this as self.initialstructure
+        # I didn't change it because of laziness 
         self.structure = structure
+
+        self.getnupackmodel()
+        self.getnupackproperties()
 
         self.mismatches = []
         self._get_mismatches()
@@ -48,8 +54,6 @@ class Complex(object):
         self.onregister = onregister
         self.check_onregister()
         self.zipping_trajectory()
-
-        self.getnupackproperties()
 
         
     
@@ -96,17 +100,8 @@ class Complex(object):
 
         if self.onregister == True: 
 
-            self.zippingtrajectory = [self.structure]
-
+            self.zipping = [Zippo(self.structure, self.structureG(self.structure))]
             left, right = self.structure.split('+')
-
-            # def get_i(lst):
-            #     indices = []
-            #     for i, el in enumerate(lst, start=1):
-            #         if el != lst[i-2]:
-            #             indices.append(i-1)
-            #         else: continue   
-            #     return indices
 
             def get_i(lst):
                 indices = []
@@ -127,14 +122,17 @@ class Complex(object):
                 return updated_inv[::-1]
             
             while '.' in left and right:
+                
                 left = update_structure(left, '(')
                 right = update_structure(right, ')')
                 step = '+'.join([left,right])
-                self.zippingtrajectory.append(step)
+                # The generated structure is parsed to see if it is correctly base-paired 
+                candidatestep = self.parse_structure(step, self.s1, self.s2)
+                self.zipping.append(Zippo(candidatestep, self.structureG(candidatestep)))
 
-            return self.zippingtrajectory
+            return self.zipping
         
-        else: self.zippingtrajectory = None; return self.zippingtrajectory
+        else: self.zipping = None; return self.zipping
         
 
 
@@ -142,31 +140,46 @@ class Complex(object):
 ##### Nupack-dependant Methods  #####
 #####################################
 
+    def structureG(self, structure):
+
+        """ Nupack related properties """
+        nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
+        nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
+        nuStructure = nu.Structure(structure)
+        dG = nu.structure_energy(strands=[nuStrand1,nuStrand2], structure=nuStructure, model=self.nupackmodel)
+        return dG
+
+    def getnupackmodel(self):
+        self.nupackmodel = nu.Model(material=self.model.material, 
+                                    ensemble='stacking', 
+                                    celsius=self.model.celsius, 
+                                    sodium=self.model.Na, 
+                                    magnesium= self.model.Mg) 
+
     def getnupackproperties(self):
             """ Nupack related properties """
             self.nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
             self.nuStrand2 = nu.Strand(self.s2.invert.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
             self.nuComplex = nu.Complex([self.nuStrand1,self.nuStrand2], name = 'c')
 
-            """For now I will keep NUPACK ensemble model variable
-            fixed at the following value:
-            ensemble = 'stacking' """
-
-            nupackmodel = nu.Model(material=self.model.material, 
-                            ensemble='stacking', 
-                            celsius=self.model.celsius, 
-                            sodium=self.model.Na, 
-                            magnesium= self.model.Mg)
-
-            j = nu.pfunc(self.nuComplex, nupackmodel)
-            self.G = j[1]
-            self.Z = float(j[0])
+            j = nu.pfunc(self.nuComplex, self.nupackmodel)
+            self.duplexG = j[1]
+            self.duplexZ = float(j[0])
 
 
 #############################################
 ##### General Structure Parsing Methods #####
 #############################################
     
+    """ This is a more general structure parsing routine 
+        borrowed from the chamber class and needed here to
+        parse zipping trajectories which for now don't account
+        for wattson-crick base pairing.
+        Since structures here have the normal dot-bracket notation
+        this method doesn't work for ì structures. Maybe I will
+        make a Structure class for handling all these structure
+        related things """
+
     def parse_structure(self, structure, seq_a, seq_b):
         """
         Converts the internal general structures made with
@@ -177,8 +190,8 @@ class Complex(object):
         seq_a = seq_a.sequence
         seq_b = seq_b.sequence 
         sx, dx = self.structurecut(seq_a, seq_b[::-1], struct_a, struct_b[::-1])
-        patch_sx = ''.join(['ì' for i in range(len(sx))])
-        patch_dx = ''.join(['ì' for i in range(len(dx))])
+        patch_sx = ''.join(['\(' for i in range(len(sx))])
+        patch_dx = ''.join(['\)' for i in range(len(dx))])
         out1 = re.sub(patch_sx,sx,struct_a)
         out2 = re.sub(patch_dx,dx,struct_b)
         structureout = out1+"+"+out2
@@ -186,13 +199,13 @@ class Complex(object):
 
 
     def structurecut(self, string1, string2, structure1, structure2):
-        cut1 = ''.join([n1 for n1, s1 in zip(string1, structure1) if s1 == 'ì'])
-        cut2 = ''.join([n2 for n2, s2 in zip(string2, structure2) if s2 == 'ì'])
+        cut1 = ''.join([n1 for n1, s1 in zip(string1, structure1) if s1 == '('])
+        cut2 = ''.join([n2 for n2, s2 in zip(string2, structure2) if s2 == ')'])
         sx = ''
         dx = ''
         # print(cut1, cut2)
         for n1, n2 in zip(cut1, cut2):
-            if self.iswattsoncrick(n1, n2):
+            if self._iswattsoncrick(n1, n2):
                 sx += '('
                 dx += ')'
             else: 
@@ -255,9 +268,16 @@ class Complex(object):
         return self.s1.sequence+"+"+self.s2.sequence
 
 
-##############################
-##### Deprecated Methods #####
-##############################
+class Zippo(object):
+
+    def __init__(self, structure, energy):
+
+        self.S = structure
+        self.G = energy
+
+################################################
+##### Deprecated Methods for class Complex #####
+################################################
   
     # def gotnucleationhere(self, mincore):
     #     self.nucleation = None
@@ -283,3 +303,5 @@ class Complex(object):
     #         if all(self.mismatches[b:b+mincore]):
     #             return True 
     #     return False 
+
+

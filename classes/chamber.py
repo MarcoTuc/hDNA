@@ -4,18 +4,19 @@ from classes.strand import Strand
 from classes.complex import Complex
 from classes.model import Model
 
+
 class Chamber(object):
 
     """ The chamber object contains every possible
     nucleation state for the two given single strands """
 
     def __init__(self, model: Model, s1: Strand, s2: Strand):
-        
+
         self.model = model
         self.s1 = s1
         self.s2 = s2.invert
         self.duplex = Complex(self.model, self.s1, self.s2, duplex=True)
-        
+
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
         """ General Slidings """
@@ -27,6 +28,11 @@ class Chamber(object):
         """ On-Register Nucleation Cores """
         self.compute_oncores(3)
 
+        """
+        self.finalstructure --->    compute the most stable structure for the 
+                                    given sequence, this will be the arrival 
+                                    of trajectories on the kinetic simulation
+        """
 
 
 #########################################
@@ -38,7 +44,7 @@ class Chamber(object):
         for complex in self.slidings:
             if complex.consecutive_nucleations >= min_nucleation:
                 self.offcores.append(complex)
-        
+
     def compute_slidings_structured(self, min_nucleation):
         n = min_nucleation
         self.slidings = []
@@ -54,7 +60,6 @@ class Chamber(object):
             slidingstruct = slidingstruct+"+"+slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
             self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister=True))
-    
 
 #####################################
 ##### Native Nucleation Methods #####
@@ -66,7 +71,13 @@ class Chamber(object):
         for structureì in self.nativeì:
             structureout = self.parse_structure(structureì, self.s1, self.s2)
             self.oncores.append(Complex(self.model, self.s1, self.s2, structure=structureout, onregister=True))
+        self.oncores = [core for core in self.oncores if core.total_nucleations >= min_nucleation]
         return self.oncores
+
+    def clean_oncores(self, min_nucleation):
+        for core in self.oncores:
+            if core.total_nucleations < min_nucleation:
+                self.oncores.pop(core)
 
     def native_nucleation_structures(self, min_nucleation):
         """Return the onregister nucleations"""
@@ -125,6 +136,6 @@ class Chamber(object):
             return True
         else:
             return False 
-            
+
     def duplexenergy(self):
         return self.duplex.fenergy
