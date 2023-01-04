@@ -27,3 +27,8 @@ class Strand(object):
     def invert(self):
         return Strand(self.model, self.sequence[::-1])
 
+
+class Structure(object):
+    """ If I have time I will put here all the structure related Methods
+        that for now are just copy-pasted around all classes """
+    pass 

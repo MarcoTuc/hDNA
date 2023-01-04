@@ -1,6 +1,7 @@
-import networkx as nx 
-from .chamber import Chamber
-from .model import Model 
+import networkx as nx
+
+from classes.chamber import Chamber
+from classes.model import Model
  
 class Kinnet(object):
     """Given a chamber it will generate the corresponding
@@ -11,4 +12,12 @@ class Kinnet(object):
         self.model = model 
         self.chamber = chamber
 
-        self.nodes = self.chamber.compute_cores(minimum_nucleation)
+        """ offnodes are chamber's complexes """
+        self.offnodes = chamber.offcores
+
+        """ onnodes are chamber's complexes and each of these 
+            complexes has in itself a zipping trajectory which is 
+            a property of the complex and not of the chamber """
+        self.onnodes = chamber.oncores
+
+        

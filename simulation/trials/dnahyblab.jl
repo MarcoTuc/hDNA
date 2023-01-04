@@ -2,6 +2,7 @@ using BioSimulator
 using Dictionaries
 using DataStructures
 using Statistics
+using TickTock
 
 include("functions.jl")
 
@@ -17,39 +18,42 @@ model <= Species("R2",0)
 model <= Species("D",0)
 
 
-kf_dl = 10e7
-nonspecific_correction = 1
-kf_sliding = 5e6
+kf_dl = 4e8
+nonspecific_correction = 1/5
+
+sliding_correction = 1/2
+kf_sliding = 1e7 * sliding_correction
+
 
 
 Na = 6.023e23
 
-kf_ssl1 = kf_dl
-kb_ssl1 = 22.920792678077465
+kf_ssl1 = kf_dl*nonspecific_correction
+kb_ssl1 = 22.920792678077465 
 
-kf_ssl2 = kf_dl
+kf_ssl2 = kf_dl*nonspecific_correction
 kb_ssl2 = 0.007808225837362128
 
-kf_ssr2 = kf_dl
+kf_ssr2 = kf_dl*nonspecific_correction
 kb_ssr2 = 0.0626785751957368
 
-kf_ssr1 = kf_dl
+kf_ssr1 = kf_dl*nonspecific_correction
 kb_ssr1 = 183.99091641848813
 
-kf_ssD = kf_dl
+kf_ssD = kf_dl*nonspecific_correction
 kb_ssD = 6.902831840829526e-08
 
 kf_l1l2 = kf_sliding
-kb_l1l2 = 17.033062396725658
+kb_l1l2 = 3406.6124793451313*sliding_correction
 
 kf_l2D = kf_sliding
-kb_l2D = 0.4420230654574368
+kb_l2D = 88.40461309148736*sliding_correction
 
 kf_r1r2 = kf_sliding
-kb_r1r2 = 17.033062396725658
+kb_r1r2 = 3406.6124793451313*sliding_correction
 
 kf_r2D = kf_sliding
-kb_r2D = 0.05506532191640359
+kb_r2D = 11.01306438328072*sliding_correction
 
 
 
@@ -88,7 +92,9 @@ Nmonte = 50000
 
 include("functions.jl")
 
-simresults = [simulate(model, StepAnticipation();tfinal=runtime) for i in 1:Nmonte]
+tick()
+simresults = [simulate(model, Direct();tfinal=runtime) for i in 1:Nmonte]
+tock()
 results = [permutedims(hcat(simresults[i]...)) for i in 1:Nmonte]
 timeresults = [simresults[i].t for i in 1:Nmonte]
 
@@ -103,7 +109,7 @@ M = mean(sao);
 
 using PlotlyJS
 plot(
-    [histogram(x=sao, opacity=0.5, nbinsx=50)],
+    [histogram(x=sao, opacity=0.5, nbinsx=5000)],
         Layout(
             yaxis_type="",
             xaxis_title_text="first passage time",
