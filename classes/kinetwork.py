@@ -19,11 +19,16 @@ class Kinetwork(object):
 
     def add_nodes(self):
         self.Graph.add_node(self.chamber.ssstruct, state = 'singlestranded')
-        self.Graph.add_nodes_from([s.structure for s in self.chamber.offcores], state = 'off_register')
-        self.Graph.add_nodes_from([s.structure for s in self.chamber.oncores],  state = 'on_register')
+
+        for s in self.chamber.offcores:
+            self.Graph.add_node(s.structure, state = 'off_register', pairs = s.total_nucleations)
+        for s in self.chamber.oncores:
+            self.Graph.add_node(s.structure,  state = 'on_register', pairs = s.total_nucleations)
         for z in self.chamber.oncores:
-            self.Graph.add_nodes_from([s.struct for s in z.zipping], state = 'zipping')
-        self.Graph.add_node(self.chamber.duplex.structure, state = 'duplex')
+            for s in z.zipping: 
+                self.Graph.add_node(s.structure, state = 'zipping', pairs = s.total_nucleations)
+
+        self.Graph.add_node(self.chamber.duplex.structure, state = 'duplex', pairs = self.chamber.duplex.total_nucleations)
         # note that duplicated nodes will not be added to the resulting graph, hence I can run through 
         # all zipping states and be sure that I will only get one note per each zipping that is common
         # from different starting native nucleations. 

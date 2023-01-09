@@ -101,7 +101,7 @@ class Complex(object):
 
         if self.onregister == True: 
 
-            self.zipping = [Zippo(self.structure, self.structureG(self.structure))]
+            self.zipping = [Zippo(self.model, self.s1, self.s2, self.structure, self.structureG(self.structure))]
             left, right = self.structure.split('+')
 
             def get_i(lst):
@@ -129,7 +129,7 @@ class Complex(object):
                 step = '+'.join([left,right])
                 # The generated structure is parsed to see if it is correctly base-paired 
                 candidatestep = self.parse_structure(step, self.s1, self.s2)
-                self.zipping.append(Zippo(candidatestep, self.structureG(candidatestep)))
+                self.zipping.append(Zippo(self.model, self.s1, self.s2, candidatestep, self.structureG(candidatestep)))
 
             self.zipping.pop(-1) #remove the spurious duplex element generated at the end of the while loop
             return self.zipping
@@ -270,10 +270,15 @@ class Complex(object):
         return self.s1.sequence+"+"+self.s2.sequence
 
 
-class Zippo(object):
+class Zippo(Complex):
 
-    def __init__(self, structure, energy):
-
+    def __init__(self, 
+                    model: Model, 
+                    s1: Strand, 
+                    s2: Strand, 
+                    structure,
+                    energy):
+        super().__init__(model,s1,s2,structure)
         self.struct = structure
         self.G = energy
 

@@ -55,7 +55,6 @@ class Chamber(object):
             self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister="left"))
         fullstructure = "("*self.s1.length+"+"+")"*self.s2.length
         self.duplex = Complex(self.model, self.s1, self.s2, structure=fullstructure, duplex=True)
-        # self.slidings.append(self.duplex)
         for b in range(1, self.s1.length - n + 1):
             slidingstruct = "."*b+"ì"*(self.s1.length-b)
             slidingstruct = slidingstruct+"+"+slidingstruct
