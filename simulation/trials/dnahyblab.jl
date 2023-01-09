@@ -4,11 +4,12 @@ using DataStructures
 using Statistics
 using TickTock
 
+tick()
 include("functions.jl")
 
 model = Network("AT-all")
 
-initial = 2
+initial = 100
 
 model <= Species("SS",Int(initial))
 model <= Species("L1",0)
@@ -60,37 +61,29 @@ kb_r2D = 11.01306438328072*sliding_correction
 
 model <= Reaction("ss-l1_f",  kf_ssl1, "SS + SS --> L1")
 model <= Reaction("ss-l1_b",  kb_ssl1, "L1 --> SS + SS")
-
 model <= Reaction("ss-l2_f",  kf_ssl2, "SS + SS --> L2")
 model <= Reaction("ss-l2_b",  kb_ssl2, "L2 --> SS + SS")
-
 model <= Reaction("ss-r2_f",  kf_ssr2, "SS + SS --> R2")
 model <= Reaction("ss-r2_b",  kb_ssr2, "R2 --> SS + SS")
-
 model <= Reaction("ss-r1_f",  kf_ssr1, "SS + SS --> R1")
 model <= Reaction("ss-r1_b",  kb_ssr1, "R1 --> SS + SS")
-
-model <= Reaction("ss-D_f",   kf_ssD, "SS + SS --> D")
-model <= Reaction("ss-D_b",   kb_ssD, "D --> SS + SS")
-
+model <= Reaction("ss-D_f ",   kf_ssD, "SS + SS --> D")
+model <= Reaction("ss-D_b ",   kb_ssD, "D --> SS + SS")
 model <= Reaction("l1-l2_f",  kf_l1l2, "L1 --> L2")
 model <= Reaction("l1-l2_b",  kb_l1l2, "L2 --> L1")
-
-model <= Reaction("l2-D_f",   kf_l2D, "L2 --> D")
-model <= Reaction("l2-D_b",   kb_l2D, "D --> L2")
-
+model <= Reaction("l2-D_f ",   kf_l2D, "L2 --> D")
+model <= Reaction("l2-D_b ",   kb_l2D, "D --> L2")
 model <= Reaction("r1-r2_f",  kf_r1r2, "R1 --> R2")
 model <= Reaction("r1-r2_b",  kb_r1r2, "R2 --> R1")
-
-model <= Reaction("r2-D_f",   kf_r2D, "R2 --> D")
-model <= Reaction("r2-D_b",   kb_r2D, "D --> R2")
+model <= Reaction("r2-D_f ",   kf_r2D, "R2 --> D")
+model <= Reaction("r2-D_b ",   kb_r2D, "D --> R2")
 
 
 
 runtime = 1e-2
 Nmonte = 50000
+tock()
 
-include("functions.jl")
 
 tick()
 simresults = [simulate(model, Direct();tfinal=runtime) for i in 1:Nmonte]

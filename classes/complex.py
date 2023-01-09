@@ -17,6 +17,7 @@ class Complex(object):
                     duplex=False,
                     offregister=False,
                     onregister=False,
+
                 ):
         
         self.model = model
@@ -130,6 +131,7 @@ class Complex(object):
                 candidatestep = self.parse_structure(step, self.s1, self.s2)
                 self.zipping.append(Zippo(candidatestep, self.structureG(candidatestep)))
 
+            self.zipping.pop(-1) #remove the spurious duplex element generated at the end of the while loop
             return self.zipping
         
         else: self.zipping = None; return self.zipping
@@ -272,7 +274,7 @@ class Zippo(object):
 
     def __init__(self, structure, energy):
 
-        self.S = structure
+        self.struct = structure
         self.G = energy
 
 ################################################

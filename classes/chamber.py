@@ -15,8 +15,7 @@ class Chamber(object):
         self.model = model
         self.s1 = s1
         self.s2 = s2.invert
-        self.duplex = Complex(self.model, self.s1, self.s2, duplex=True)
-
+        self.ssstruct = '.'*self.s1.length+'+'+'.'*self.s2.length
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
         """ General Slidings """
@@ -33,6 +32,7 @@ class Chamber(object):
                                     given sequence, this will be the arrival 
                                     of trajectories on the kinetic simulation
         """
+
 
 
 #########################################
@@ -52,14 +52,15 @@ class Chamber(object):
             slidingstruct = "ì"*b+"."*(self.s1.length-b)
             slidingstruct = slidingstruct + "+" + slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
-            self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister=True))
+            self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister="left"))
         fullstructure = "("*self.s1.length+"+"+")"*self.s2.length
-        self.slidings.append(Complex(self.model, self.s1, self.s2, structure=fullstructure, duplex=True))
+        self.duplex = Complex(self.model, self.s1, self.s2, structure=fullstructure, duplex=True)
+        # self.slidings.append(self.duplex)
         for b in range(1, self.s1.length - n + 1):
             slidingstruct = "."*b+"ì"*(self.s1.length-b)
             slidingstruct = slidingstruct+"+"+slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
-            self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister=True))
+            self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister='right'))
 
 #####################################
 ##### Native Nucleation Methods #####
