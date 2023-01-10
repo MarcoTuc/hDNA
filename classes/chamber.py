@@ -10,22 +10,23 @@ class Chamber(object):
     """ The chamber object contains every possible
     nucleation state for the two given single strands """
 
-    def __init__(self, model: Model, s1: Strand, s2: Strand):
+    def __init__(self, model: Model, s1: Strand, s2: Strand, mincore):
 
         self.model = model
         self.s1 = s1
         self.s2 = s2.invert
         self.ssstruct = '.'*self.s1.length+'+'+'.'*self.s2.length
+        self.mincore = mincore
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
         """ General Slidings """
-        self.compute_slidings_structured(3)
+        self.compute_slidings_structured(self.mincore)
         
         """ Off-Register Nucleation Cores """
-        self.compute_offcores(3)
+        self.compute_offcores(self.mincore)
 
         """ On-Register Nucleation Cores """
-        self.compute_oncores(3)
+        self.compute_oncores(self.mincore)
 
         """
         self.finalstructure --->    compute the most stable structure for the 
@@ -60,6 +61,11 @@ class Chamber(object):
             slidingstruct = slidingstruct+"+"+slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
             self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister='right'))
+
+    def split_offcores(self):
+        n = int(len(self.offcores)/2)
+        return self.offcores[:n], self.offcores[n:][::-1]
+
 
 #####################################
 ##### Native Nucleation Methods #####
