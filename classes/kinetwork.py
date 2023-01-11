@@ -1,5 +1,6 @@
 import networkx as nx
 import copy
+import pandas as pd 
 
 from classes.chamber import Chamber
 from classes.model import Model
@@ -22,62 +23,84 @@ class Kinetwork(object):
         self.Graph = nx.Graph()
         self.add_nodes()
         self.add_reactions()
+        self.clean_duplicates()
+
 
     def add_nodes(self):
 
-        self.Graph.add_node(self.chamber.ssstruct, state = 'singlestranded', pairs = 0)
+        self.Graph.add_node(self.chamber.ssstruct, structure = self.chamber.ssstruct, state = 'singlestranded', pairs = 0)
 
         for s in self.chamber.offcores:
-            self.Graph.add_node(s.structure, state = 'off_register', pairs = int(s.total_nucleations))
-
-        for z in self.chamber.oncores:
-            for s in z.zipping: 
-                self.Graph.add_node(s.structure, state = 'zipping', pairs = int(s.total_nucleations))
+            self.Graph.add_node(s, object = s, structure = s.structure, state = 'off_register', pairs = int(s.total_nucleations))
 
         for s in self.chamber.oncores:
-            self.Graph.add_node(s.structure, state = 'on_register', pairs = int(s.total_nucleations))
+            self.Graph.add_node(s, object = s, structure = s.structure, state = 'on_register', pairs = int(s.total_nucleations))
 
-        self.Graph.add_node(self.chamber.duplex.structure, state = 'duplex', pairs = self.chamber.duplex.total_nucleations)
+        for s in self.chamber.oncores:
+            for z in s.zipping[1:]: #first zipping value is the oncore itself so flush it away by indexing
+                self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
+
+        self.Graph.add_node(self.chamber.duplex, structure = self.chamber.duplex.structure, state = 'duplex', pairs = self.chamber.duplex.total_nucleations)
         """   note that duplicated nodes will not be added to the resulting graph, hence I can run through 
               all zipping states and be sure that I will only get one note per each zipping that is common
               from different starting native nucleations. """
 
     def add_reactions(self):
 
-        ZIP = self.node_filter('state','zipping')
         ON  = self.node_filter('state','on_register')
         OFF = self.node_filter('state','off_register')
-        
-        for zipp, data in copy.deepcopy(ZIP.nodes.items()):
-            print('adding...')
-            if data['pairs'] < (self.mincore):
-                up = self.get_neighbor_zippings(zipp, onlyup=True)
-                self.Graph.add_edge(zipp, up, kind = 'zipping') #ADDPROPERTY
-                print('added up')
-            else: 
-                up, down = self.get_neighbor_zippings(zipp)
-                self.Graph.add_edge(zipp, up, kind = 'zipping') #ADDPROPERTY
-                self.Graph.add_edge(zipp, down, kind = 'zipping') #ADDPROPERTY
-                print('added up and down')
+        D = self.node_filter('state', 'duplex')
+        print(D)
 
-
-        for on, data in copy.deepcopy(ON.nodes.items()):
+        for on, data in ON.nodes.items():
             self.Graph.add_edge(self.chamber.ssstruct, on, kind = 'on_nucleation') #ADDPROPERTY
-        
-        for off, data in copy.deepcopy(OFF.nodes.items()):
-            self.Graph.add_edge(self.chamber.ssstruct, off, kind = 'off_nucleation') #ADDPROPERTY
-            offleft, offright = self.chamber.split_offcores()
-            for i, (l, r) in enumerate(zip(offleft, offright)):
-                if 0 < i < len(offleft): 
-                    self.Graph.add_edge(l.structure, offleft[i-1].structure, kind = 'sliding') #ADDPROPERTY
-                    self.Graph.add_edge(r.structure, offright[i-1].structure, kind = 'sliding') #ADDPROPERTY
-            #   TODO
-            #   add here a condition for sliding into duplex from the most duplexed sliding state 
-            self.Graph.add_edge(offleft[-1].structure, self.chamber.duplex.structure, kind = 'sliding_closure') #ADDPROPERTY
-            self.Graph.add_edge(offright[-1].structure, self.chamber.duplex.structure, kind = 'sliding_closure') #ADDPROPERTY
+            self.Graph.add_edge(on, on.zipping[1], kind = 'zipping')
+            for i, z in enumerate(on.zipping[2:], start=2):
+                self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
+                self.Graph.add_node(on.zipping[i-1], structure = on.zipping[i-1].structure, state = 'zipping', pairs = int(z.total_nucleations))
+                self.Graph.add_edge(z, on.zipping[i-1], kind = 'zipping')
+            self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
+
+        L, R = self.chamber.split_offcores()
+
+        for i, (left, right) in enumerate(zip(L, R)):
+            self.Graph.add_edge(self.chamber.ssstruct, left, kind = 'off_nucleation')
+            self.Graph.add_edge(self.chamber.ssstruct, right, kind = 'off_nucleation')
+            if i > 0: 
+                self.Graph.add_edge(left, L[i-1], kind = 'sliding')
+                self.Graph.add_edge(right, R[i-1], kind = 'sliding')
+        self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
+        self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
+
+    def clean_duplicates(self):
+        """ Unfortunately my code makes duplicates.
+            Also unfortunately it was easier to just get rid of them
+            after they are made than fix the entire code """
+        df = pd.DataFrame(self.Graph.nodes(data=True))
+        labels = df[0]
+        struct = [list(df[1])[i]['structure'] for i in range(len(list(df[1])))]
+        diz = dict(zip(labels, struct))
+        Relabeled = nx.relabel_nodes(self.Graph, diz)
+        self.Graph = Relabeled
+
+        #TODO: FIX THIS SHIT DOWN HERE  
+
+        # for off, data in OFF.nodes.items():
+        #     self.Graph.add_edge(self.chamber.ssstruct, off, kind = 'off_nucleation') #ADDPROPERTY
+        #     offleft, offright = self.chamber.split_offcores()
+        #     for i, (l, r) in enumerate(zip(offleft, offright)):
+        #         if 0 < i < len(offleft): 
+        #             self.Graph.add_edge(l, offleft[i-1].structure, kind = 'sliding') #ADDPROPERTY
+        #             self.Graph.add_edge(r, offright[i-1].structure, kind = 'sliding') #ADDPROPERTY
+        #     #   TODO
+        #     #   add here a condition for sliding into duplex from the most duplexed sliding state 
+        #     self.Graph.add_edge(offleft[-1], self.chamber.duplex, kind = 'sliding_closure') #ADDPROPERTY
+        #     self.Graph.add_edge(offright[-1], self.chamber.duplex, kind = 'sliding_closure') #ADDPROPERTY
+    
+    
     def node_filter(self, property, attribute):
-        return copy.deepcopy(self.Graph.subgraph( 
-        [n for n, attrdict in self.Graph.nodes.items() if attrdict [str(property)] == str(attribute)]))
+        return self.Graph.subgraph( 
+        [n for n, attrdict in self.Graph.nodes.items() if attrdict [str(property)] == str(attribute)])
 
     def get_neighbor_zippings(self, structure, onlyup = False, onlydown = False):
 
