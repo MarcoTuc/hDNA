@@ -48,8 +48,9 @@ class Simulator(object):
                 self.biosim <= jl.Reaction(reaction_name, reaction_rate, reaction_string (use the f"{stuff}" method of Giovanni))
         """
         # start from the neighborhood of the singlestranded state to add nucleations 
-        ss = self.kinet.chamber.singlestranded.structure 
-        neighbors = nx.neighbors(self.Graph, ss)
+        SS = self.kinet.chamber.singlestranded.structure 
+        ss = self.tl(SS)
+        neighbors = nx.neighbors(self.Graph, SS)
         for n in neighbors:
             i += 1                       # TODO RATES
             """ JULIA PATHOLOGY 
@@ -63,14 +64,16 @@ class Simulator(object):
                 \   + --> A
 
                 """
-            ss = self.tl(ss); n  = self.tl(n)
-            name = f"f{i}"; rule = f"{ss} + {ss} --> {n}"
+            neigh  = self.tl(n)
+            name = f"f{i}"; rule = f"{ss} + {ss} --> {neigh}"
             self.biosim <= jl.Reaction(name, 0, rule)
-            name = f"b{i}"; rule = f"{n} --> {ss} + {ss}"
+            name = f"b{i}"; rule = f"{neigh} --> {ss} + {ss}"
             self.biosim <= jl.Reaction(name, 0, rule)
 
         # now make a graph without the singlestranded state for all subsequent transitions 
-        subgraph = self.Graph.copy().remove_node(ss)
+        subgraph = self.Graph.copy()
+        subgraph.remove_node(SS)
+        
         for n1, n2, data in list(subgraph.edges.data()):
             i += 1                       # TODO RATES (data will be used to get rates etc)
             n1 = self.tl(n1)
@@ -120,6 +123,12 @@ class Simulator(object):
         """ Used to fix julia pathology """
         table = str.maketrans({'.':'o', '(':'b', ')':'d', '+':'A'})
         return s.translate(table)
+    
+    def lt(self,s):
+        table = str.maketrans({'o':'.', 'b':'(', 'd':')', 'A':'+'})
+        return s.translate(table)
+
+
 
     # DEPRECATED
     # def nucleation_filter(self):
