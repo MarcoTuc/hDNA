@@ -2,9 +2,9 @@ import networkx as nx
 import copy
 import pandas as pd 
 
-from classes.chamber import Chamber
-from classes.model import Model
-from classes.strand import Strand
+from hdna.chamber import Chamber
+from hdna.model import Model
+from hdna.strand import Strand
  
 class Kinetwork(object):
 
@@ -38,9 +38,9 @@ class Kinetwork(object):
 
         for s in self.chamber.oncores:
             for z in s.zipping[1:]: #first zipping value is the oncore itself so flush it away by indexing
-                self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
+                self.Graph.add_node(z, object = z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
 
-        self.Graph.add_node(self.chamber.duplex, structure = self.chamber.duplex.structure, state = 'duplex', pairs = self.chamber.duplex.total_nucleations)
+        self.Graph.add_node(self.chamber.duplex, object = self.chamber.duplex, structure = self.chamber.duplex.structure, state = 'duplex', pairs = self.chamber.duplex.total_nucleations)
         """   note that duplicated nodes will not be added to the resulting graph, hence I can run through 
               all zipping states and be sure that I will only get one note per each zipping that is common
               from different starting native nucleations. """
@@ -48,7 +48,6 @@ class Kinetwork(object):
     def add_reactions(self):
 
         ON  = self.node_filter('state','on_register')
-        OFF = self.node_filter('state','off_register')
         D = self.node_filter('state', 'duplex')
         print(D)
 
@@ -56,8 +55,8 @@ class Kinetwork(object):
             self.Graph.add_edge(self.chamber.ssstruct, on, kind = 'on_nucleation') #ADDPROPERTY
             self.Graph.add_edge(on, on.zipping[1], kind = 'zipping')
             for i, z in enumerate(on.zipping[2:], start=2):
-                self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
-                self.Graph.add_node(on.zipping[i-1], structure = on.zipping[i-1].structure, state = 'zipping', pairs = int(z.total_nucleations))
+                # self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
+                # self.Graph.add_node(on.zipping[i-1], structure = on.zipping[i-1].structure, state = 'zipping', pairs = int(z.total_nucleations))
                 self.Graph.add_edge(z, on.zipping[i-1], kind = 'zipping')
             self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
 
