@@ -46,31 +46,38 @@
 #######################################################
 #### Notes on how to improve the model on a conceptual level
 
-!)  By looking at off-register nucleations we can see that there are direct nucleations
-    going on directly from singlestranded to lots of base-pairs.
-    This entails that off-register nucleations will have a profound impact on the dynamics
-    since there are very short pathways connecting single stranded to duplex like: 
-    (example is made with few nucleotides long strands as an example)
-    (say that allowed minimum nucleation is 3 base pairs long and we have octamers)
+!!!!)   By looking at off-register nucleations we can see that there are direct nucleations
+        going on directly from singlestranded to lots of base-pairs.
+        This entails that off-register nucleations will have a profound impact on the dynamics
+        since there are very short pathways connecting single stranded to duplex like: 
+        (example is made with few nucleotides long strands as an example)
+        (say that allowed minimum nucleation is 3 base pairs long and we have octamers)
 
 
-    the following pathway is possible:
+        the following pathway is possible:
 
-    ........+........
-    .(((((((+.)))))))
-    ((((((((+))))))))
+        ........+........
+        .(((((((+.)))))))
+        ((((((((+))))))))
 
-    which is unrealistic. 
+        which is unrealistic. 
 
-    - How to solve this shit: 
-        1\  Cut off-register nucleations with a number of base pairs longer than 
-            some value plus the minimum nucleation length. Add some value because otherwise
-            we're limiting the trajectory too much. 
-        2\  When off-register collisions entailing the presence of more than minimum nucleation
-            number of base pairs happen, model them as:
-#           ss + ss --> off-nucleation --> zipping --> sliding --> duplex 
-    
-        I think that solution 2 is the physically realistic one but it needs me to do some 
-        quite annoying tweaks to all the classes Strand, Complex and Chamber
-        Solution 1 on the other hand is kinda physically unrealistic but at least it is easy
-        to implement since it will just mean to cut some edges out of the kinetwork graph 
+###     - How to solve this shit: 
+            1\  Cut off-register nucleations with a number of base pairs longer than 
+                some value plus the minimum nucleation length. Add some value because otherwise
+                we're limiting the trajectory too much. 
+            2\  When off-register collisions entailing the presence of more than minimum nucleation
+                number of base pairs happen, model them as:
+#                          ss + ss --> off-nucleation --> zipping --> sliding --> duplex 
+        
+            I think that solution 2 is the physically realistic one but it needs me to do some 
+            quite annoying tweaks to all the classes Strand, Complex and Chamber
+            Solution 1 on the other hand is kinda physically unrealistic but at least it is easy
+            to implement since it will just mean to cut some edges out of the kinetwork graph 
+
+###     - what to do about it
+            1\  I will first continue implementing this stuff as it is with the short pathway 
+                and see what happens to the results
+            2\  Then I will first try the solution number 1 and check experiments
+            3\  If I'll have time left I will go for solution number 2 
+                to make things more realistic (hopefully more accurate)
