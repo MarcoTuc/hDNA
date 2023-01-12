@@ -14,6 +14,7 @@ class Complex(object):
                     s1: Strand, 
                     s2: Strand, 
                     structure=None,
+                    singlestranded=False,
                     duplex=False,
                     offregister=False,
                     onregister=False,
@@ -34,6 +35,7 @@ class Complex(object):
 
         self.getnupackmodel()
         self.getnupackproperties()
+        self.G = self.structureG(self.structure)
 
         self.mismatches = []
         self._get_mismatches()
@@ -43,6 +45,10 @@ class Complex(object):
             #TODO update this when considering mismatches 
             self.consecutive_nucleations = min(self.l1, self.l2)
             self.total_nucleations = self.consecutive_nucleations
+        elif self.singlestranded == True:
+            self.total_nucleations = 0
+            self.consecutive_nucleations = 0
+            self.G = 0
         else:
             self.nucleationsize()
 

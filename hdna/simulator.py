@@ -2,7 +2,7 @@ import juliacall
 
 jl = juliacall.newmodule("hDNA")
 jl.seval('using BioSimulator')
-jl.seval('usingTickTock')
+jl.seval('using TickTock')
 
 from hdna.kinetwork import Kinetwork
 from hdna.model import Model 
@@ -18,19 +18,18 @@ class Simulator(object):
     def __init__(self, model: Model, kinetwork: Kinetwork, initialamount, options):
         
         self.Graph = kinetwork.Graph
-        """PSEUDOCODE
         self.model = model 
         self.options = options 
-        self.biosim = jl.Network("AT-all")
+        self.biosim = jl.Network("biosim")
         self.initialamount = initialamount
-        """
+
 
     def add_species(self):
         """PSEUDOCODE
         for node in self.Graph:
             self.biosim <= jl.Species(node.structure, if it is singlestranded add the self.initial)    
         """
-        pass
+        
 
 
     def add_reactions(self):

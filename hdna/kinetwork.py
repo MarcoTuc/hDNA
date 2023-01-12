@@ -18,7 +18,7 @@ class Kinetwork(object):
         self.s2 = s2
         self.mincore = minimum_nucleation
         self.chamber = Chamber(self.model, self.s1, self.s2, self.mincore)
-
+        
 
         self.Graph = nx.Graph()
         self.add_nodes()
@@ -28,7 +28,7 @@ class Kinetwork(object):
 
     def add_nodes(self):
 
-        self.Graph.add_node(self.chamber.ssstruct, structure = self.chamber.ssstruct, state = 'singlestranded', pairs = 0)
+        self.Graph.add_node(self.chamber.ssstruct, object = None, structure = self.chamber.ssstruct, state = 'singlestranded', pairs = 0)
 
         for s in self.chamber.offcores:
             self.Graph.add_node(s, object = s, structure = s.structure, state = 'off_register', pairs = int(s.total_nucleations))
@@ -49,7 +49,6 @@ class Kinetwork(object):
 
         ON  = self.node_filter('state','on_register')
         D = self.node_filter('state', 'duplex')
-        print(D)
 
         for on, data in ON.nodes.items():
             self.Graph.add_edge(self.chamber.ssstruct, on, kind = 'on_nucleation') #ADDPROPERTY
