@@ -41,6 +41,7 @@ class Complex(object):
         self._get_mismatches()
         
         self.duplex = duplex
+        self.singlestranded = singlestranded
         if self.duplex == True:
             #TODO update this when considering mismatches 
             self.consecutive_nucleations = min(self.l1, self.l2)
@@ -48,6 +49,7 @@ class Complex(object):
         elif self.singlestranded == True:
             self.total_nucleations = 0
             self.consecutive_nucleations = 0
+            self.structure = '.'*self.s1.length+'+'+'.'*self.s2.length
             self.G = 0
         else:
             self.nucleationsize()
@@ -57,7 +59,6 @@ class Complex(object):
         to be comunicated to classes higher in the hierarchy"""
 
         self.offregister = offregister
-
         self.onregister = onregister
         self.check_onregister()
         self.zipping_trajectory()

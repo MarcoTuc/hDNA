@@ -8,14 +8,14 @@ from hdna.kinetwork import Kinetwork
 from hdna.model import Model 
 
 class Options(object):
-    def __init__(self, method, runtime, Nmonte):
+    def __init__(self, method=jl.Direct(), runtime=1, Nmonte=1000):
         self.runtime = runtime
         self.Nmonte = Nmonte
         self.method = method #add some error here if the method is not a julia object or whatever 
 
 class Simulator(object):
     
-    def __init__(self, model: Model, kinetwork: Kinetwork, initialamount, options):
+    def __init__(self, model: Model, kinetwork: Kinetwork, initialamount=2, options=Options):
         
         self.Graph = kinetwork.Graph
         self.model = model 
@@ -25,11 +25,10 @@ class Simulator(object):
 
 
     def add_species(self):
-        """PSEUDOCODE
-        for node in self.Graph:
-            self.biosim <= jl.Species(node.structure, if it is singlestranded add the self.initial)    
-        """
-        
+        """DONE"""
+        self.biosim <= jl.Species(list(self.Graph.nodes())[0], self.initialamount)
+        for node in list(self.Graph.nodes())[1:]:
+            self.biosim <= jl.Species(node)
 
 
     def add_reactions(self):
@@ -42,6 +41,7 @@ class Simulator(object):
             for node in neighborhood:
                 self.biosim <= jl.Reaction(reaction_name, reaction_rate, reaction_string (use the f"{stuff}" method of Giovanni))
         """
+        
         pass
     
     def run_simulation(self):
@@ -69,3 +69,6 @@ class Simulator(object):
             mfpts.append(self.findmfpt(sim)) make another method that just gets the mfpt for a single simulation result 
         """
     
+    def trajectory(self):
+        pass
+        """ Create a method for appending a simulation trajectory to each simulation result """

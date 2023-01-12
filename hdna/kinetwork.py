@@ -28,7 +28,7 @@ class Kinetwork(object):
 
     def add_nodes(self):
 
-        self.Graph.add_node(self.chamber.ssstruct, object = None, structure = self.chamber.ssstruct, state = 'singlestranded', pairs = 0)
+        self.Graph.add_node(self.chamber.singlestranded, object = self.chamber.singlestranded, structure = self.chamber.singlestranded.structure, state = 'singlestranded', pairs = 0)
 
         for s in self.chamber.offcores:
             self.Graph.add_node(s, object = s, structure = s.structure, state = 'off_register', pairs = int(s.total_nucleations))
@@ -51,7 +51,7 @@ class Kinetwork(object):
         D = self.node_filter('state', 'duplex')
 
         for on, data in ON.nodes.items():
-            self.Graph.add_edge(self.chamber.ssstruct, on, kind = 'on_nucleation') #ADDPROPERTY
+            self.Graph.add_edge(self.chamber.singlestranded, on, kind = 'on_nucleation') #ADDPROPERTY
             self.Graph.add_edge(on, on.zipping[1], kind = 'zipping')
             for i, z in enumerate(on.zipping[2:], start=2):
                 # self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
@@ -62,8 +62,8 @@ class Kinetwork(object):
         L, R = self.chamber.split_offcores()
 
         for i, (left, right) in enumerate(zip(L, R)):
-            self.Graph.add_edge(self.chamber.ssstruct, left, kind = 'off_nucleation')
-            self.Graph.add_edge(self.chamber.ssstruct, right, kind = 'off_nucleation')
+            self.Graph.add_edge(self.chamber.singlestranded, left, kind = 'off_nucleation')
+            self.Graph.add_edge(self.chamber.singlestranded, right, kind = 'off_nucleation')
             if i > 0: 
                 self.Graph.add_edge(left, L[i-1], kind = 'sliding')
                 self.Graph.add_edge(right, R[i-1], kind = 'sliding')
@@ -73,7 +73,9 @@ class Kinetwork(object):
     def clean_duplicates(self):
         """ Unfortunately my code makes duplicates.
             Also unfortunately it was easier to just get rid of them
-            after they are made than fix the entire code """
+            after they are made than fix the entire code.
+            Also the labels will be changed from object to structure.
+            Objects are still accessible from nodes object property. """
         df = pd.DataFrame(self.Graph.nodes(data=True))
         labels = df[0]
         struct = [list(df[1])[i]['structure'] for i in range(len(list(df[1])))]

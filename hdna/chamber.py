@@ -15,7 +15,8 @@ class Chamber(object):
         self.model = model
         self.s1 = s1
         self.s2 = s2.invert
-        self.ssstruct = '.'*self.s1.length+'+'+'.'*self.s2.length
+
+        self.singlestranded = Complex(self.model, self.s1, self.s2, singlestranded=True)
         self.mincore = mincore
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
