@@ -3,6 +3,7 @@ using Dictionaries
 using DataStructures
 using Statistics
 using TickTock
+using TikzGraphs
 
 tick()
 include("functions.jl")

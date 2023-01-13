@@ -5,8 +5,8 @@ jl = juliacall.newmodule("hDNA")
 jl.seval('using BioSimulator')
 jl.seval('using TickTock')
 
-from hdna.kinetwork import Kinetwork
-from hdna.model import Model 
+from hdna.kinetwork import Kinetwork, Kinetics
+from hdna.model import Model, Geometry
 
 class Options(object):
     def __init__(self, method=jl.Direct(), runtime=1, Nmonte=1000):
@@ -16,15 +16,20 @@ class Options(object):
 
 class Simulator(object):
     
-    def __init__(self, model: Model, kinetwork: Kinetwork, initialamount=2, options=Options):
+    def __init__(self, model: Model, kinetwork: Kinetwork, kinetics: Kinetics, initialamount=2, options=Options()):
         
+        self.model = model 
         self.kinet = kinetwork
         self.Graph = kinetwork.Graph
-        self.model = model 
+
+        self.kinetics = kinetics 
+
         self.options = options 
         self.biosim = jl.Network("biosim")
+
         self.initialamount = initialamount
         self.add_species()
+        self.add_reactions()
 
 
     def add_species(self):
@@ -51,6 +56,7 @@ class Simulator(object):
         SS = self.kinet.chamber.singlestranded.structure 
         ss = self.tl(SS)
         neighbors = nx.neighbors(self.Graph, SS)
+        sliding_factor = 1/len(list(neighbors))
         for n in neighbors:
             i += 1                       # TODO RATES
             """ JULIA PATHOLOGY 
@@ -65,10 +71,17 @@ class Simulator(object):
 
                 """
             neigh  = self.tl(n)
-            name = f"f{i}"; rule = f"{ss} + {ss} --> {neigh}"
-            self.biosim <= jl.Reaction(name, 0, rule)
-            name = f"b{i}"; rule = f"{neigh} --> {ss} + {ss}"
-            self.biosim <= jl.Reaction(name, 0, rule)
+
+            # FORWARD BIMOLECULAR NUCLEATION
+            name = f"f_nucleation{i}"; rule = f"{ss} + {ss} --> {neigh}"
+            kf = self.kinetics.georate * sliding_factor
+            self.biosim <= jl.Reaction(name, kf, rule)
+
+            # BACKWARD UNIMOLECULAR DISSOCIATION            
+            name = f"b_nucleation{i}"; rule = f"{neigh} --> {ss} + {ss}"
+            DG = self.Graph.nodes[n]['object'].G
+            kb = self.kinetics.k_back(kf, DG)
+            self.biosim <= jl.Reaction(name, kb, rule)
 
         # now make a graph without the singlestranded state for all subsequent transitions 
         subgraph = self.Graph.copy()
@@ -76,14 +89,21 @@ class Simulator(object):
         
         for n1, n2, data in list(subgraph.edges.data()):
             i += 1                       # TODO RATES (data will be used to get rates etc)
-            n1 = self.tl(n1)
-            n2 = self.tl(n2)
-            name = f'f{i}'; rule = f'{n1} --> {n2}'
-            self.biosim <= jl.Reaction(name, 0, rule)
-            name = f'b{i}'; rule = f'{n2} --> {n1}'
-            self.biosim <= jl.Reaction(name, 0, rule)
-
-
+            n1o = self.tl(n1)
+            n2o = self.tl(n2)
+            
+            # FORWARD SLIDINGS AND ZIPPINGS
+            name = f"f_{data['kind']}_{i}"; rule = f"{n1o} --> {n2o}"
+            kf = self.kinetics.generalforward(data['kind'])
+            self.biosim <= jl.Reaction(name, kf, rule)
+                        
+            # BACKWARD SLIDINGS AND ZIPPINGS 
+            name = f"b_{data['kind']}_{i}"; rule = f'{n2o} --> {n1o}'
+            DG = self.Graph.nodes[n1]['object'].G - self.Graph.nodes[n2]['object'].G
+            if self.Graph.nodes[n1]['object'].total_nucleations > self.Graph.nodes[n1]['object'].total_nucleations:
+                DG = - DG
+            kb = self.kinetics.k_back(kf, DG)
+            self.biosim <= jl.Reaction(name, kb, rule)
 
 
     def run_simulation(self):

@@ -1,9 +1,9 @@
 import networkx as nx
-import copy
+import numpy as np 
 import pandas as pd 
 
 from hdna.chamber import Chamber
-from hdna.model import Model
+from hdna.model import Model, Geometry
 from hdna.strand import Strand
  
 class Kinetwork(object):
@@ -45,6 +45,7 @@ class Kinetwork(object):
               all zipping states and be sure that I will only get one note per each zipping that is common
               from different starting native nucleations. """
 
+
     def add_reactions(self):
 
         ON  = self.node_filter('state','on_register')
@@ -54,8 +55,6 @@ class Kinetwork(object):
             self.Graph.add_edge(self.chamber.singlestranded, on, kind = 'on_nucleation') #ADDPROPERTY
             self.Graph.add_edge(on, on.zipping[1], kind = 'zipping')
             for i, z in enumerate(on.zipping[2:], start=2):
-                # self.Graph.add_node(z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
-                # self.Graph.add_node(on.zipping[i-1], structure = on.zipping[i-1].structure, state = 'zipping', pairs = int(z.total_nucleations))
                 self.Graph.add_edge(z, on.zipping[i-1], kind = 'zipping')
             self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
 
@@ -70,6 +69,7 @@ class Kinetwork(object):
         self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
         self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
 
+
     def clean_duplicates(self):
         """ Unfortunately my code makes duplicates.
             Also unfortunately it was easier to just get rid of them
@@ -82,25 +82,12 @@ class Kinetwork(object):
         diz = dict(zip(labels, struct))
         Relabeled = nx.relabel_nodes(self.Graph, diz)
         self.Graph = Relabeled
-
-        #TODO: FIX THIS SHIT DOWN HERE  
-
-        # for off, data in OFF.nodes.items():
-        #     self.Graph.add_edge(self.chamber.ssstruct, off, kind = 'off_nucleation') #ADDPROPERTY
-        #     offleft, offright = self.chamber.split_offcores()
-        #     for i, (l, r) in enumerate(zip(offleft, offright)):
-        #         if 0 < i < len(offleft): 
-        #             self.Graph.add_edge(l, offleft[i-1].structure, kind = 'sliding') #ADDPROPERTY
-        #             self.Graph.add_edge(r, offright[i-1].structure, kind = 'sliding') #ADDPROPERTY
-        #     #   TODO
-        #     #   add here a condition for sliding into duplex from the most duplexed sliding state 
-        #     self.Graph.add_edge(offleft[-1], self.chamber.duplex, kind = 'sliding_closure') #ADDPROPERTY
-        #     self.Graph.add_edge(offright[-1], self.chamber.duplex, kind = 'sliding_closure') #ADDPROPERTY
     
-    
+
     def node_filter(self, property, attribute):
         return self.Graph.subgraph( 
         [n for n, attrdict in self.Graph.nodes.items() if attrdict [str(property)] == str(attribute)])
+
 
     def get_neighbor_zippings(self, structure, onlyup = False, onlydown = False):
 
@@ -133,101 +120,176 @@ class Kinetwork(object):
             return down
         else: return up, down
 
-# DEPRECATED (?)
 
-    # def make_sliding_transitions(self):
 
-    #     left_off = []
-    #     right_off = []
-    #     for off in range(len(self.offnodes)):
-    #         if self.offnodes[off].offregister == 'left':  left_off.append(self.offnodes[off]) 
-    #         if self.offnodes[off].offregister == 'right': right_off.append(self.offnodes[off]) 
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+
+
+
+class Kinetics(object):
+    def __init__(self, model: Model, kinetwork: Kinetwork, geometry: Geometry):
         
-    #     left_sliding_transitions = []
-    #     left_sliding_nucleations = []
-    #     for sliding in left_off:
-            
-    #         left_sliding_nucleations.append
-    #         #TODO this dictionary of reaction rules 
-    #         (
-    #             {
-    #             'forward'   :{
-    #                     'name':None,
-    #                     'rate':None,
-    #                     'rule':None},
-    #             'backward'  :{
-    #                     'name':None,
-    #                     'rate':None,
-    #                     'rule':None}
-    #             }
-    #         )
-    #         left_sliding_transitions.append
-    #         #TODO this dictionary of reaction rules 
-    #         (
-    #             {
-    #             'forward'   :{
-    #                     'name':None,
-    #                     'rate':None,
-    #                     'rule':None},
-    #             'backward'  :{
-    #                     'name':None,
-    #                     'rate':None,
-    #                     'rule':None}
-    #             }
-    #         )
-
-    #     right_sliding_nucleations = []
-    #     right_sliding_transitions = []
-    #     for sliding in right_off:
-
-    #         right_sliding_nucleations.append
-    #         #TODO this dictionary of reaction rules 
-    #         (
-    #             {
-    #             'forward'   :{
-    #                     'name':None, #put here singlestrands --> first_offregister_nucleation_structure AS A NAME 
-    #                     'rate':None, #put here kf_nucleation_geometric as a general parameter (later I may make this a function of the number of nucleotides of separation)
-    #                     'rule':None},#put here SS + SS --> offregister_nucleation_structure
-    #             'backward'  :{
-    #                     'name':None, #put here first_offregister_nucleation_structure --> singlestrands
-    #                     'rate':None, #put here kf_nucleation_geometric/K_eq (compute K_eq by taking the free energy difference between origin and destination structure and plugging it into a K_eq function)
-    #                     'rule':None} #put here offregister_nucleation_structure --> SS + SS
-    #             }
-    #         )
-
-    #         right_sliding_transitions.append
-    #         #TODO this dictionary of reaction rules 
-    #         (
-    #             {
-    #             'forward'   :{
-    #                     'name':None, #put here struct_origin --> struct_destin AS A NAME 
-    #                     'rate':None, #put here kf_sliding as a general parameter (later I may make this a function of the number of nucleotides of separation)
-    #                     'rule':None},#put here struct_origin --> struct_destin
-    #             'backward'  :{
-    #                     'name':None, #put here struct_destin --> struct_origin
-    #                     'rate':None, #put here kf_sliding/K_eq (compute K_eq by taking the free energy difference between origin and destination structure and plugging it into a K_eq function)
-    #                     'rule':None} #put here struct_destin --> struct_origin AS A REACTION RULE 
-    #             }
-    #         )
-
-    # def make_zipping_transitions(self):
-    #     native_nucleations = []
-    #     zipping_transitions = []
-    #     for on in self.onnodes:
-    #         #PSEUDO: append native nucleations 
-    #         for z in on.zipping:
-    #             zipping_transitions.append
-    #             (
-    #                 {
-    #                 'forward'   :{
-    #                         'name':None, #put here struct_origin --> struct_destin AS A NAME 
-    #                         'rate':None, #put here kf_zipping as a general parameter (later I may make this a function of the number of nucleotides of separation)
-    #                         'rule':None},#put here struct_origin --> struct_destin
-    #                 'backward'  :{
-    #                         'name':None, #put here struct_destin --> struct_origin
-    #                         'rate':None, #put here kf_zipping/K_eq (compute K_eq by taking the free energy difference between origin and destination structure and plugging it into a K_eq function)
-    #                         'rule':None} #put here struct_destin --> struct_origin AS A REACTION RULE 
-    #                 }
-    #             )
-
+        self.model = model
+        self.geometry = geometry
+        self.T = model.kelvin
+        self.space = model.space_dimensionality
+        self.s1 = kinetwork.s1
+        self.s2 = kinetwork.s2 
         
+        self.phys = {'R(kcal/molK)': 1.987e-3,
+                     'h_planck':     6.62607015e-34,
+                     'k_boltz':      1.380649e-23,
+                     'k_boltz_cm':   1.380649e-19,
+                     'Na':           6.023e23,
+                     'gamma':        .57722,}
+        
+        self.hydroparams = {'H20_viscosity': {'value':0.8701e-5, 'units':'kg/(cm*s)'}}
+        self.viscosity = self.hydroparams['H20_viscosity']['value']
+
+        #Lipid diffusion constants
+        self.lipid_diffusion = {'Units':'cm^2/s',
+                                'Filippov04': 9.32e-8,
+                                'Arnott08':   4.5e-8}
+
+        #TODO DOUBLE CHECK THESE VALUES 
+        self.duplex_geometry = {'units':'nm',
+                                'basepairdistance': 0.34, 
+                                'persistence_length': 100*0.34,
+                                'radius': 2} #CHECK THE RADIUS 
+
+        #TODO DOUBLE CHECK THESE VALUES 
+        self.simplex_geometry = {   'units':'nm',
+                                    'basepairdistance': 0.676,
+                                    'persistence_length': 2.223,
+                                    'cylinder_radius': 1}
+
+        ### Default compute relevant rates
+        self.diffusionlimited()
+        self.geometric_rate()
+        self.set_slidingrate()
+        self.set_zippingrate()
+
+
+    ##################################################
+    #################### General #####################
+    ##################################################
+
+    def einsmol_spherical(self, radius):
+        return self.phys['k_boltz']*self.T/(6*np.pi*self.viscosity*radius)
+
+    def diffusionlimited(self, kind='ppi'):
+        if kind == 'ppi':  
+            self.ppi_diffusivities()
+            self.dlrate = self.phys['Na']*4*np.pi*(self.pD1+self.pD2)*(self.gr1+self.gr2)
+            return self.dlrate
+        elif kind == 'vanilla':
+            """ Smoluchowski 1916 classical formula """
+            self.vanilla_diffusivities()
+            self.dlrate = self.phys['Na']*4*np.pi*(self.vD1+self.vD2)*(self.size1+self.size2)
+            return self.dlrate
+        else: raise ValueError(f'{kind} not implemented')
+
+    def geometric_rate(self):
+        self.georate = (np.power((self.geometry.theta/360),2))*(np.power((self.geometry.phi/360),2))*self.dlrate
+        return self.georate 
+
+    def closedconfscaling(self, p_circular):
+        """ p_circular => probability of circularization 
+            circularization will impede nucleation because ...
+            (just make a picture of it in your mind for now) """
+        self.georate = self.georate * (1 - p_circular)
+        #TODO implement methods to calculate p_circular from 
+        #end-to-end probability distributions from polymer physics 
+
+
+
+    """ ------------- NUCLEATION FORWARD RATES -----------------"""
+
+    ##################################################
+    #################### Vanilla #####################
+    ##################################################
+   
+    def ss_strands_size(self):
+        self.size1 = self.s1.length*self.simplex_geometry['basepairdistance']
+        self.size2 = self.s2.length*self.simplex_geometry['basepairdistance']
+        # TODO DIMENSIONAL ANALYSIS HERE (RIGHT NOW IT IS WRONG)
+   
+    def vanilla_diffusivities(self):
+        self.ss_strands_size()
+        self.vD1 = self.einsmol_spherical(self.size1)
+        self.vD2 = self.einsmol_spherical(self.size2)
+
+
+    #########################################
+    ####### Polymer Physics Informed ########
+    #########################################
+    
+    def gyradiuses(self):
+        lambda_0 = (self.simplex_geometry['persistence_length']*self.simplex_geometry['basepairdistance'])/3
+        self.gr1 = np.sqrt(self.s1.length*lambda_0)
+        self.gr2 = np.sqrt(self.s2.length*lambda_0)
+    
+    def ppi_diffusivities(self):
+        self.gyradiuses()
+        self.pD1 = self.einsmol_spherical(self.gr1)
+        self.pD2 = self.einsmol_spherical(self.gr2)
+    
+
+
+  
+    #TODO###################################################
+    ######## Chain wiggling pdfs to implement later ########
+    def px_realchain(x):
+        return 0.278*(x**0.28)*np.exp(-1.206*(x**2.43))
+    def px_idealchain(x):
+        return ((3/2*np.pi)**(3/2))*np.exp(-1.5*(x**2))
+    
+    """ Check dnapolymer.py inside ./oldsequentialcode/polymer 
+        for all the other polymer physics related functions """
+        
+
+    """ ------------- SLIDING FORWARD RATES -----------------"""
+
+    def set_slidingrate(self, sliding = 2e7): #NOTE NEED TO EXPAND THIS TO TRY ALL RANGES
+        self.slidingrate = sliding
+    
+
+    """ ------------- ZIPPING FORWARD RATES -----------------"""
+
+    def set_zippingrate(self):
+        """ first approximation is to take zipping
+            equal to diffusion limited collision rate """
+        self.zippingrate = self.dlrate
+
+
+
+    """ ------------- GENERAL BACKWARD RATES -----------------"""
+
+    def k_equilibrium(self, free_energy):
+        return np.exp(-(free_energy/(self.phys['R(kcal/molK)']*(self.T))))   # (Kcal/mol)/((Kcal/mol*K)*K) -> adimensional
+    
+    def k_back(self, forward, free_energy, geo = 'cylinder', p_circular = None):
+        """ LOOK OUT: default angle steric values don't influence 
+            the backward rates (since they are yelding a factor of 1)"""
+        ke = self.k_equilibrium(free_energy)
+        self.diffusionlimited()
+        self.geometric_rate()
+        if geo == 'cylinder': return self.georate / ke 
+        if geo == 'chain:': 
+            if 0 <= p_circular <= 1 : return self.closedconfscaling(p_circular) / ke
+            else: raise ValueError("need to input a 'p_circular' value in the [0,1] interval")
+        else: return forward / ke
+
+
+    #############################################
+    ########## General helper methods ###########
+    #############################################
+    def generalforward(self, kind):
+        correspondence = {'sliding': self.slidingrate,
+                          'sliding-end': self.slidingrate,
+                          'zipping': self.zippingrate,
+                          'zipping-end': self.zippingrate}
+        return correspondence[kind]

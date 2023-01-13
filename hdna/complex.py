@@ -42,6 +42,7 @@ class Complex(object):
         
         self.duplex = duplex
         self.singlestranded = singlestranded
+        
         if self.duplex == True:
             #TODO update this when considering mismatches 
             self.consecutive_nucleations = min(self.l1, self.l2)
@@ -68,6 +69,12 @@ class Complex(object):
 ######################################
 ##### Self-calculated Properties #####
 ######################################
+
+    #TODO: ADD ABASIC DEFECTS (not supported by nupack) 
+    # ab = {
+    # 'GUG':  {'A':-4.3,'C':-3,'G':-5.7,'T':-4.5},
+    # 'CUC':  {'A':-7.6,'C':-11.3,'G':-8.3,'T':-11.3},
+    # }
 
     def nucleationsize(self):
 
