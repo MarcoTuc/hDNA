@@ -1,20 +1,12 @@
-import os
-os.environ['PYTHON_JULIACALL_THREADS'] = '6'
-os.environ['PYTHON_JULIACALL_PROCS'] = '6'
-
 import networkx as nx
 
-import juliapkg
-juliapkg.resolve()
+import juliacall
+# print("Julia has",juliacall.Main.seval("Threads.nthreads()"),"threads")
 
-import juliacall 
 jl = juliacall.Main
 
 jl.seval('using BioSimulator')
 jl.seval('using TickTock')
-
-print(jl.CONFIG)
-print(jl.Threads.nthreads())
 
 from hdna.kinetwork import Kinetwork, Kinetics
 from hdna.model import Model, Geometry
@@ -181,9 +173,13 @@ class Simulator(object):
         table = str.maketrans({'o':'.', 'b':'(', 'd':')', 'A':'+'})
         return s.translate(table)
 
+    ########################
+    ### Printing Methods ###
+    ########################
+
+    def print_properties(self, *args):
+        """ Define a method for printing the properties of nodes/edges 
+            in the graph in a nice looking way."""
+        pass
 
 
-    # DEPRECATED
-    # def nucleation_filter(self):
-    #     return nx.edge_subgraph(self.Graph, edges=
-    #     [e for e, attrdict in self.Graph.edges.items() if attrdict['kind' == 'on_nucleation'] or attrdict['kind' == 'off_nucleation']])

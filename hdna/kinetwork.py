@@ -59,15 +59,16 @@ class Kinetwork(object):
             self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
 
         L, R = self.chamber.split_offcores()
-
         for i, (left, right) in enumerate(zip(L, R)):
             self.Graph.add_edge(self.chamber.singlestranded, left, kind = 'off_nucleation')
             self.Graph.add_edge(self.chamber.singlestranded, right, kind = 'off_nucleation')
             if i > 0: 
                 self.Graph.add_edge(left, L[i-1], kind = 'sliding')
                 self.Graph.add_edge(right, R[i-1], kind = 'sliding')
-        self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
-        self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
+        try: self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
+        except: print('no left slidings as you can see from the empty list:', L)
+        try: self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
+        except: print('no right slidings as you can see from the empty list:', R)
 
 
     def clean_duplicates(self):

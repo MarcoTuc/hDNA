@@ -1,10 +1,19 @@
+from numpy.random import choice 
+from hdna.model import Model
+
 class Strand(object):
 
-    def __init__(self, model, sequence):
+    def __init__(self, model: Model, sequence: str):
 
         #TODO: Check if the sequence has non WT stuff 
+        if type(model) != Model:
+            raise TypeError("Model must be an instance of hdna.Model")
         self.model = model
+        
+        if type(sequence) != str:
+            raise TypeError("Sequence must be a string")
         self.sequence = sequence
+
         self.length = len(sequence)
 
     def secstruct(self):
@@ -22,6 +31,17 @@ class Strand(object):
     
     def cut(self, start, stop):
         return Strand(self.model, self.sequence[start:stop])
+
+    def complementary(self):
+        wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+        seq = ''.join([wc[self.sequence[i]] for i in range(self.length)])
+        return Strand(self.model, seq)
+    
+    def random(model, length):
+        """ Generate a random sequence of given length """
+        seq = ''.join([choice(['A','T','C','G']) for i in range(length)])
+        return Strand(model, seq)
+
 
     @property
     def invert(self):
