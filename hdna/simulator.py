@@ -179,7 +179,9 @@ class Simulator(object):
 
     def print_properties(self, *args):
         """ Define a method for printing the properties of nodes/edges 
-            in the graph in a nice looking way."""
+            in the graph in a nice looking way.
+            It also has to incorporate the translation of notation when 
+            plotting biosim properties from obdA to .()+"""
         pass
 
 
