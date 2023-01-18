@@ -1,13 +1,19 @@
+import csv 
+import pickle 
+
 import networkx as nx
+import pandas as pd 
+import numpy as np
 
 import juliacall
-# print("Julia has",juliacall.Main.seval("Threads.nthreads()"),"threads")
+print("Julia has",juliacall.Main.seval("Threads.nthreads()"),"threads")
 
 jl = juliacall.Main
 
 jl.seval('using BioSimulator')
 jl.seval('using TickTock')
 
+from tqdm import tqdm 
 from hdna.kinetwork import Kinetwork, Kinetics
 from hdna.model import Model, Geometry
 
@@ -129,14 +135,14 @@ class Simulator(object):
 
     def simulation(self):
         """ run the simulation and return the results """
-        sim = jl.simulate(self.biosim, jl.NextReaction(), tfinal = self.options.runtime)
-        return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t}
+        return jl.simulate(self.biosim, self.options.method, tfinal = self.options.runtime)
+        # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t}
     
     def ensemble(self):
         state, model = jl.parse_model(self.biosim)
-        return [jl.simulate(state, model, self.options.method, tfinal = self.options.runtime) for _ in range(self.options.Nmonte)]
+        return [jl.simulate(state, model, self.options.method, tfinal = self.options.runtime) for _ in tqdm(range(self.options.Nmonte))]
 
-    def mfpts(self, simresults):
+    def mfpts(self, ensemble):
         """
         node referring to Duplex should be the last one so the result spot for duplex should just be something like simresults[-1] i hope 
         first i need to understand how the simresult looks like out of the juliacalled biosimlator 
@@ -155,10 +161,65 @@ class Simulator(object):
             mfpts.append(self.findmfpt(sim)) make another method that just gets the mfpt for a single simulation result 
         """
 
+        fpts = []
+        failed = []
+        for sim in ensemble:
+            index = jl.findfirst(jl.isone, sim[-1,:])
+            try: fpts.append(sim.t[index-1])
+            except TypeError: 
+                fpts.append(self.options.runtime)
+                failed.append(index)
+        print(f"{len(failed)} simulations didn't produce a duplex.")
+        print(f"That's {100*len(failed)/len(ensemble)}% of simulations")
+        return np.mean(fpts)
+        
+        
+        ############ DEPRECATED MFPTS ROUTINES ################
+        # fpts = []
+        # failed = []
+        # try: data = self.ensemble_to_dict(ensemble)
+        # except: data = ensemble 
+        # for i, sim in enumerate(data):
+        #     fpi = np.argmax(sim['c'][-1] == 1)
+        #     fpts.append(data['t'][fpi])
+        # print(f"{len(failed)} simulations didn't produce a duplex.")
+        # print(f"That's {100*len(failed)/len(data)}% of simulations")
+        # return np.mean(fpts)
     
-    def trajectory(self):
-        """ Create a method for appending a simulation trajectory to each simulation result """
-        pass
+        # fpts = []
+        # failed = []
+        # try: data = self.ensemble_to_dict(ensemble)
+        # except: data = ensemble 
+        # duplex = list(self.Graph.nodes())[-1]
+        # for i, sim in enumerate(data):
+        #     try: 
+        #         index = np.where(sim[duplex] == 1)[0][0]
+        #         fpt = sim['time'][index]
+        #         fpts.append(fpt)
+        #     except: 
+        #         # print(f"simulation at index {i} has not duplexed")
+        #         failed.append(i)
+        #         fpts.append(self.options.runtime)
+        #         # print(f"appended runtime as fpt for failed simulation {i}: {self.options.runtime}")
+        # # print(f"list of failed simulations: {failed}")
+        # print(f"{len(failed)} simulations didn't produce a duplex.")
+        # print(f"That's {100*len(failed)/len(data)}% of simulations")
+        # return np.mean(fpts)
+    
+
+    def trajectory(self, simulation): #TODO REDO IT EFFICIENTLY
+        """ Create a method for appending a simulation trajectory to each simulation result
+            Over than being pretty this is a good way to see inside simulations what's happening
+            in order to see if the code is making stuff that makes actual physical sense.
+            Checking this kind of stuff on the very big and sparse dataframes is unwise """
+        ###### DUE TO CHANGES IN ENSEMBLE TO DICT IT DOESN'T WORK ANYMORE AT THE MOMENT
+        # trajectory = []
+        # try: data = simulation.drop('time', axis=1)
+        # except KeyError: data = simulation
+        # for index, row in data.iterrows():
+        #     trajectory.append(row[row!=0].index[0])
+        # return trajectory
+        
 
     ######################
     ### Helper Methods ###
@@ -182,4 +243,74 @@ class Simulator(object):
             in the graph in a nice looking way."""
         pass
 
+    ########################
+    ### Property Methods ###
+    ########################
 
+    @property
+    def duplex(self):
+        return list(self.Graph.nodes())[-1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ############################ DEPRECATED SHIT #######################################
+
+#     def julia_csv_pandas(self, ensemble):
+#         out = []
+#         for sim in ensemble:
+#             with open('translator.csv', 'w+') as file:
+#                 file.truncate(0)
+#                 writer = csv.writer(file)
+#                 writer.writerows(sim)
+#                 df = pd.read_csv('translator.csv', names=list(self.Graph.nodes()))
+#             out.append(df)
+#         return out 
+
+
+#     def julia_pickle_pandas(self, ensemble):
+#         out = []
+#         for sim in ensemble:
+#             file = open('mbare', 'wb')
+#             pickle.dump(sim, file)
+#             file.close()
+#             file = open('mbare', 'rb')
+#             df = pd.read_pickle(file)
+#             file.close()
+#             out.append(df)
+#         return out 
+
+
+
+    # def ensemble_to_dataframe(self, ensemble):
+    #     """ convert the ensemble of simulations to a pandas dataframe """
+    #     out = []
+    #     for sim in ensemble:
+    #         df = pd.DataFrame(sim.u, columns=list(self.Graph.nodes()))
+    #         df['time'] = sim.t
+    #         out.append(df)
+    #     return out
+
+    # def ensemble_to_dict(self, ensemble):
+    #     out = []
+    #     for sim in tqdm(range(self.options.Nmonte)):
+    #         data = ensemble[sim].u.__array__()
+    #         time = ensemble[sim].t
+    #         new = {'c':data,'t':time}
+    #         out.append(new)
+    #     return new
+    #     # return [{'c':jl.hcat(*ensemble[i].u).__array__(), 't':ensemble[i].t} for i in tqdm(range(len(ensemble)))]

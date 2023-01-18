@@ -1,5 +1,5 @@
 Seqs:             ,   Expt:      
-GTTCGGTCTA        ,   1145949.98 #handmadecheck
+GTTCGGTCTA        ,   1145949.98
 CCAAAACCAA        ,   1668153.61 
 AAACCACACA        ,   1809459.04 
 ACCAAACCAC        ,   2167674.56 
@@ -16,7 +16,7 @@ CCACCAACAA        ,   2825046.68
 ACACACACAC        ,   3843880.1  
 AACCACCACA        ,   3865948.42 
 CAACCAACCA        ,   3960894.12 
-ACACACACCA        ,   4159346.56 #handmadecheck
+ACACACACCA        ,   4159346.56
 CCCCACACAA        ,   5448523.07 
 ACACCACCAC        ,   5613147.49 
 GCTGTTCGGTCTAT    ,   1042172.8  

@@ -46,7 +46,7 @@ class Kinetwork(object):
               from different starting native nucleations. """
 
 
-    def add_reactions(self):
+    def add_reactions(self, verbose=False):
 
         ON  = self.node_filter('state','on_register')
         D = self.node_filter('state', 'duplex')
@@ -66,9 +66,13 @@ class Kinetwork(object):
                 self.Graph.add_edge(left, L[i-1], kind = 'sliding')
                 self.Graph.add_edge(right, R[i-1], kind = 'sliding')
         try: self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
-        except: print('no left slidings as you can see from the empty list:', L)
+        except IndexError: 
+            if verbose: print('no left slidings as you can see from the empty list:', L)
+            else: pass
         try: self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
-        except: print('no right slidings as you can see from the empty list:', R)
+        except IndexError: 
+            if verbose: print('no right slidings as you can see from the empty list:', R)
+            else: pass
 
 
     def clean_duplicates(self):
@@ -156,16 +160,16 @@ class Kinetics(object):
                                 'Arnott08':   4.5e-8}
 
         #TODO DOUBLE CHECK THESE VALUES 
-        self.duplex_geometry = {'units':'nm',
-                                'basepairdistance': 0.34, 
-                                'persistence_length': 100*0.34,
-                                'radius': 2} #CHECK THE RADIUS 
+        self.duplex_geometry = {'units':'cm',
+                                'basepairdistance': 0.34e-7, 
+                                'persistence_length': 100*0.34e-7,
+                                'radius': 2e-7} #CHECK THE RADIUS 
 
         #TODO DOUBLE CHECK THESE VALUES 
-        self.simplex_geometry = {   'units':'nm',
-                                    'basepairdistance': 0.676,
-                                    'persistence_length': 2.223,
-                                    'cylinder_radius': 1}
+        self.simplex_geometry = {   'units':'cm',
+                                    'basepairdistance': 0.676e-7,
+                                    'persistence_length': 2.223e-7,
+                                    'cylinder_radius': 1e-7}
 
         ### Default compute relevant rates
         self.diffusionlimited()
@@ -179,17 +183,21 @@ class Kinetics(object):
     ##################################################
 
     def einsmol_spherical(self, radius):
-        return self.phys['k_boltz']*self.T/(6*np.pi*self.viscosity*radius)
+        """ returns einstein smoluchowski diffusivity for 
+            spherical particles in (cm^2)/s units """
+        return self.phys['k_boltz_cm']*self.T/(6*np.pi*self.viscosity*radius)
 
     def diffusionlimited(self, kind='ppi'):
+        """ Smoluchowski 1916 classical formula """
         if kind == 'ppi':  
             self.ppi_diffusivities()
-            self.dlrate = self.phys['Na']*4*np.pi*(self.pD1+self.pD2)*(self.gr1+self.gr2)
+            dc = 1e-3 #dimensional correction from cubic cm to cubic dm to get 1/(M*s) kinetic rates
+            self.dlrate = self.phys['Na']*4*np.pi*(self.pD1+self.pD2)*(self.gr1+self.gr2) * dc
             return self.dlrate
         elif kind == 'vanilla':
-            """ Smoluchowski 1916 classical formula """
             self.vanilla_diffusivities()
-            self.dlrate = self.phys['Na']*4*np.pi*(self.vD1+self.vD2)*(self.size1+self.size2)
+            dc = 1e-3 #dimensional correction from cubic cm to cubic dm to get 1/(M*s) kinetic rates
+            self.dlrate = self.phys['Na']*4*np.pi*(self.vD1+self.vD2)*(self.size1+self.size2) * dc
             return self.dlrate
         else: raise ValueError(f'{kind} not implemented')
 

@@ -20,22 +20,12 @@
         -- singlestranded - yellow
         -- duplexed       - red 
 
-# !!!!) Add kinetic constants to edge creation routines in Kinetwork class
-        we have the following forward rates:
-            - nucleations
-                this gets divided by the total number of off and on register nucleations possible 
-            - sliding
-                for now this is a constant value but I want to make it 
-                dependant on the "separation" between one sliding and 
-                the next but I don't really know how atm. 
-            - zipping
-                for now this is just going to be the diffusion limited rate
-                without any geometric constraints
-    
-    !!!) Dimensional analysis of constants and formulas inside Kinetics class 
+# !!!!) Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A SECOND CHECK IF NEEDED)
+        Kinetics class 
             -   there's clearlys some wrong shit as one can see
                 by the orders of magnitude you get for diffusion
-    
+
+
 
 # !!!) Implement the Simulator from the Kinetwork 
     - Translate simhelper1.ipynb code into the class 
@@ -85,3 +75,23 @@
             2\  Then I will first try the solution number 1 and check experiments
             3\  If I'll have time left I will go for solution number 2 
                 to make things more realistic (hopefully more accurate)
+
+
+
+#### ################# DONE ##########################
+#### ################# DONE ##########################
+
+
+# DONE) Add kinetic constants to edge creation routines in Kinetwork class
+        we have the following forward rates:
+            - nucleations
+                this gets divided by the total number of off and on register nucleations possible 
+            - sliding
+                for now this is a constant value but I want to make it 
+                dependant on the "separation" between one sliding and 
+                the next but I don't really know how atm. 
+            - zipping
+                for now this is just going to be the diffusion limited rate
+                without any geometric constraints
+    
+    
