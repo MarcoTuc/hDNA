@@ -1,4 +1,15 @@
-ciao
+#######################################################
+#### Simulation Exploration 
+
+-   Decreasing minimum-nucleation has the effect of lowering average resulting rates for strands.
+    I saw this by confronting 1 vs 3 minimum nucleation. 
+    Since my model is already under-computing rates for minimum nucleation of 3, I will need to 
+    do a new simulation with some higher minimum nucleation value and see how better it behaves. 
+
+-   Try one simulation with Geometry(360,360) and see how it changes results. 
+
+-   There are some strands that systematically get over/under evaluated.
+    I need to check in detail what's happening in there, if there are any shitty dynamics taking place. 
 
 #######################################################
 #### About the simulator

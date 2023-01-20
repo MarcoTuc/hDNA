@@ -6,12 +6,11 @@ import pandas as pd
 import numpy as np
 
 import juliacall
-print("Julia has",juliacall.Main.seval("Threads.nthreads()"),"threads")
+# print("Julia has",juliacall.Main.seval("Threads.nthreads()"),"threads")
 
 jl = juliacall.Main
 
 jl.seval('using BioSimulator')
-jl.seval('using TickTock')
 
 from tqdm import tqdm 
 from hdna.kinetwork import Kinetwork, Kinetics

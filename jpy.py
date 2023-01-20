@@ -4,9 +4,8 @@ import juliacall
 jl = juliacall.newmodule('Dude')
 
 jl.seval('using BioSimulator')
-jl.seval('using TickTock')
 
-jl.tick()
+
 model = jl.Network("AT-all")  
 
 initial = 100
@@ -82,11 +81,11 @@ model <= jl.Reaction("r2-D_b",   kb_r2D, "D --> R2")
 
 runtime = 1e-2
 Nmonte = 50000
-jl.tock()
 
-jl.tick()
+
+
 simresults = [jl.simulate(model, jl.Direct(),tfinal=runtime) for i in range(Nmonte)]
-jl.tock()
+
 
 """
 results = jl.seval('[permutedims(hcat(simresults[i]...)) for i in 1:50000]')
