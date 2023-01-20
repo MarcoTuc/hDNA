@@ -206,11 +206,38 @@ class Simulator(object):
         # return np.mean(fpts)
     
 
-    def trajectory(self, simulation): #TODO REDO IT EFFICIENTLY
+    def get_trajectory(self, simulation): #TODO REDO IT EFFICIENTLY
+        
         """ Create a method for appending a simulation trajectory to each simulation result
             Over than being pretty this is a good way to see inside simulations what's happening
             in order to see if the code is making stuff that makes actual physical sense.
             Checking this kind of stuff on the very big and sparse dataframes is unwise """
+        
+        self.trajectory = []
+        states = list(self.Graph.nodes())
+        # substitute 1 instead of 2 into the singlestranded states 
+        for i, e in enumerate(simulation[0,:]): 
+            if e == 2: simulation[0,:][i] = 1
+        # Append the corresponding structure to the trajectory list
+        for step in range(len(simulation)-1):
+            stepvector = simulation[:,step]
+            index = jl.findall(jl.isone, stepvector)
+            # Check for errors
+            if len(index) != 1: 
+                if len(index) == 0: 
+                    # Cannot have void states (strand always exists)
+                    raise TrajectoryError(f'void state detected at step {step}')
+                else:     
+                    # Cannot have more than one state at the same time 
+                    raise TrajectoryError(f'simultaneous states detected in step {step} at indices {[*list(index)]}')
+            index = index[0] - 1
+            self.trajectory.append(states[index])
+        
+        return self.trajectory
+
+
+
+
         ###### DUE TO CHANGES IN ENSEMBLE TO DICT IT DOESN'T WORK ANYMORE AT THE MOMENT
         # trajectory = []
         # try: data = simulation.drop('time', axis=1)
@@ -252,14 +279,9 @@ class Simulator(object):
 
 
 
-
-
-
-
-
-
-
-
+class TrajectoryError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
 
 
 
