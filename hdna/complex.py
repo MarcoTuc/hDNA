@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd 
 import re
 
-from hdna.strand import Strand
-from hdna.model import Model
+from .strand import Strand
+from .model import Model
 
 
 class Complex(object):

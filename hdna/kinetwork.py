@@ -2,9 +2,9 @@ import networkx as nx
 import numpy as np 
 import pandas as pd 
 
-from hdna.chamber import Chamber
-from hdna.model import Model, Geometry
-from hdna.strand import Strand
+from .chamber import Chamber
+from .model import Model, Geometry
+from .strand import Strand
  
 class Kinetwork(object):
 

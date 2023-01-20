@@ -1,8 +1,8 @@
 import re
 
-from hdna.strand import Strand
-from hdna.complex import Complex
-from hdna.model import Model
+from .strand import Strand
+from .complex import Complex
+from .model import Model
 
 
 class Chamber(object):

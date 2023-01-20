@@ -1,5 +1,5 @@
 from numpy.random import choice 
-from hdna.model import Model
+from .model import Model
 
 class Strand(object):
 

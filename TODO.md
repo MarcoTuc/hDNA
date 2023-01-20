@@ -53,6 +53,7 @@
 #######################################################
 #### Notes on how to improve the model on a conceptual level
 
+#       Off-register nonzipping
 !!!!)   By looking at off-register nucleations we can see that there are direct nucleations
         going on directly from singlestranded to lots of base-pairs.
         This entails that off-register nucleations will have a profound impact on the dynamics
@@ -69,7 +70,7 @@
 
         which is unrealistic. 
 
-###     - How to solve this shit: 
+###     - How to solve this: 
             1\  Cut off-register nucleations with a number of base pairs longer than 
                 some value plus the minimum nucleation length. Add some value because otherwise
                 we're limiting the trajectory too much. 
@@ -89,10 +90,45 @@
             3\  If I'll have time left I will go for solution number 2 
                 to make things more realistic (hopefully more accurate)
 
+#       Nonsense inside slidings thermodynamics!
+!!!!)   Basal sliding rate is 2e7.
+        What can happen is that the free energy difference between two slidings is positive 
+        such that the fws is 2e7 and the bwd is some orders of magnitude over 2e7 (say 2e9).
+        How do I fix this? 
+
+#       Wrong zipping sides: 
+!!!!)   Some forward zippings are actually referring to backward zippings. 
+        Fix this (see wrongdoingszippingline64.html line 64)
+        In particular it is zipping_55 that has fwd and bwd switched
+
+         
 
 
+######################################################
+### THEORETICAL CONSIDERATIONS: 
+
+<Non-Markovianity>
+Right now the kinetic network we gillespie simulate is a markovian one. 
+We are not inferring transitions probabilities from any other information than the current state. 
+Actually this is not the case as the actual physical location of strands will influence the probability
+of having this or that subsequent transition. For example let's think about a sliding going into zipping: 
+'........(.+........).' sliding
+'..........+..........' singlestranded
+'(.........+.........)' nucleation
+The sliding in this case is one like this: AAAAAAAAAG
+                                                   TCTTTTTTTT 
+Then it simplexes: 
+Then it nucleates like: AAAAAAAAAG
+                        TCTTTTTTTT
+                        ^
+It is clear that here there's no information about spatial permanence of objects 
+which will eventually influence markovianity rendering the process actually dependant
+on current state + state previous to that (it is just order 1 nonmarkovian)
+
+
+#### #################################################
 #### ################# DONE ##########################
-#### ################# DONE ##########################
+#### #################################################
 
 
 # DONE) Add kinetic constants to edge creation routines in Kinetwork class

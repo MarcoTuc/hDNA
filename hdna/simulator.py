@@ -1,5 +1,4 @@
 import csv 
-import pickle 
 
 import networkx as nx
 import pandas as pd 
@@ -13,8 +12,8 @@ jl = juliacall.Main
 jl.seval('using BioSimulator')
 
 from tqdm import tqdm 
-from hdna.kinetwork import Kinetwork, Kinetics
-from hdna.model import Model, Geometry
+from .kinetwork import Kinetwork, Kinetics
+from .model import Model, Geometry
 
 class Options(object):
     def __init__(self, method="direct", runtime=1e-5, Nmonte=500):
@@ -137,9 +136,16 @@ class Simulator(object):
         return jl.simulate(self.biosim, self.options.method, tfinal = self.options.runtime)
         # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t}
     
-    def ensemble(self):
+    def ensemble(self, write_csv=False, folder = '.'):
         state, model = jl.parse_model(self.biosim)
-        return [jl.simulate(state, model, self.options.method, tfinal = self.options.runtime) for _ in tqdm(range(self.options.Nmonte))]
+        if not write_csv:
+            return [jl.simulate(state, model, self.options.method, tfinal = self.options.runtime) for _ in tqdm(range(self.options.Nmonte))]
+        else: 
+            for _ in tqdm(range(self.options.Nmonte)):
+                sim = jl.simulate(state, model, self.options.method, tfinal = self.options.runtime)
+                traj = self.get_trajectory(sim)
+
+
 
     def mfpts(self, ensemble):
         """
@@ -206,13 +212,13 @@ class Simulator(object):
         # return np.mean(fpts)
     
 
-    def get_trajectory(self, simulation): #TODO REDO IT EFFICIENTLY
+    def get_trajectory(self, simulation, rates_info = False): #TODO REDO IT EFFICIENTLY
         
         """ Create a method for appending a simulation trajectory to each simulation result
             Over than being pretty this is a good way to see inside simulations what's happening
             in order to see if the code is making stuff that makes actual physical sense.
             Checking this kind of stuff on the very big and sparse dataframes is unwise """
-        
+
         self.trajectory = []
         states = list(self.Graph.nodes())
         # substitute 1 instead of 2 into the singlestranded states 
@@ -232,11 +238,30 @@ class Simulator(object):
                     raise TrajectoryError(f'simultaneous states detected in step {step} at indices {[*list(index)]}')
             index = index[0] - 1
             self.trajectory.append(states[index])
-        
-        return self.trajectory
+        if not rates_info:
+            return self.trajectory
+        else:
+            G = self.DiGraph()
+            rates = []
+            names = []
+            for i, step in enumerate(self.trajectory[:-1], start=1):
+                rates.append('{:e}'.format(G.edges[str(step),str(self.trajectory[i])]['rate']))
+                names.append(G.edges[str(step),str(self.trajectory[i])]['name'])
+            DF = pd.DataFrame([self.trajectory, rates, names], index=['trajectory', 'next step rate', 'step name']).T
+            return DF
 
-
-
+    def DiGraph(self):
+        R = self.biosim.reaction_list
+        properties = ['name', 'rate', 'reactants', 'products']
+        names = []; rates = []; reags = []; prods = []
+        for r in R:
+            names.append(str(r))
+            rates.append(R[r].rate)
+            reags.append(self.lt(str(list((R[r].reactants))[0])))
+            prods.append(self.lt(str(list((R[r].products))[0])))
+        dataframe = pd.DataFrame([names, rates, reags, prods], index=properties).T
+        digraph = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', edge_attr=['name', 'rate'], create_using=nx.DiGraph())
+        return digraph
 
         ###### DUE TO CHANGES IN ENSEMBLE TO DICT IT DOESN'T WORK ANYMORE AT THE MOMENT
         # trajectory = []

@@ -1,6 +1,7 @@
-from hdna.strand import Strand
-from hdna.complex import Complex 
-from hdna.chamber import Chamber
-from hdna.kinetwork import Kinetwork, Kinetics
-from hdna.simulator import Simulator, Options
-from hdna.model import Model, Geometry
+from .strand import Strand, Structure
+from .complex import Complex, Zippo
+from .chamber import Chamber
+from .kinetwork import Kinetwork, Kinetics
+from .simulator import Options, Simulator
+
+from .model import Model, Geometry
