@@ -100,6 +100,7 @@
 !!!!)   Some forward zippings are actually referring to backward zippings. 
         Fix this (see wrongdoingszippingline64.html line 64)
         In particular it is zipping_55 that has fwd and bwd switched
+#       By looking at new trajectory plots I see that this bug is happening quite often. 
 
          
 

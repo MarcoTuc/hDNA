@@ -1,2 +1,5 @@
 /HELPER
 /virtualenvs
+/results
+/__pycache__
+/.vscode

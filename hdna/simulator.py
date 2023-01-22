@@ -1,4 +1,5 @@
 import csv 
+import os
 
 import networkx as nx
 import pandas as pd 
@@ -16,13 +17,36 @@ from .kinetwork import Kinetwork, Kinetics
 from .model import Model, Geometry
 
 class Options(object):
-    def __init__(self, method="direct", runtime=1e-5, Nmonte=500):
+    def __init__(self, 
+
+                method="direct", 
+                runtime=1e-5, 
+                Nsim=500,
+
+                make_sim_csv=True,
+                rates_info = True,
+                save_graph_html = True,
+                trajstosave=10,
+                folder = './results' #beware if folder exists 
+                
+                ):
+        
+        # JULIA SIMULATION OPTIONS
         self.runtime = runtime
-        self.Nmonte = Nmonte
-
+        self.Nsim = Nsim
         methods = {"direct": jl.Direct()}
+        self.method = methods[method]
 
-        self.method = methods[method] #add some error here if the method is not a julia object or whatever 
+        # DATASAVING OPTIONS
+        self.make_sim_csv = make_sim_csv
+        self.rates_info = rates_info
+        self.save_graph_html = save_graph_html
+        self.folder = folder 
+        self.trajstosave = trajstosave
+        self.stranditer = 1
+
+
+ #add some error here if the method is not a julia object or whatever 
 
 class Simulator(object):
     
@@ -136,35 +160,26 @@ class Simulator(object):
         return jl.simulate(self.biosim, self.options.method, tfinal = self.options.runtime)
         # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t}
     
-    def ensemble(self, write_csv=False, folder = '.'):
+    def ensemble(self):
         state, model = jl.parse_model(self.biosim)
-        if not write_csv:
-            return [jl.simulate(state, model, self.options.method, tfinal = self.options.runtime) for _ in tqdm(range(self.options.Nmonte))]
-        else: 
-            for _ in tqdm(range(self.options.Nmonte)):
-                sim = jl.simulate(state, model, self.options.method, tfinal = self.options.runtime)
-                traj = self.get_trajectory(sim)
-
+        sim = [jl.simulate(state, model, self.options.method, tfinal = self.options.runtime) for _ in tqdm(range(self.options.Nsim))]
+        if not self.options.make_sim_csv:
+            return sim
+        else:
+            DIR = f'./{self.options.folder}/{self.options.stranditer}_{self.kinet.s1.sequence}/trajectories'  
+            self.options.stranditer += 1
+            try: os.makedirs(DIR)
+            except FileExistsError: pass 
+            for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
+                traj = self.get_trajectory(s) 
+                traj.to_csv(f'{DIR}/run{i+1}.csv')
+            return sim
 
 
     def mfpts(self, ensemble):
         """
         node referring to Duplex should be the last one so the result spot for duplex should just be something like simresults[-1] i hope 
-        first i need to understand how the simresult looks like out of the juliacalled biosimlator 
-
-        PSEUDOCODE:
-
-        def condition(x):
-            return 1 == y (when the value of duplex gets to one for the firs time we get the mfpt)
-        def findmfpt(sim):
-            index_r = findfirst(condition, result[:,duplexindex])
-            firstpassage = etc etc 
-
-        mfpts = []
-        time = simresults.time
-        for sim in simresults:
-            mfpts.append(self.findmfpt(sim)) make another method that just gets the mfpt for a single simulation result 
-        """
+        first i need to understand how the simresult looks like out of the juliacalled biosimlator """
 
         fpts = []
         failed = []
@@ -177,42 +192,9 @@ class Simulator(object):
         print(f"{len(failed)} simulations didn't produce a duplex.")
         print(f"That's {100*len(failed)/len(ensemble)}% of simulations")
         return np.mean(fpts)
-        
-        
-        ############ DEPRECATED MFPTS ROUTINES ################
-        # fpts = []
-        # failed = []
-        # try: data = self.ensemble_to_dict(ensemble)
-        # except: data = ensemble 
-        # for i, sim in enumerate(data):
-        #     fpi = np.argmax(sim['c'][-1] == 1)
-        #     fpts.append(data['t'][fpi])
-        # print(f"{len(failed)} simulations didn't produce a duplex.")
-        # print(f"That's {100*len(failed)/len(data)}% of simulations")
-        # return np.mean(fpts)
-    
-        # fpts = []
-        # failed = []
-        # try: data = self.ensemble_to_dict(ensemble)
-        # except: data = ensemble 
-        # duplex = list(self.Graph.nodes())[-1]
-        # for i, sim in enumerate(data):
-        #     try: 
-        #         index = np.where(sim[duplex] == 1)[0][0]
-        #         fpt = sim['time'][index]
-        #         fpts.append(fpt)
-        #     except: 
-        #         # print(f"simulation at index {i} has not duplexed")
-        #         failed.append(i)
-        #         fpts.append(self.options.runtime)
-        #         # print(f"appended runtime as fpt for failed simulation {i}: {self.options.runtime}")
-        # # print(f"list of failed simulations: {failed}")
-        # print(f"{len(failed)} simulations didn't produce a duplex.")
-        # print(f"That's {100*len(failed)/len(data)}% of simulations")
-        # return np.mean(fpts)
     
 
-    def get_trajectory(self, simulation, rates_info = False): #TODO REDO IT EFFICIENTLY
+    def get_trajectory(self, simulation): #TODO REDO IT EFFICIENTLY
         
         """ Create a method for appending a simulation trajectory to each simulation result
             Over than being pretty this is a good way to see inside simulations what's happening
@@ -238,7 +220,7 @@ class Simulator(object):
                     raise TrajectoryError(f'simultaneous states detected in step {step} at indices {[*list(index)]}')
             index = index[0] - 1
             self.trajectory.append(states[index])
-        if not rates_info:
+        if not self.options.rates_info:
             return self.trajectory
         else:
             G = self.DiGraph()
@@ -247,10 +229,13 @@ class Simulator(object):
             for i, step in enumerate(self.trajectory[:-1], start=1):
                 rates.append('{:e}'.format(G.edges[str(step),str(self.trajectory[i])]['rate']))
                 names.append(G.edges[str(step),str(self.trajectory[i])]['name'])
-            DF = pd.DataFrame([self.trajectory, rates, names], index=['trajectory', 'next step rate', 'step name']).T
+            DF = pd.DataFrame([self.trajectory, rates, names], 
+                                index=['trajectory', 'next step rate', 'step name']).T
             return DF
 
     def DiGraph(self):
+        """ Return a digraph post-biosim to see if it matches with the pre-biosim graph.
+            This is useful to see if there are any errors in the kinetwork-biosim translation"""
         R = self.biosim.reaction_list
         properties = ['name', 'rate', 'reactants', 'products']
         names = []; rates = []; reags = []; prods = []
@@ -260,16 +245,14 @@ class Simulator(object):
             reags.append(self.lt(str(list((R[r].reactants))[0])))
             prods.append(self.lt(str(list((R[r].products))[0])))
         dataframe = pd.DataFrame([names, rates, reags, prods], index=properties).T
-        digraph = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', edge_attr=['name', 'rate'], create_using=nx.DiGraph())
-        return digraph
+        self.digraph = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', 
+                                            edge_attr=['name', 'rate'], create_using=nx.DiGraph())
+        # loop for inheriting node properties from self.Graph to self.digraph
+        for g in list(self.Graph.nodes):
+            for key in list(self.Graph.nodes[g].keys()):
+                self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
 
-        ###### DUE TO CHANGES IN ENSEMBLE TO DICT IT DOESN'T WORK ANYMORE AT THE MOMENT
-        # trajectory = []
-        # try: data = simulation.drop('time', axis=1)
-        # except KeyError: data = simulation
-        # for index, row in data.iterrows():
-        #     trajectory.append(row[row!=0].index[0])
-        # return trajectory
+        return self.digraph
         
 
     ######################
@@ -353,10 +336,45 @@ class TrajectoryError(Exception):
 
     # def ensemble_to_dict(self, ensemble):
     #     out = []
-    #     for sim in tqdm(range(self.options.Nmonte)):
+    #     for sim in tqdm(range(self.options.Nsim)):
     #         data = ensemble[sim].u.__array__()
     #         time = ensemble[sim].t
     #         new = {'c':data,'t':time}
     #         out.append(new)
     #     return new
     #     # return [{'c':jl.hcat(*ensemble[i].u).__array__(), 't':ensemble[i].t} for i in tqdm(range(len(ensemble)))]
+
+
+
+
+############ DEPRECATED MFPTS ROUTINES ################
+        # fpts = []
+        # failed = []
+        # try: data = self.ensemble_to_dict(ensemble)
+        # except: data = ensemble 
+        # for i, sim in enumerate(data):
+        #     fpi = np.argmax(sim['c'][-1] == 1)
+        #     fpts.append(data['t'][fpi])
+        # print(f"{len(failed)} simulations didn't produce a duplex.")
+        # print(f"That's {100*len(failed)/len(data)}% of simulations")
+        # return np.mean(fpts)
+    
+        # fpts = []
+        # failed = []
+        # try: data = self.ensemble_to_dict(ensemble)
+        # except: data = ensemble 
+        # duplex = list(self.Graph.nodes())[-1]
+        # for i, sim in enumerate(data):
+        #     try: 
+        #         index = np.where(sim[duplex] == 1)[0][0]
+        #         fpt = sim['time'][index]
+        #         fpts.append(fpt)
+        #     except: 
+        #         # print(f"simulation at index {i} has not duplexed")
+        #         failed.append(i)
+        #         fpts.append(self.options.runtime)
+        #         # print(f"appended runtime as fpt for failed simulation {i}: {self.options.runtime}")
+        # # print(f"list of failed simulations: {failed}")
+        # print(f"{len(failed)} simulations didn't produce a duplex.")
+        # print(f"That's {100*len(failed)/len(data)}% of simulations")
+        # return np.mean(fpts)

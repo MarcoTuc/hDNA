@@ -1,0 +1,1249 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2023-01-22">
+    <creator>NetworkX 3.0</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <attributes mode="static" class="edge">
+      <attribute id="3" title="name" type="string" />
+      <attribute id="4" title="rate" type="double" />
+    </attributes>
+    <attributes mode="static" class="node">
+      <attribute id="0" title="structure" type="string" />
+      <attribute id="1" title="state" type="string" />
+      <attribute id="2" title="pairs" type="long" />
+    </attributes>
+    <nodes>
+      <node id="..........+.........." label="..........+..........">
+        <attvalues>
+          <attvalue for="0" value="..........+.........." />
+          <attvalue for="1" value="singlestranded" />
+          <attvalue for="2" value="0" />
+        </attvalues>
+      </node>
+      <node id=".......(..+..)......." label=".......(..+..).......">
+        <attvalues>
+          <attvalue for="0" value=".......(..+..)......." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="......(...+...)......" label="......(...+...)......">
+        <attvalues>
+          <attvalue for="0" value="......(...+...)......" />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="........(.+.)........" label="........(.+.)........">
+        <attvalues>
+          <attvalue for="0" value="........(.+.)........" />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="...(......+......)..." label="...(......+......)...">
+        <attvalues>
+          <attvalue for="0" value="...(......+......)..." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="....(.....+.....)...." label="....(.....+.....)....">
+        <attvalues>
+          <attvalue for="0" value="....(.....+.....)...." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id=".........(+)........." label=".........(+).........">
+        <attvalues>
+          <attvalue for="0" value=".........(+)........." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id=".(........+........)." label=".(........+........).">
+        <attvalues>
+          <attvalue for="0" value=".(........+........)." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="..(.......+.......).." label="..(.......+.......)..">
+        <attvalues>
+          <attvalue for="0" value="..(.......+.......).." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="(.........+.........)" label="(.........+.........)">
+        <attvalues>
+          <attvalue for="0" value="(.........+.........)" />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id=".....(....+....)....." label=".....(....+....).....">
+        <attvalues>
+          <attvalue for="0" value=".....(....+....)....." />
+          <attvalue for="1" value="on_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id=".(........+.)........" label=".(........+.)........">
+        <attvalues>
+          <attvalue for="0" value=".(........+.)........" />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="........(.+........)." label="........(.+........).">
+        <attvalues>
+          <attvalue for="0" value="........(.+........)." />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="..(.......+.)........" label="..(.......+.)........">
+        <attvalues>
+          <attvalue for="0" value="..(.......+.)........" />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="........(.+.......).." label="........(.+.......)..">
+        <attvalues>
+          <attvalue for="0" value="........(.+.......).." />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="((........+...))....." label="((........+...)).....">
+        <attvalues>
+          <attvalue for="0" value="((........+...))....." />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="2" />
+        </attvalues>
+      </node>
+      <node id=".....((...+........))" label=".....((...+........))">
+        <attvalues>
+          <attvalue for="0" value=".....((...+........))" />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="2" />
+        </attvalues>
+      </node>
+      <node id="(.((......+..)).)...." label="(.((......+..)).)....">
+        <attvalues>
+          <attvalue for="0" value="(.((......+..)).)...." />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="....(.((..+......)).)" label="....(.((..+......)).)">
+        <attvalues>
+          <attvalue for="0" value="....(.((..+......)).)" />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="......(...+.)........" label="......(...+.)........">
+        <attvalues>
+          <attvalue for="0" value="......(...+.)........" />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id="........(.+...)......" label="........(.+...)......">
+        <attvalues>
+          <attvalue for="0" value="........(.+...)......" />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="1" />
+        </attvalues>
+      </node>
+      <node id=".(..(.....+....)..).." label=".(..(.....+....)..)..">
+        <attvalues>
+          <attvalue for="0" value=".(..(.....+....)..).." />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="2" />
+        </attvalues>
+      </node>
+      <node id="..(..(....+.....)..)." label="..(..(....+.....)..).">
+        <attvalues>
+          <attvalue for="0" value="..(..(....+.....)..)." />
+          <attvalue for="1" value="off_register" />
+          <attvalue for="2" value="2" />
+        </attvalues>
+      </node>
+      <node id="((((((((((+))))))))))" label="((((((((((+))))))))))">
+        <attvalues>
+          <attvalue for="0" value="((((((((((+))))))))))" />
+          <attvalue for="1" value="duplex" />
+          <attvalue for="2" value="10" />
+        </attvalues>
+      </node>
+      <node id="((........+........))" label="((........+........))">
+        <attvalues>
+          <attvalue for="0" value="((........+........))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="2" />
+        </attvalues>
+      </node>
+      <node id="(((.......+.......)))" label="(((.......+.......)))">
+        <attvalues>
+          <attvalue for="0" value="(((.......+.......)))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id=".(((......+......)))." label=".(((......+......))).">
+        <attvalues>
+          <attvalue for="0" value=".(((......+......)))." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="..(((.....+.....))).." label="..(((.....+.....)))..">
+        <attvalues>
+          <attvalue for="0" value="..(((.....+.....))).." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="...(((....+....)))..." label="...(((....+....)))...">
+        <attvalues>
+          <attvalue for="0" value="...(((....+....)))..." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="....(((...+...)))...." label="....(((...+...)))....">
+        <attvalues>
+          <attvalue for="0" value="....(((...+...)))...." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id=".....(((..+..)))....." label=".....(((..+..))).....">
+        <attvalues>
+          <attvalue for="0" value=".....(((..+..)))....." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="......(((.+.)))......" label="......(((.+.)))......">
+        <attvalues>
+          <attvalue for="0" value="......(((.+.)))......" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id=".......(((+)))......." label=".......(((+))).......">
+        <attvalues>
+          <attvalue for="0" value=".......(((+)))......." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="3" />
+        </attvalues>
+      </node>
+      <node id="........((+))........" label="........((+))........">
+        <attvalues>
+          <attvalue for="0" value="........((+))........" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="2" />
+        </attvalues>
+      </node>
+      <node id="((((......+......))))" label="((((......+......))))">
+        <attvalues>
+          <attvalue for="0" value="((((......+......))))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="4" />
+        </attvalues>
+      </node>
+      <node id="(((((.....+.....)))))" label="(((((.....+.....)))))">
+        <attvalues>
+          <attvalue for="0" value="(((((.....+.....)))))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="5" />
+        </attvalues>
+      </node>
+      <node id="((((((....+....))))))" label="((((((....+....))))))">
+        <attvalues>
+          <attvalue for="0" value="((((((....+....))))))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="6" />
+        </attvalues>
+      </node>
+      <node id="(((((((...+...)))))))" label="(((((((...+...)))))))">
+        <attvalues>
+          <attvalue for="0" value="(((((((...+...)))))))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="7" />
+        </attvalues>
+      </node>
+      <node id="((((((((..+..))))))))" label="((((((((..+..))))))))">
+        <attvalues>
+          <attvalue for="0" value="((((((((..+..))))))))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="8" />
+        </attvalues>
+      </node>
+      <node id=".(((((....+....)))))." label=".(((((....+....))))).">
+        <attvalues>
+          <attvalue for="0" value=".(((((....+....)))))." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="5" />
+        </attvalues>
+      </node>
+      <node id="(((((((((.+.)))))))))" label="(((((((((.+.)))))))))">
+        <attvalues>
+          <attvalue for="0" value="(((((((((.+.)))))))))" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="9" />
+        </attvalues>
+      </node>
+      <node id=".(((((((..+..)))))))." label=".(((((((..+..))))))).">
+        <attvalues>
+          <attvalue for="0" value=".(((((((..+..)))))))." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="7" />
+        </attvalues>
+      </node>
+      <node id="..(((((...+...))))).." label="..(((((...+...)))))..">
+        <attvalues>
+          <attvalue for="0" value="..(((((...+...))))).." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="5" />
+        </attvalues>
+      </node>
+      <node id="...(((((..+..)))))..." label="...(((((..+..)))))...">
+        <attvalues>
+          <attvalue for="0" value="...(((((..+..)))))..." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="5" />
+        </attvalues>
+      </node>
+      <node id="..(((((((.+.))))))).." label="..(((((((.+.)))))))..">
+        <attvalues>
+          <attvalue for="0" value="..(((((((.+.))))))).." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="7" />
+        </attvalues>
+      </node>
+      <node id=".(((((((((+)))))))))." label=".(((((((((+))))))))).">
+        <attvalues>
+          <attvalue for="0" value=".(((((((((+)))))))))." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="9" />
+        </attvalues>
+      </node>
+      <node id="..((((((((+)))))))).." label="..((((((((+))))))))..">
+        <attvalues>
+          <attvalue for="0" value="..((((((((+)))))))).." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="8" />
+        </attvalues>
+      </node>
+      <node id="....(((((.+.)))))...." label="....(((((.+.)))))....">
+        <attvalues>
+          <attvalue for="0" value="....(((((.+.)))))...." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="5" />
+        </attvalues>
+      </node>
+      <node id="...(((((((+)))))))..." label="...(((((((+)))))))...">
+        <attvalues>
+          <attvalue for="0" value="...(((((((+)))))))..." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="7" />
+        </attvalues>
+      </node>
+      <node id="....((((((+))))))...." label="....((((((+))))))....">
+        <attvalues>
+          <attvalue for="0" value="....((((((+))))))...." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="6" />
+        </attvalues>
+      </node>
+      <node id=".....(((((+)))))....." label=".....(((((+))))).....">
+        <attvalues>
+          <attvalue for="0" value=".....(((((+)))))....." />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="5" />
+        </attvalues>
+      </node>
+      <node id="......((((+))))......" label="......((((+))))......">
+        <attvalues>
+          <attvalue for="0" value="......((((+))))......" />
+          <attvalue for="1" value="zipping" />
+          <attvalue for="2" value="4" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="..........+.........." target=".......(..+..)......." id="0">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation1" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="......(...+...)......" id="1">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation2" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="........(.+.)........" id="2">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation3" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="...(......+......)..." id="3">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation4" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="....(.....+.....)...." id="4">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation5" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target=".........(+)........." id="5">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation6" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target=".(........+........)." id="6">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation7" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="..(.......+.......).." id="7">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation8" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="(.........+.........)" id="8">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation9" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target=".....(....+....)....." id="9">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation10" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target=".(........+.)........" id="10">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation11" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="........(.+........)." id="11">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation12" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="..(.......+.)........" id="12">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation13" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="........(.+.......).." id="13">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation14" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="((........+...))....." id="14">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation15" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target=".....((...+........))" id="15">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation16" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="(.((......+..)).)...." id="16">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation17" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="....(.((..+......)).)" id="17">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation18" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="......(...+.)........" id="18">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation19" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="........(.+...)......" id="19">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation20" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target=".(..(.....+....)..).." id="20">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation21" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source="..........+.........." target="..(..(....+.....)..)." id="21">
+        <attvalues>
+          <attvalue for="3" value="f_nucleation22" />
+          <attvalue for="4" value="38505212.66779661" />
+        </attvalues>
+      </edge>
+      <edge source=".......(..+..)......." target="..........+.........." id="22">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation1" />
+          <attvalue for="4" value="827964.3174347384" />
+        </attvalues>
+      </edge>
+      <edge source=".......(..+..)......." target="......(((.+.)))......" id="23">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_42" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="......(...+...)......" target="..........+.........." id="24">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation2" />
+          <attvalue for="4" value="30186234.31102917" />
+        </attvalues>
+      </edge>
+      <edge source="......(...+...)......" target=".....(((..+..)))....." id="25">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_41" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+.)........" target="..........+.........." id="26">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation3" />
+          <attvalue for="4" value="5655052.635865835" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+.)........" target=".......(((+)))......." id="27">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_43" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(......+......)..." target="..........+.........." id="28">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation4" />
+          <attvalue for="4" value="2027800.9532047838" />
+        </attvalues>
+      </edge>
+      <edge source="...(......+......)..." target="..(((.....+.....))).." id="29">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_38" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="....(.....+.....)...." target="..........+.........." id="30">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation5" />
+          <attvalue for="4" value="3622386.2735023284" />
+        </attvalues>
+      </edge>
+      <edge source="....(.....+.....)...." target="...(((....+....)))..." id="31">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_39" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".........(+)........." target="..........+.........." id="32">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation6" />
+          <attvalue for="4" value="30143950.34646939" />
+        </attvalues>
+      </edge>
+      <edge source=".........(+)........." target="........((+))........" id="33">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_44" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(........+........)." target="..........+.........." id="34">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation7" />
+          <attvalue for="4" value="31658148.71416081" />
+        </attvalues>
+      </edge>
+      <edge source=".(........+........)." target="(((.......+.......)))" id="35">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_36" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..(.......+.......).." target="..........+.........." id="36">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation8" />
+          <attvalue for="4" value="14395285.599367809" />
+        </attvalues>
+      </edge>
+      <edge source="..(.......+.......).." target=".(((......+......)))." id="37">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_37" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(.........+.........)" target="..........+.........." id="38">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation9" />
+          <attvalue for="4" value="14289098.004653847" />
+        </attvalues>
+      </edge>
+      <edge source="(.........+.........)" target="((........+........))" id="39">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_35" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".....(....+....)....." target="..........+.........." id="40">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation10" />
+          <attvalue for="4" value="1179884.085772729" />
+        </attvalues>
+      </edge>
+      <edge source=".....(....+....)....." target="....(((...+...)))...." id="41">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_40" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(........+.)........" target="..........+.........." id="42">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation11" />
+          <attvalue for="4" value="11504752.717201196" />
+        </attvalues>
+      </edge>
+      <edge source=".(........+.)........" target="..(.......+.)........" id="43">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_23" />
+          <attvalue for="4" value="704816880.422026" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+........)." target="..........+.........." id="44">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation12" />
+          <attvalue for="4" value="15561264.264722127" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+........)." target="........(.+.......).." id="45">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_34" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="..(.......+.)........" target="..........+.........." id="46">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation13" />
+          <attvalue for="4" value="9572191.492053403" />
+        </attvalues>
+      </edge>
+      <edge source="..(.......+.)........" target=".(........+.)........" id="47">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_23" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="..(.......+.)........" target="((........+...))....." id="48">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_24" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+.......).." target="..........+.........." id="49">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation14" />
+          <attvalue for="4" value="8504436.819962049" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+.......).." target=".....((...+........))" id="50">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_33" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+.......).." target="........(.+........)." id="51">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_34" />
+          <attvalue for="4" value="1550035076.5969746" />
+        </attvalues>
+      </edge>
+      <edge source="((........+...))....." target="..........+.........." id="52">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation15" />
+          <attvalue for="4" value="1000392.4932719163" />
+        </attvalues>
+      </edge>
+      <edge source="((........+...))....." target="..(.......+.)........" id="53">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_24" />
+          <attvalue for="4" value="88532199.36176401" />
+        </attvalues>
+      </edge>
+      <edge source="((........+...))....." target="(.((......+..)).)...." id="54">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_25" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source=".....((...+........))" target="..........+.........." id="55">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation16" />
+          <attvalue for="4" value="978411.6227472379" />
+        </attvalues>
+      </edge>
+      <edge source=".....((...+........))" target="....(.((..+......)).)" id="56">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_32" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source=".....((...+........))" target="........(.+.......).." id="57">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_33" />
+          <attvalue for="4" value="97458169.77393682" />
+        </attvalues>
+      </edge>
+      <edge source="(.((......+..)).)...." target="..........+.........." id="58">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation17" />
+          <attvalue for="4" value="26156209.299017474" />
+        </attvalues>
+      </edge>
+      <edge source="(.((......+..)).)...." target="((........+...))....." id="59">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_25" />
+          <attvalue for="4" value="22148615653.49922" />
+        </attvalues>
+      </edge>
+      <edge source="(.((......+..)).)...." target="......(...+.)........" id="60">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_26" />
+          <attvalue for="4" value="1679944095.6900556" />
+        </attvalues>
+      </edge>
+      <edge source="....(.((..+......)).)" target="..........+.........." id="61">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation18" />
+          <attvalue for="4" value="347135.82948823663" />
+        </attvalues>
+      </edge>
+      <edge source="....(.((..+......)).)" target="........(.+...)......" id="62">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_31" />
+          <attvalue for="4" value="22720518.58328967" />
+        </attvalues>
+      </edge>
+      <edge source="....(.((..+......)).)" target=".....((...+........))" id="63">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_32" />
+          <attvalue for="4" value="300552292.9434904" />
+        </attvalues>
+      </edge>
+      <edge source="......(...+.)........" target="..........+.........." id="64">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation19" />
+          <attvalue for="4" value="13189313.199749134" />
+        </attvalues>
+      </edge>
+      <edge source="......(...+.)........" target="(.((......+..)).)...." id="65">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_26" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="......(...+.)........" target=".(..(.....+....)..).." id="66">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_27" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+...)......" target="..........+.........." id="67">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation20" />
+          <attvalue for="4" value="12942656.021747667" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+...)......" target="..(..(....+.....)..)." id="68">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_29" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="........(.+...)......" target="....(.((..+......)).)" id="69">
+        <attvalues>
+          <attvalue for="3" value="f_sliding_31" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source=".(..(.....+....)..).." target="..........+.........." id="70">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation21" />
+          <attvalue for="4" value="191460206.06062472" />
+        </attvalues>
+      </edge>
+      <edge source=".(..(.....+....)..).." target="......(...+.)........" id="71">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_27" />
+          <attvalue for="4" value="12296982297.936802" />
+        </attvalues>
+      </edge>
+      <edge source=".(..(.....+....)..).." target="((((((((((+))))))))))" id="72">
+        <attvalues>
+          <attvalue for="3" value="f_sliding-end_28" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="..(..(....+.....)..)." target="..........+.........." id="73">
+        <attvalues>
+          <attvalue for="3" value="b_nucleation22" />
+          <attvalue for="4" value="118290772.76874374" />
+        </attvalues>
+      </edge>
+      <edge source="..(..(....+.....)..)." target="........(.+...)......" id="74">
+        <attvalues>
+          <attvalue for="3" value="b_sliding_29" />
+          <attvalue for="4" value="7742294147.181983" />
+        </attvalues>
+      </edge>
+      <edge source="..(..(....+.....)..)." target="((((((((((+))))))))))" id="75">
+        <attvalues>
+          <attvalue for="3" value="f_sliding-end_30" />
+          <attvalue for="4" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="((((((((((+))))))))))" target=".(..(.....+....)..).." id="76">
+        <attvalues>
+          <attvalue for="3" value="b_sliding-end_28" />
+          <attvalue for="4" value="0.04681759466692119" />
+        </attvalues>
+      </edge>
+      <edge source="((((((((((+))))))))))" target="..(..(....+.....)..)." id="77">
+        <attvalues>
+          <attvalue for="3" value="b_sliding-end_30" />
+          <attvalue for="4" value="0.07577688531729722" />
+        </attvalues>
+      </edge>
+      <edge source="((((((((((+))))))))))" target="(((((((((.+.)))))))))" id="78">
+        <attvalues>
+          <attvalue for="3" value="b_zipping-end_54" />
+          <attvalue for="4" value="4066113016.6852117" />
+        </attvalues>
+      </edge>
+      <edge source="((((((((((+))))))))))" target=".(((((((((+)))))))))." id="79">
+        <attvalues>
+          <attvalue for="3" value="b_zipping-end_62" />
+          <attvalue for="4" value="94346051.65031403" />
+        </attvalues>
+      </edge>
+      <edge source="((........+........))" target="(.........+.........)" id="80">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_35" />
+          <attvalue for="4" value="209027982.9256374" />
+        </attvalues>
+      </edge>
+      <edge source="((........+........))" target="(((.......+.......)))" id="81">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_45" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((.......+.......)))" target=".(........+........)." id="82">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_36" />
+          <attvalue for="4" value="11081978.327776207" />
+        </attvalues>
+      </edge>
+      <edge source="(((.......+.......)))" target="((........+........))" id="83">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_45" />
+          <attvalue for="4" value="99502908.13647771" />
+        </attvalues>
+      </edge>
+      <edge source="(((.......+.......)))" target="((((......+......))))" id="84">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_46" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((......+......)))." target="..(.......+.......).." id="85">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_37" />
+          <attvalue for="4" value="14776660.092142293" />
+        </attvalues>
+      </edge>
+      <edge source=".(((......+......)))." target="(((((.....+.....)))))" id="86">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_49" />
+          <attvalue for="4" value="735817.2954320558" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.....+.....))).." target="...(......+......)..." id="87">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_38" />
+          <attvalue for="4" value="3167077.654293247" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.....+.....))).." target=".(((((....+....)))))." id="88">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_56" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((....+....)))..." target="....(.....+.....)...." id="89">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_39" />
+          <attvalue for="4" value="63963.78082938916" />
+        </attvalues>
+      </edge>
+      <edge source="...(((....+....)))..." target="..(((((...+...))))).." id="90">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_57" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="....(((...+...)))...." target=".....(....+....)....." id="91">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_40" />
+          <attvalue for="4" value="10582745.783263333" />
+        </attvalues>
+      </edge>
+      <edge source="....(((...+...)))...." target="...(((((..+..)))))..." id="92">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_59" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".....(((..+..)))....." target="......(...+...)......" id="93">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_41" />
+          <attvalue for="4" value="214792.85771930212" />
+        </attvalues>
+      </edge>
+      <edge source=".....(((..+..)))....." target="....(((((.+.)))))...." id="94">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_64" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="......(((.+.)))......" target=".......(..+..)......." id="95">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_42" />
+          <attvalue for="4" value="76712266.16570252" />
+        </attvalues>
+      </edge>
+      <edge source="......(((.+.)))......" target=".....(((((+)))))....." id="96">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_68" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".......(((+)))......." target="........(.+.)........" id="97">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_43" />
+          <attvalue for="4" value="53631275.23450978" />
+        </attvalues>
+      </edge>
+      <edge source=".......(((+)))......." target="......((((+))))......" id="98">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_71" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".......(((+)))......." target="........((+))........" id="99">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_72" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="........((+))........" target=".........(+)........." id="100">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_44" />
+          <attvalue for="4" value="762809216.0597413" />
+        </attvalues>
+      </edge>
+      <edge source="........((+))........" target=".......(((+)))......." id="101">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_72" />
+          <attvalue for="4" value="11173285.223915298" />
+        </attvalues>
+      </edge>
+      <edge source="((((......+......))))" target="(((.......+.......)))" id="102">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_46" />
+          <attvalue for="4" value="57202826.33692295" />
+        </attvalues>
+      </edge>
+      <edge source="((((......+......))))" target="(((((.....+.....)))))" id="103">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_47" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((((.....+.....)))))" target="((((......+......))))" id="104">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_47" />
+          <attvalue for="4" value="6606759.06296412" />
+        </attvalues>
+      </edge>
+      <edge source="(((((.....+.....)))))" target="((((((....+....))))))" id="105">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_48" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((((.....+.....)))))" target=".(((......+......)))." id="106">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_49" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="((((((....+....))))))" target="(((((.....+.....)))))" id="107">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_48" />
+          <attvalue for="4" value="14650663.759983348" />
+        </attvalues>
+      </edge>
+      <edge source="((((((....+....))))))" target="(((((((...+...)))))))" id="108">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_50" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((((((...+...)))))))" target="((((((....+....))))))" id="109">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_50" />
+          <attvalue for="4" value="199309433.00334874" />
+        </attvalues>
+      </edge>
+      <edge source="(((((((...+...)))))))" target="((((((((..+..))))))))" id="110">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_51" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((((((...+...)))))))" target=".(((((....+....)))))." id="111">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_52" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="((((((((..+..))))))))" target="(((((((...+...)))))))" id="112">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_51" />
+          <attvalue for="4" value="23356286.024294697" />
+        </attvalues>
+      </edge>
+      <edge source="((((((((..+..))))))))" target="(((((((((.+.)))))))))" id="113">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_53" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((....+....)))))." target="(((((((...+...)))))))" id="114">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_52" />
+          <attvalue for="4" value="22197771.48658781" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((....+....)))))." target="..(((.....+.....))).." id="115">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_56" />
+          <attvalue for="4" value="3784566.1196954446" />
+        </attvalues>
+      </edge>
+      <edge source="(((((((((.+.)))))))))" target="((((((((..+..))))))))" id="116">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_53" />
+          <attvalue for="4" value="76314298.4863756" />
+        </attvalues>
+      </edge>
+      <edge source="(((((((((.+.)))))))))" target="((((((((((+))))))))))" id="117">
+        <attvalues>
+          <attvalue for="3" value="f_zipping-end_54" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((((((((.+.)))))))))" target=".(((((((..+..)))))))." id="118">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_55" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((((..+..)))))))." target="(((((((((.+.)))))))))" id="119">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_55" />
+          <attvalue for="4" value="8499383.76439693" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((((..+..)))))))." target="..(((((...+...))))).." id="120">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_58" />
+          <attvalue for="4" value="6033406.418820328" />
+        </attvalues>
+      </edge>
+      <edge source="..(((((...+...))))).." target="...(((....+....)))..." id="121">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_57" />
+          <attvalue for="4" value="95542829.02388182" />
+        </attvalues>
+      </edge>
+      <edge source="..(((((...+...))))).." target=".(((((((..+..)))))))." id="122">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_58" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((((..+..)))))..." target="....(((...+...)))...." id="123">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_59" />
+          <attvalue for="4" value="101971.92323306754" />
+        </attvalues>
+      </edge>
+      <edge source="...(((((..+..)))))..." target="..(((((((.+.))))))).." id="124">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_60" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..(((((((.+.))))))).." target="...(((((..+..)))))..." id="125">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_60" />
+          <attvalue for="4" value="36582734.0055639" />
+        </attvalues>
+      </edge>
+      <edge source="..(((((((.+.))))))).." target=".(((((((((+)))))))))." id="126">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_61" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((((((+)))))))))." target="..(((((((.+.))))))).." id="127">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_61" />
+          <attvalue for="4" value="1050360162.0993702" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((((((+)))))))))." target="((((((((((+))))))))))" id="128">
+        <attvalues>
+          <attvalue for="3" value="f_zipping-end_62" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((((((+)))))))))." target="..((((((((+)))))))).." id="129">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_63" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..((((((((+)))))))).." target=".(((((((((+)))))))))." id="130">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_63" />
+          <attvalue for="4" value="218827048.72589892" />
+        </attvalues>
+      </edge>
+      <edge source="..((((((((+)))))))).." target="...(((((((+)))))))..." id="131">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_66" />
+          <attvalue for="4" value="406080794.52258104" />
+        </attvalues>
+      </edge>
+      <edge source="....(((((.+.)))))...." target=".....(((..+..)))....." id="132">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_64" />
+          <attvalue for="4" value="4052065.2150759976" />
+        </attvalues>
+      </edge>
+      <edge source="....(((((.+.)))))...." target="...(((((((+)))))))..." id="133">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_65" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((((((+)))))))..." target="....(((((.+.)))))...." id="134">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_65" />
+          <attvalue for="4" value="17752367.13418877" />
+        </attvalues>
+      </edge>
+      <edge source="...(((((((+)))))))..." target="..((((((((+)))))))).." id="135">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_66" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((((((+)))))))..." target="....((((((+))))))...." id="136">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_67" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="....((((((+))))))...." target="...(((((((+)))))))..." id="137">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_67" />
+          <attvalue for="4" value="3698443.8748217267" />
+        </attvalues>
+      </edge>
+      <edge source="....((((((+))))))...." target=".....(((((+)))))....." id="138">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_69" />
+          <attvalue for="4" value="44979302.57878242" />
+        </attvalues>
+      </edge>
+      <edge source=".....(((((+)))))....." target="......(((.+.)))......" id="139">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_68" />
+          <attvalue for="4" value="37393446.61882489" />
+        </attvalues>
+      </edge>
+      <edge source=".....(((((+)))))....." target="....((((((+))))))...." id="140">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_69" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".....(((((+)))))....." target="......((((+))))......" id="141">
+        <attvalues>
+          <attvalue for="3" value="f_zipping_70" />
+          <attvalue for="4" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="......((((+))))......" target=".....(((((+)))))....." id="142">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_70" />
+          <attvalue for="4" value="7790373.112525532" />
+        </attvalues>
+      </edge>
+      <edge source="......((((+))))......" target=".......(((+)))......." id="143">
+        <attvalues>
+          <attvalue for="3" value="b_zipping_71" />
+          <attvalue for="4" value="851532255.3382233" />
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>

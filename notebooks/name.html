@@ -1,0 +1,472 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+                <link href="lib/tom-select/tom-select.css" rel="stylesheet">
+                <script src="lib/tom-select/tom-select.complete.min.js"></script>
+            
+        
+<center>
+<h1>stringseq</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1>stringseq</h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="..........+..........">..........+..........</option>
+                                
+                                    <option value=".......(..+..).......">.......(..+..).......</option>
+                                
+                                    <option value="......(...+...)......">......(...+...)......</option>
+                                
+                                    <option value="........(.+.)........">........(.+.)........</option>
+                                
+                                    <option value="...(......+......)...">...(......+......)...</option>
+                                
+                                    <option value="....(.....+.....)....">....(.....+.....)....</option>
+                                
+                                    <option value=".........(+).........">.........(+).........</option>
+                                
+                                    <option value=".(........+........).">.(........+........).</option>
+                                
+                                    <option value="..(.......+.......)..">..(.......+.......)..</option>
+                                
+                                    <option value="(.........+.........)">(.........+.........)</option>
+                                
+                                    <option value=".....(....+....).....">.....(....+....).....</option>
+                                
+                                    <option value=".(........+.)........">.(........+.)........</option>
+                                
+                                    <option value="........(.+........).">........(.+........).</option>
+                                
+                                    <option value="..(.......+.)........">..(.......+.)........</option>
+                                
+                                    <option value="........(.+.......)..">........(.+.......)..</option>
+                                
+                                    <option value="((........+...)).....">((........+...)).....</option>
+                                
+                                    <option value=".....((...+........))">.....((...+........))</option>
+                                
+                                    <option value="(.((......+..)).)....">(.((......+..)).)....</option>
+                                
+                                    <option value="....(.((..+......)).)">....(.((..+......)).)</option>
+                                
+                                    <option value="......(...+.)........">......(...+.)........</option>
+                                
+                                    <option value="........(.+...)......">........(.+...)......</option>
+                                
+                                    <option value=".(..(.....+....)..)..">.(..(.....+....)..)..</option>
+                                
+                                    <option value="..(..(....+.....)..).">..(..(....+.....)..).</option>
+                                
+                                    <option value="((((((((((+))))))))))">((((((((((+))))))))))</option>
+                                
+                                    <option value="((........+........))">((........+........))</option>
+                                
+                                    <option value="(((.......+.......)))">(((.......+.......)))</option>
+                                
+                                    <option value=".(((......+......))).">.(((......+......))).</option>
+                                
+                                    <option value="..(((.....+.....)))..">..(((.....+.....)))..</option>
+                                
+                                    <option value="...(((....+....)))...">...(((....+....)))...</option>
+                                
+                                    <option value="....(((...+...)))....">....(((...+...)))....</option>
+                                
+                                    <option value=".....(((..+..))).....">.....(((..+..))).....</option>
+                                
+                                    <option value="......(((.+.)))......">......(((.+.)))......</option>
+                                
+                                    <option value=".......(((+))).......">.......(((+))).......</option>
+                                
+                                    <option value="........((+))........">........((+))........</option>
+                                
+                                    <option value="((((......+......))))">((((......+......))))</option>
+                                
+                                    <option value="(((((.....+.....)))))">(((((.....+.....)))))</option>
+                                
+                                    <option value="((((((....+....))))))">((((((....+....))))))</option>
+                                
+                                    <option value="(((((((...+...)))))))">(((((((...+...)))))))</option>
+                                
+                                    <option value="((((((((..+..))))))))">((((((((..+..))))))))</option>
+                                
+                                    <option value=".(((((....+....))))).">.(((((....+....))))).</option>
+                                
+                                    <option value="(((((((((.+.)))))))))">(((((((((.+.)))))))))</option>
+                                
+                                    <option value=".(((((((..+..))))))).">.(((((((..+..))))))).</option>
+                                
+                                    <option value="..(((((...+...)))))..">..(((((...+...)))))..</option>
+                                
+                                    <option value="...(((((..+..)))))...">...(((((..+..)))))...</option>
+                                
+                                    <option value="..(((((((.+.)))))))..">..(((((((.+.)))))))..</option>
+                                
+                                    <option value=".(((((((((+))))))))).">.(((((((((+))))))))).</option>
+                                
+                                    <option value="..((((((((+))))))))..">..((((((((+))))))))..</option>
+                                
+                                    <option value="....(((((.+.)))))....">....(((((.+.)))))....</option>
+                                
+                                    <option value="...(((((((+)))))))...">...(((((((+)))))))...</option>
+                                
+                                    <option value="....((((((+))))))....">....((((((+))))))....</option>
+                                
+                                    <option value=".....(((((+))))).....">.....(((((+))))).....</option>
+                                
+                                    <option value="......((((+))))......">......((((+))))......</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+              <div id="filter-menu" class="card-header">
+                <div class="row no-gutters">
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'item')"
+                            id="select-item"
+                        >
+                        <option value="">Select a network item</option>
+                        <option value="edge">edge</option>
+                        <option value="node">node</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'property')"
+                            id="select-property"
+                        >
+                        <option value="">Select a property...</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="select-value"
+                        >
+                        <option value="">Select value(s)...</option>
+                    </select>
+                  </div>
+                  <div class="col-1 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="highlightFilter(filter);">Filter</button>
+                  </div>
+                  <div class="col-2 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="clearFilter(true)">Reset Selection</button>
+                  </div>
+                </div>
+              </div>
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+                  // explicitly using onItemAdd and this function as we need to save multiple values
+                  let updateValueFilter = function() {
+                      return function () {
+                      filter['value'].push(arguments[0])
+                      }
+                  }
+
+                  let valueControl = new TomSelect("#select-value",{
+                      maxItems: null,
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: updateValueFilter()
+                  });
+
+                  let addValues = function() {
+                      return function () {
+                          // clear the current value options and add the selected attribute values
+                          // tom-select handles duplicates
+                          let selectedProperty = arguments[0];
+                          valueControl.clear();
+                          valueControl.clearOptions();
+                          filter['value'] = []
+                          if (filter['item'] === 'node') {
+                              for (let each in allNodes) {
+                                  valueControl.addOption({
+                                      id:allNodes[each][selectedProperty],
+                                      title:allNodes[each][selectedProperty]
+                                  })
+                              }
+                          }
+                          else if (filter['item'] === 'edge') {
+                              for (let each in allEdges) {
+                                  valueControl.addOption({
+                                      id:allEdges[each][selectedProperty],
+                                      title:allEdges[each][selectedProperty]
+                                  })
+                              }
+                          }
+                      }
+                  };
+
+                  let propControl = new TomSelect("#select-property",{
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addValues()
+                  });
+
+                  let addProperties = function() {
+                      return function () {
+                          // loops through the selected network item and adds the attributes to dropdown
+                          // tom-select handles duplicates
+                          clearFilter(false)
+                          if (arguments[0] === 'edge') {
+                              for (let each in allEdges) {
+                                  if (allEdges.hasOwnProperty(each)) {
+                                      for (let eachProp in allEdges[each]) {
+                                          if (allEdges[each].hasOwnProperty(eachProp)) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                          else if (arguments[0] === 'node') {
+                              for (let each in allNodes) {
+                                  if (allNodes.hasOwnProperty(each)) {
+                                      for (let eachProp in allNodes[each]) {
+                                          if (allNodes[each].hasOwnProperty(eachProp)
+                                              && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+                                                  && eachProp !== 'hiddenLabel')) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  let itemControl = new TomSelect("#select-item",{
+                      create: false,
+                      sortField:{
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addProperties()
+                  });
+
+                  function clearFilter(reset) {
+                      // utility function to clear all the selected filter options
+                      // if reset is set to true, the existing filter will be removed
+                      // else, only the dropdown options are cleared
+                      propControl.clear();
+                      propControl.clearOptions();
+                      valueControl.clear();
+                      valueControl.clearOptions();
+                      filter = {
+                          item : '',
+                          property : '',
+                          value : []
+                      }
+                      if (reset) {
+                          itemControl.clear();
+                          filterHighlight({nodes: []})
+                      }
+                  }
+
+                  function updateFilter(value, key) {
+                      // key could be 'item' or 'property' and value is as selected in dropdown
+                      filter[key] = value
+                  }
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "..........+..........", "label": "..........+..........", "shape": "dot", "state": "singlestranded"}, {"color": "#97c2fc", "id": ".......(..+..).......", "label": ".......(..+..).......", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": "......(...+...)......", "label": "......(...+...)......", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": "........(.+.)........", "label": "........(.+.)........", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": "...(......+......)...", "label": "...(......+......)...", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": "....(.....+.....)....", "label": "....(.....+.....)....", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": ".........(+).........", "label": ".........(+).........", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": ".(........+........).", "label": ".(........+........).", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": "..(.......+.......)..", "label": "..(.......+.......)..", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": "(.........+.........)", "label": "(.........+.........)", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": ".....(....+....).....", "label": ".....(....+....).....", "shape": "dot", "state": "on_register"}, {"color": "#97c2fc", "id": ".(........+.)........", "label": ".(........+.)........", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "........(.+........).", "label": "........(.+........).", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "..(.......+.)........", "label": "..(.......+.)........", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "........(.+.......)..", "label": "........(.+.......)..", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "((........+...)).....", "label": "((........+...)).....", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": ".....((...+........))", "label": ".....((...+........))", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "(.((......+..)).)....", "label": "(.((......+..)).)....", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "....(.((..+......)).)", "label": "....(.((..+......)).)", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "......(...+.)........", "label": "......(...+.)........", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "........(.+...)......", "label": "........(.+...)......", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": ".(..(.....+....)..)..", "label": ".(..(.....+....)..)..", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "..(..(....+.....)..).", "label": "..(..(....+.....)..).", "shape": "dot", "state": "off_register"}, {"color": "#97c2fc", "id": "((((((((((+))))))))))", "label": "((((((((((+))))))))))", "shape": "dot", "state": "duplex"}, {"color": "#97c2fc", "id": "((........+........))", "label": "((........+........))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "(((.......+.......)))", "label": "(((.......+.......)))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".(((......+......))).", "label": ".(((......+......))).", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "..(((.....+.....)))..", "label": "..(((.....+.....)))..", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "...(((....+....)))...", "label": "...(((....+....)))...", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "....(((...+...)))....", "label": "....(((...+...)))....", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".....(((..+..))).....", "label": ".....(((..+..))).....", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "......(((.+.)))......", "label": "......(((.+.)))......", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".......(((+))).......", "label": ".......(((+))).......", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "........((+))........", "label": "........((+))........", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "((((......+......))))", "label": "((((......+......))))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "(((((.....+.....)))))", "label": "(((((.....+.....)))))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "((((((....+....))))))", "label": "((((((....+....))))))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "(((((((...+...)))))))", "label": "(((((((...+...)))))))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "((((((((..+..))))))))", "label": "((((((((..+..))))))))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".(((((....+....))))).", "label": ".(((((....+....))))).", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "(((((((((.+.)))))))))", "label": "(((((((((.+.)))))))))", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".(((((((..+..))))))).", "label": ".(((((((..+..))))))).", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "..(((((...+...)))))..", "label": "..(((((...+...)))))..", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "...(((((..+..)))))...", "label": "...(((((..+..)))))...", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "..(((((((.+.)))))))..", "label": "..(((((((.+.)))))))..", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".(((((((((+))))))))).", "label": ".(((((((((+))))))))).", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "..((((((((+))))))))..", "label": "..((((((((+))))))))..", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "....(((((.+.)))))....", "label": "....(((((.+.)))))....", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "...(((((((+)))))))...", "label": "...(((((((+)))))))...", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "....((((((+))))))....", "label": "....((((((+))))))....", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": ".....(((((+))))).....", "label": ".....(((((+))))).....", "shape": "dot", "state": "zipping"}, {"color": "#97c2fc", "id": "......((((+))))......", "label": "......((((+))))......", "shape": "dot", "state": "zipping"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "..........+..........", "name": "f_nucleation1", "rate": 38505212.66779661, "to": ".......(..+..)......."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation2", "rate": 38505212.66779661, "to": "......(...+...)......"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation3", "rate": 38505212.66779661, "to": "........(.+.)........"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation4", "rate": 38505212.66779661, "to": "...(......+......)..."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation5", "rate": 38505212.66779661, "to": "....(.....+.....)...."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation6", "rate": 38505212.66779661, "to": ".........(+)........."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation7", "rate": 38505212.66779661, "to": ".(........+........)."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation8", "rate": 38505212.66779661, "to": "..(.......+.......).."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation9", "rate": 38505212.66779661, "to": "(.........+.........)"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation10", "rate": 38505212.66779661, "to": ".....(....+....)....."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation11", "rate": 38505212.66779661, "to": ".(........+.)........"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation12", "rate": 38505212.66779661, "to": "........(.+........)."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation13", "rate": 38505212.66779661, "to": "..(.......+.)........"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation14", "rate": 38505212.66779661, "to": "........(.+.......).."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation15", "rate": 38505212.66779661, "to": "((........+...))....."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation16", "rate": 38505212.66779661, "to": ".....((...+........))"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation17", "rate": 38505212.66779661, "to": "(.((......+..)).)...."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation18", "rate": 38505212.66779661, "to": "....(.((..+......)).)"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation19", "rate": 38505212.66779661, "to": "......(...+.)........"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation20", "rate": 38505212.66779661, "to": "........(.+...)......"}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation21", "rate": 38505212.66779661, "to": ".(..(.....+....)..).."}, {"arrows": "to", "from": "..........+..........", "name": "f_nucleation22", "rate": 38505212.66779661, "to": "..(..(....+.....)..)."}, {"arrows": "to", "from": ".......(..+..).......", "name": "b_nucleation1", "rate": 827964.3174347384, "to": "..........+.........."}, {"arrows": "to", "from": ".......(..+..).......", "name": "f_zipping_42", "rate": 7624032108.223729, "to": "......(((.+.)))......"}, {"arrows": "to", "from": "......(...+...)......", "name": "b_nucleation2", "rate": 30186234.31102917, "to": "..........+.........."}, {"arrows": "to", "from": "......(...+...)......", "name": "f_zipping_41", "rate": 7624032108.223729, "to": ".....(((..+..)))....."}, {"arrows": "to", "from": "........(.+.)........", "name": "b_nucleation3", "rate": 5655052.635865835, "to": "..........+.........."}, {"arrows": "to", "from": "........(.+.)........", "name": "f_zipping_43", "rate": 7624032108.223729, "to": ".......(((+)))......."}, {"arrows": "to", "from": "...(......+......)...", "name": "b_nucleation4", "rate": 2027800.9532047838, "to": "..........+.........."}, {"arrows": "to", "from": "...(......+......)...", "name": "f_zipping_38", "rate": 7624032108.223729, "to": "..(((.....+.....))).."}, {"arrows": "to", "from": "....(.....+.....)....", "name": "b_nucleation5", "rate": 3622386.2735023284, "to": "..........+.........."}, {"arrows": "to", "from": "....(.....+.....)....", "name": "f_zipping_39", "rate": 7624032108.223729, "to": "...(((....+....)))..."}, {"arrows": "to", "from": ".........(+).........", "name": "b_nucleation6", "rate": 30143950.34646939, "to": "..........+.........."}, {"arrows": "to", "from": ".........(+).........", "name": "f_zipping_44", "rate": 7624032108.223729, "to": "........((+))........"}, {"arrows": "to", "from": ".(........+........).", "name": "b_nucleation7", "rate": 31658148.71416081, "to": "..........+.........."}, {"arrows": "to", "from": ".(........+........).", "name": "f_zipping_36", "rate": 7624032108.223729, "to": "(((.......+.......)))"}, {"arrows": "to", "from": "..(.......+.......)..", "name": "b_nucleation8", "rate": 14395285.599367809, "to": "..........+.........."}, {"arrows": "to", "from": "..(.......+.......)..", "name": "f_zipping_37", "rate": 7624032108.223729, "to": ".(((......+......)))."}, {"arrows": "to", "from": "(.........+.........)", "name": "b_nucleation9", "rate": 14289098.004653847, "to": "..........+.........."}, {"arrows": "to", "from": "(.........+.........)", "name": "f_zipping_35", "rate": 7624032108.223729, "to": "((........+........))"}, {"arrows": "to", "from": ".....(....+....).....", "name": "b_nucleation10", "rate": 1179884.085772729, "to": "..........+.........."}, {"arrows": "to", "from": ".....(....+....).....", "name": "f_zipping_40", "rate": 7624032108.223729, "to": "....(((...+...)))...."}, {"arrows": "to", "from": ".(........+.)........", "name": "b_nucleation11", "rate": 11504752.717201196, "to": "..........+.........."}, {"arrows": "to", "from": ".(........+.)........", "name": "b_sliding_23", "rate": 704816880.422026, "to": "..(.......+.)........"}, {"arrows": "to", "from": "........(.+........).", "name": "b_nucleation12", "rate": 15561264.264722127, "to": "..........+.........."}, {"arrows": "to", "from": "........(.+........).", "name": "f_sliding_34", "rate": 20000000.0, "to": "........(.+.......).."}, {"arrows": "to", "from": "..(.......+.)........", "name": "b_nucleation13", "rate": 9572191.492053403, "to": "..........+.........."}, {"arrows": "to", "from": "..(.......+.)........", "name": "f_sliding_23", "rate": 20000000.0, "to": ".(........+.)........"}, {"arrows": "to", "from": "..(.......+.)........", "name": "f_sliding_24", "rate": 20000000.0, "to": "((........+...))....."}, {"arrows": "to", "from": "........(.+.......)..", "name": "b_nucleation14", "rate": 8504436.819962049, "to": "..........+.........."}, {"arrows": "to", "from": "........(.+.......)..", "name": "f_sliding_33", "rate": 20000000.0, "to": ".....((...+........))"}, {"arrows": "to", "from": "........(.+.......)..", "name": "b_sliding_34", "rate": 1550035076.5969746, "to": "........(.+........)."}, {"arrows": "to", "from": "((........+...)).....", "name": "b_nucleation15", "rate": 1000392.4932719163, "to": "..........+.........."}, {"arrows": "to", "from": "((........+...)).....", "name": "b_sliding_24", "rate": 88532199.36176401, "to": "..(.......+.)........"}, {"arrows": "to", "from": "((........+...)).....", "name": "f_sliding_25", "rate": 20000000.0, "to": "(.((......+..)).)...."}, {"arrows": "to", "from": ".....((...+........))", "name": "b_nucleation16", "rate": 978411.6227472379, "to": "..........+.........."}, {"arrows": "to", "from": ".....((...+........))", "name": "f_sliding_32", "rate": 20000000.0, "to": "....(.((..+......)).)"}, {"arrows": "to", "from": ".....((...+........))", "name": "b_sliding_33", "rate": 97458169.77393682, "to": "........(.+.......).."}, {"arrows": "to", "from": "(.((......+..)).)....", "name": "b_nucleation17", "rate": 26156209.299017474, "to": "..........+.........."}, {"arrows": "to", "from": "(.((......+..)).)....", "name": "b_sliding_25", "rate": 22148615653.49922, "to": "((........+...))....."}, {"arrows": "to", "from": "(.((......+..)).)....", "name": "b_sliding_26", "rate": 1679944095.6900556, "to": "......(...+.)........"}, {"arrows": "to", "from": "....(.((..+......)).)", "name": "b_nucleation18", "rate": 347135.82948823663, "to": "..........+.........."}, {"arrows": "to", "from": "....(.((..+......)).)", "name": "b_sliding_31", "rate": 22720518.58328967, "to": "........(.+...)......"}, {"arrows": "to", "from": "....(.((..+......)).)", "name": "b_sliding_32", "rate": 300552292.9434904, "to": ".....((...+........))"}, {"arrows": "to", "from": "......(...+.)........", "name": "b_nucleation19", "rate": 13189313.199749134, "to": "..........+.........."}, {"arrows": "to", "from": "......(...+.)........", "name": "f_sliding_26", "rate": 20000000.0, "to": "(.((......+..)).)...."}, {"arrows": "to", "from": "......(...+.)........", "name": "f_sliding_27", "rate": 20000000.0, "to": ".(..(.....+....)..).."}, {"arrows": "to", "from": "........(.+...)......", "name": "b_nucleation20", "rate": 12942656.021747667, "to": "..........+.........."}, {"arrows": "to", "from": "........(.+...)......", "name": "f_sliding_29", "rate": 20000000.0, "to": "..(..(....+.....)..)."}, {"arrows": "to", "from": "........(.+...)......", "name": "f_sliding_31", "rate": 20000000.0, "to": "....(.((..+......)).)"}, {"arrows": "to", "from": ".(..(.....+....)..)..", "name": "b_nucleation21", "rate": 191460206.06062472, "to": "..........+.........."}, {"arrows": "to", "from": ".(..(.....+....)..)..", "name": "b_sliding_27", "rate": 12296982297.936802, "to": "......(...+.)........"}, {"arrows": "to", "from": ".(..(.....+....)..)..", "name": "f_sliding-end_28", "rate": 20000000.0, "to": "((((((((((+))))))))))"}, {"arrows": "to", "from": "..(..(....+.....)..).", "name": "b_nucleation22", "rate": 118290772.76874374, "to": "..........+.........."}, {"arrows": "to", "from": "..(..(....+.....)..).", "name": "b_sliding_29", "rate": 7742294147.181983, "to": "........(.+...)......"}, {"arrows": "to", "from": "..(..(....+.....)..).", "name": "f_sliding-end_30", "rate": 20000000.0, "to": "((((((((((+))))))))))"}, {"arrows": "to", "from": "((((((((((+))))))))))", "name": "b_sliding-end_28", "rate": 0.04681759466692119, "to": ".(..(.....+....)..).."}, {"arrows": "to", "from": "((((((((((+))))))))))", "name": "b_sliding-end_30", "rate": 0.07577688531729722, "to": "..(..(....+.....)..)."}, {"arrows": "to", "from": "((((((((((+))))))))))", "name": "b_zipping-end_54", "rate": 4066113016.6852117, "to": "(((((((((.+.)))))))))"}, {"arrows": "to", "from": "((((((((((+))))))))))", "name": "b_zipping-end_62", "rate": 94346051.65031403, "to": ".(((((((((+)))))))))."}, {"arrows": "to", "from": "((........+........))", "name": "b_zipping_35", "rate": 209027982.9256374, "to": "(.........+.........)"}, {"arrows": "to", "from": "((........+........))", "name": "f_zipping_45", "rate": 7624032108.223729, "to": "(((.......+.......)))"}, {"arrows": "to", "from": "(((.......+.......)))", "name": "b_zipping_36", "rate": 11081978.327776207, "to": ".(........+........)."}, {"arrows": "to", "from": "(((.......+.......)))", "name": "b_zipping_45", "rate": 99502908.13647771, "to": "((........+........))"}, {"arrows": "to", "from": "(((.......+.......)))", "name": "f_zipping_46", "rate": 7624032108.223729, "to": "((((......+......))))"}, {"arrows": "to", "from": ".(((......+......))).", "name": "b_zipping_37", "rate": 14776660.092142293, "to": "..(.......+.......).."}, {"arrows": "to", "from": ".(((......+......))).", "name": "b_zipping_49", "rate": 735817.2954320558, "to": "(((((.....+.....)))))"}, {"arrows": "to", "from": "..(((.....+.....)))..", "name": "b_zipping_38", "rate": 3167077.654293247, "to": "...(......+......)..."}, {"arrows": "to", "from": "..(((.....+.....)))..", "name": "f_zipping_56", "rate": 7624032108.223729, "to": ".(((((....+....)))))."}, {"arrows": "to", "from": "...(((....+....)))...", "name": "b_zipping_39", "rate": 63963.78082938916, "to": "....(.....+.....)...."}, {"arrows": "to", "from": "...(((....+....)))...", "name": "f_zipping_57", "rate": 7624032108.223729, "to": "..(((((...+...))))).."}, {"arrows": "to", "from": "....(((...+...)))....", "name": "b_zipping_40", "rate": 10582745.783263333, "to": ".....(....+....)....."}, {"arrows": "to", "from": "....(((...+...)))....", "name": "f_zipping_59", "rate": 7624032108.223729, "to": "...(((((..+..)))))..."}, {"arrows": "to", "from": ".....(((..+..))).....", "name": "b_zipping_41", "rate": 214792.85771930212, "to": "......(...+...)......"}, {"arrows": "to", "from": ".....(((..+..))).....", "name": "f_zipping_64", "rate": 7624032108.223729, "to": "....(((((.+.)))))...."}, {"arrows": "to", "from": "......(((.+.)))......", "name": "b_zipping_42", "rate": 76712266.16570252, "to": ".......(..+..)......."}, {"arrows": "to", "from": "......(((.+.)))......", "name": "f_zipping_68", "rate": 7624032108.223729, "to": ".....(((((+)))))....."}, {"arrows": "to", "from": ".......(((+))).......", "name": "b_zipping_43", "rate": 53631275.23450978, "to": "........(.+.)........"}, {"arrows": "to", "from": ".......(((+))).......", "name": "f_zipping_71", "rate": 7624032108.223729, "to": "......((((+))))......"}, {"arrows": "to", "from": ".......(((+))).......", "name": "f_zipping_72", "rate": 7624032108.223729, "to": "........((+))........"}, {"arrows": "to", "from": "........((+))........", "name": "b_zipping_44", "rate": 762809216.0597413, "to": ".........(+)........."}, {"arrows": "to", "from": "........((+))........", "name": "b_zipping_72", "rate": 11173285.223915298, "to": ".......(((+)))......."}, {"arrows": "to", "from": "((((......+......))))", "name": "b_zipping_46", "rate": 57202826.33692295, "to": "(((.......+.......)))"}, {"arrows": "to", "from": "((((......+......))))", "name": "f_zipping_47", "rate": 7624032108.223729, "to": "(((((.....+.....)))))"}, {"arrows": "to", "from": "(((((.....+.....)))))", "name": "b_zipping_47", "rate": 6606759.06296412, "to": "((((......+......))))"}, {"arrows": "to", "from": "(((((.....+.....)))))", "name": "f_zipping_48", "rate": 7624032108.223729, "to": "((((((....+....))))))"}, {"arrows": "to", "from": "(((((.....+.....)))))", "name": "f_zipping_49", "rate": 7624032108.223729, "to": ".(((......+......)))."}, {"arrows": "to", "from": "((((((....+....))))))", "name": "b_zipping_48", "rate": 14650663.759983348, "to": "(((((.....+.....)))))"}, {"arrows": "to", "from": "((((((....+....))))))", "name": "f_zipping_50", "rate": 7624032108.223729, "to": "(((((((...+...)))))))"}, {"arrows": "to", "from": "(((((((...+...)))))))", "name": "b_zipping_50", "rate": 199309433.00334874, "to": "((((((....+....))))))"}, {"arrows": "to", "from": "(((((((...+...)))))))", "name": "f_zipping_51", "rate": 7624032108.223729, "to": "((((((((..+..))))))))"}, {"arrows": "to", "from": "(((((((...+...)))))))", "name": "f_zipping_52", "rate": 7624032108.223729, "to": ".(((((....+....)))))."}, {"arrows": "to", "from": "((((((((..+..))))))))", "name": "b_zipping_51", "rate": 23356286.024294697, "to": "(((((((...+...)))))))"}, {"arrows": "to", "from": "((((((((..+..))))))))", "name": "f_zipping_53", "rate": 7624032108.223729, "to": "(((((((((.+.)))))))))"}, {"arrows": "to", "from": ".(((((....+....))))).", "name": "b_zipping_52", "rate": 22197771.48658781, "to": "(((((((...+...)))))))"}, {"arrows": "to", "from": ".(((((....+....))))).", "name": "b_zipping_56", "rate": 3784566.1196954446, "to": "..(((.....+.....))).."}, {"arrows": "to", "from": "(((((((((.+.)))))))))", "name": "b_zipping_53", "rate": 76314298.4863756, "to": "((((((((..+..))))))))"}, {"arrows": "to", "from": "(((((((((.+.)))))))))", "name": "f_zipping-end_54", "rate": 7624032108.223729, "to": "((((((((((+))))))))))"}, {"arrows": "to", "from": "(((((((((.+.)))))))))", "name": "f_zipping_55", "rate": 7624032108.223729, "to": ".(((((((..+..)))))))."}, {"arrows": "to", "from": ".(((((((..+..))))))).", "name": "b_zipping_55", "rate": 8499383.76439693, "to": "(((((((((.+.)))))))))"}, {"arrows": "to", "from": ".(((((((..+..))))))).", "name": "b_zipping_58", "rate": 6033406.418820328, "to": "..(((((...+...))))).."}, {"arrows": "to", "from": "..(((((...+...)))))..", "name": "b_zipping_57", "rate": 95542829.02388182, "to": "...(((....+....)))..."}, {"arrows": "to", "from": "..(((((...+...)))))..", "name": "f_zipping_58", "rate": 7624032108.223729, "to": ".(((((((..+..)))))))."}, {"arrows": "to", "from": "...(((((..+..)))))...", "name": "b_zipping_59", "rate": 101971.92323306754, "to": "....(((...+...)))...."}, {"arrows": "to", "from": "...(((((..+..)))))...", "name": "f_zipping_60", "rate": 7624032108.223729, "to": "..(((((((.+.))))))).."}, {"arrows": "to", "from": "..(((((((.+.)))))))..", "name": "b_zipping_60", "rate": 36582734.0055639, "to": "...(((((..+..)))))..."}, {"arrows": "to", "from": "..(((((((.+.)))))))..", "name": "f_zipping_61", "rate": 7624032108.223729, "to": ".(((((((((+)))))))))."}, {"arrows": "to", "from": ".(((((((((+))))))))).", "name": "b_zipping_61", "rate": 1050360162.0993702, "to": "..(((((((.+.))))))).."}, {"arrows": "to", "from": ".(((((((((+))))))))).", "name": "f_zipping-end_62", "rate": 7624032108.223729, "to": "((((((((((+))))))))))"}, {"arrows": "to", "from": ".(((((((((+))))))))).", "name": "f_zipping_63", "rate": 7624032108.223729, "to": "..((((((((+)))))))).."}, {"arrows": "to", "from": "..((((((((+))))))))..", "name": "b_zipping_63", "rate": 218827048.72589892, "to": ".(((((((((+)))))))))."}, {"arrows": "to", "from": "..((((((((+))))))))..", "name": "b_zipping_66", "rate": 406080794.52258104, "to": "...(((((((+)))))))..."}, {"arrows": "to", "from": "....(((((.+.)))))....", "name": "b_zipping_64", "rate": 4052065.2150759976, "to": ".....(((..+..)))....."}, {"arrows": "to", "from": "....(((((.+.)))))....", "name": "f_zipping_65", "rate": 7624032108.223729, "to": "...(((((((+)))))))..."}, {"arrows": "to", "from": "...(((((((+)))))))...", "name": "b_zipping_65", "rate": 17752367.13418877, "to": "....(((((.+.)))))...."}, {"arrows": "to", "from": "...(((((((+)))))))...", "name": "f_zipping_66", "rate": 7624032108.223729, "to": "..((((((((+)))))))).."}, {"arrows": "to", "from": "...(((((((+)))))))...", "name": "f_zipping_67", "rate": 7624032108.223729, "to": "....((((((+))))))...."}, {"arrows": "to", "from": "....((((((+))))))....", "name": "b_zipping_67", "rate": 3698443.8748217267, "to": "...(((((((+)))))))..."}, {"arrows": "to", "from": "....((((((+))))))....", "name": "b_zipping_69", "rate": 44979302.57878242, "to": ".....(((((+)))))....."}, {"arrows": "to", "from": ".....(((((+))))).....", "name": "b_zipping_68", "rate": 37393446.61882489, "to": "......(((.+.)))......"}, {"arrows": "to", "from": ".....(((((+))))).....", "name": "f_zipping_69", "rate": 7624032108.223729, "to": "....((((((+))))))...."}, {"arrows": "to", "from": ".....(((((+))))).....", "name": "f_zipping_70", "rate": 7624032108.223729, "to": "......((((+))))......"}, {"arrows": "to", "from": "......((((+))))......", "name": "b_zipping_70", "rate": 7790373.112525532, "to": ".....(((((+)))))....."}, {"arrows": "to", "from": "......((((+))))......", "name": "b_zipping_71", "rate": 851532255.3382233, "to": ".......(((+)))......."}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
