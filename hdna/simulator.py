@@ -174,8 +174,8 @@ class Simulator(object):
             except FileExistsError: pass 
             for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
                 traj = self.get_trajectory(s) 
-                self.make_graph_html(self.options.results_dir)
                 traj.to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
+            self.save_graph(self.options.results_dir)
             return sim
 
 
@@ -257,11 +257,11 @@ class Simulator(object):
 
         return self.digraph
     
-    def make_graph_html(self, PATH):
+    def save_graph(self, PATH):
         #convert node object to string of object type
         for n in self.digraph.nodes.data():
             n[1]['object'] = str(type(n[1]['object']))
-        nx.write_gexf(self.digraph,f'{PATH}/{self.kinet.s1.sequence}_graph.gexf')
+        nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
         
 
     ######################

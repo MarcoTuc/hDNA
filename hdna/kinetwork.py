@@ -268,11 +268,11 @@ class Kinetics(object):
 
     """ ------------- ZIPPING FORWARD RATES -----------------"""
 
-    def set_zippingrate(self):
+    def set_zippingrate(self, setrate=None):
         """ first approximation is to take zipping
             equal to diffusion limited collision rate """
-        self.zippingrate = self.dlrate
-
+        if setrate == None: self.zippingrate = self.dlrate
+        elif type(setrate) == float: self.zippingrate = setrate
 
 
     """ ------------- GENERAL BACKWARD RATES -----------------"""
