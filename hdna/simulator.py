@@ -27,7 +27,8 @@ class Options(object):
                 rates_info = True,
                 save_graph_html = True,
                 trajstosave=10,
-                folder = './results' #beware if folder exists 
+                results_dir = './results', #beware if results_dir exists 
+                stranditer = 1
                 
                 ):
         
@@ -41,9 +42,9 @@ class Options(object):
         self.make_sim_csv = make_sim_csv
         self.rates_info = rates_info
         self.save_graph_html = save_graph_html
-        self.folder = folder 
+        self.results_dir = results_dir 
         self.trajstosave = trajstosave
-        self.stranditer = 1
+        self.stranditer = stranditer
 
 
  #add some error here if the method is not a julia object or whatever 
@@ -166,13 +167,15 @@ class Simulator(object):
         if not self.options.make_sim_csv:
             return sim
         else:
-            DIR = f'./{self.options.folder}/{self.options.stranditer}_{self.kinet.s1.sequence}/trajectories'  
+            DIR = f'./{self.options.results_dir}/{self.options.stranditer}_{self.kinet.s1.sequence}'
+            DIR_TRAJ = f'{DIR}/trajectories'  
             self.options.stranditer += 1
-            try: os.makedirs(DIR)
+            try: os.makedirs(DIR_TRAJ)
             except FileExistsError: pass 
             for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
                 traj = self.get_trajectory(s) 
-                traj.to_csv(f'{DIR}/run{i+1}.csv')
+                self.make_graph_html(self.options.results_dir)
+                traj.to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
             return sim
 
 
@@ -253,6 +256,12 @@ class Simulator(object):
                 self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
 
         return self.digraph
+    
+    def make_graph_html(self, PATH):
+        #convert node object to string of object type
+        for n in self.digraph.nodes.data():
+            n[1]['object'] = str(type(n[1]['object']))
+        nx.write_gexf(self.digraph,f'{PATH}/{self.kinet.s1.sequence}_graph.gexf')
         
 
     ######################

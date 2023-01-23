@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 from hdna import *
 
-RESULTS_DIR = "results/min4long"
+EXPNAME = 'datawritingtrials'
+RESULTS_DIR = f"results/{EXPNAME}"
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['seq', 'expvalue'])
@@ -10,13 +11,15 @@ expdata = pd.read_csv('./data/herteldata.csv', names=['seq', 'expvalue'])
 expdata = expdata.drop(0)
 expdata['expvalue'] = ['{:e}'.format(float(e)) for e in expdata['expvalue']]
 
-# Actual computation 
+limit = len(expdata)
+torun = expdata.iloc[:limit]
 
+# Actual computation 
 rates = []
 
 model = Model('dna', '3D')
 
-for i, (seq, exp) in enumerate(zip(expdata['seq'], expdata['expvalue'])):
+for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
     print(f'Strand number {i+1}: {seq}')
     seq = str(seq.strip())      # make sure they are alright
     exp = float(exp.strip())    #
@@ -26,19 +29,23 @@ for i, (seq, exp) in enumerate(zip(expdata['seq'], expdata['expvalue'])):
     kinet = Kinetwork(model, A, B, 4)
     geo = Geometry(120, 360)
     K = Kinetics(model, kinet, geo)
-    opts = Options(method='direct', runtime=3e-6, Nmonte=2000)
+    opts = Options(method='direct', runtime=3e-6, Nsim=2000, results_dir=RESULTS_DIR, stranditer=i)
     print('embedding network into biosimulator network model...')
     simulatore = Simulator(model, kinet, K, options=opts)
     print('start running simulations...')
-    results = simulatore.ensemble(write_csv=True, folder=RESULTS_DIR, stranditer = i+1)
+    results = simulatore.ensemble()
     mfpt = simulatore.mfpts(results)
     rates.append(1/mfpt)
     print(f"experimental rate: {'{:e}'.format(exp)}")
-    print(f"computed rate:     {'{:e}'.format(1/mfpt)}")
+    print(f"computed rate:     {'{:e}'.format(1/mfpt)}", '\n')
     del results 
 
-expdata['computedrates'] = rates
-expdata.to_csv(RESULTS_DIR)
+torun['computed'] = rates
+torun.to_csv(f"{RESULTS_DIR}/simulationdata.csv")
+valplot(torun, EXPNAME, writepath=RESULTS_DIR, theme='dark')
+
+
+#ADD HERE A PRINT 
 
 #TODO
 """ Create a routine for a more easy identification of strands

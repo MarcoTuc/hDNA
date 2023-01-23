@@ -5,3 +5,4 @@ from .kinetwork import Kinetwork, Kinetics
 from .simulator import Options, Simulator
 
 from .model import Model, Geometry
+from .plotting import valplot 
