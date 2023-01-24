@@ -96,8 +96,8 @@ class Simulator(object):
             i += 1
             """ JULIA PATHOLOGY 
                 Can't use dots as names for reactions because
-                Julia has a pathology with dots and also 
-                parenthesis (fuck) the most reliable notation is: 
+                Julia has a pathology with dots and parentheses 
+                the most reliable notation is: 
                 |   . --> o     |
                 |   ( --> b     |
                 |   ) --> d     |
@@ -167,15 +167,15 @@ class Simulator(object):
         if not self.options.make_sim_csv:
             return sim
         else:
-            DIR = f'./{self.options.results_dir}/{self.options.stranditer}_{self.kinet.s1.sequence}'
+            DIR = f'./{self.options.results_dir}/simulations/{self.options.stranditer}_{self.kinet.s1.sequence}'
             DIR_TRAJ = f'{DIR}/trajectories'  
-            self.options.stranditer += 1
             try: os.makedirs(DIR_TRAJ)
             except FileExistsError: pass 
             for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
                 traj = self.get_trajectory(s) 
                 traj.to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
-            self.save_graph(self.options.results_dir)
+            self.save_graph(f'{self.options.results_dir}/graphs')
+            self.options.stranditer += 1
             return sim
 
 
@@ -261,6 +261,8 @@ class Simulator(object):
         #convert node object to string of object type
         for n in self.digraph.nodes.data():
             n[1]['object'] = str(type(n[1]['object']))
+        try: os.makedirs(PATH)
+        except FileExistsError: pass 
         nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
         
 

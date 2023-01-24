@@ -247,7 +247,6 @@ class Kinetics(object):
         self.pD2 = self.einsmol_spherical(self.gr2)
     
 
-
   
     #TODO###################################################
     ######## Chain wiggling pdfs to implement later ########

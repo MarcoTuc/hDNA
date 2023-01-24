@@ -13,40 +13,50 @@ expdata['expvalue'] = ['{:e}'.format(float(e)) for e in expdata['expvalue']]
 limit = len(expdata)
 torun = expdata.copy().iloc[:limit]
 
-EXPNAME = 'MN4Z8S6'
+EXPNAME = 'MN5Z9S5_(180,360)'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 if os.path.isdir(RESULTS_DIR): 
-    permission = input('Folder already exists, do you want to overwrite old experiments? [Y,N]')
-    if permission.lower().startswith('y'): 
-        print("Ok, going on with new simulations...") 
-        pass 
-    elif permission.lower().startswith('n'): 
-        print("Ok, stopping the program")
-        sys.exit()
+    i = 0
+    while True: 
+        i += 1
+        permission = input('Folder already exists, do you want to overwrite old experiments? [Y,N]')
+        if permission.lower().startswith('y'):
+            print('>>>> overwriting old simulations')
+            break
+        elif permission.lower().startswith('n') or i == 3:
+            print(">>>> stopping the program")
+            sys.exit()
+        print("yes or not?") 
+else:
+    os.makedirs(RESULTS_DIR)
 
 HP = {
     
     #model free parameters  
-    'minimum_nucleation': 4,
-    'zipping_rate':       2e8,
-    'sliding_rate':       2e6,
+    'minimum_nucleation': 5,
+    'zipping_rate':       2e9,
+    'sliding_rate':       5e5,
     
     #temperature
     'temperature':        37,
     
     #angles
-    'azimutal_angle':     120,
+    'azimutal_angle':     180,
     'longitudinal_angle': 360,
 }
 
 OPT = {
 
     #simulation options
-    'runtime': 3e-6,
-    'N_simul': 2000
+    'runtime': 5e-6,
+    'N_simul': 3000
 }
 
+hyperparams = pd.DataFrame.from_dict([dict(**HP,**OPT)]).T
+hyperparams.rename(columns={np.int64(0):'values'}, inplace=True)
+hyperparams.index.rename('hyperparameters', inplace=True)
+hyperparams.to_csv(f'{RESULTS_DIR}/hyperparameters.csv')
 
 # Actual computation 
 rates = []

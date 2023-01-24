@@ -31,6 +31,18 @@ Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A 
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>#### IMPROVEMENTS & BUGS TO FIX
 
+# !!!
+# Sliding Factor
+Right now the sliding factor is computed as: 
+sf = 1/(all possible nucleations)
+But actually what I should do is: 
+sf = 1/(all possible slidings + 1) 
+where the 1 refers to the native sliding 
+Then for zippings take a zipping factor
+zf = 1/(all possible zippings)
+>>>> Check line 94 in simulator.py
+
+
 # !!!! 
 # Off-register nonzipping
 By looking at off-register nucleations we can see that there are direct nucleations going on directly from singlestranded to lots of base-pairs.
