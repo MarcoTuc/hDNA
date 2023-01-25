@@ -292,7 +292,6 @@ class Complex(object):
 
 
 class Zippo(Complex):
-
     def __init__(self, 
                     model: Model, 
                     s1: Strand, 
@@ -302,6 +301,17 @@ class Zippo(Complex):
         super().__init__(model,s1,s2,structure)
         self.struct = structure
         self.G = energy
+    
+class Sliding(Complex):
+    def __init__(self,
+                    model:Model,
+                    s1: Strand,
+                    s2: Strand,
+                    structure,
+                    offregister,
+                    dpxdist):
+        super().__init__(model,s1,s2,structure,offregister=offregister)
+        self.dpxdist = dpxdist #distance in terms of basepairs from the sliding to the duplex
 
 ################################################
 ##### Deprecated Methods for class Complex #####

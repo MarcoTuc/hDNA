@@ -32,8 +32,23 @@ Implement a method inside the Kinetwork class
 
 
 #######################################################
-#### Experimental verification
+>>>>>>>>>>>>>>>>>>>>>>>>>#### Experimental verification
 
 !) Make a routine for simulating the model over hertel's data 
 
 !) Put numbers in front of gext graph names when saving for order 
+
+
+#######################################################
+>>>>>>>>>>>>>>>>>>>>>>>>#### IMPROVEMENTS & BUGS TO FIX
+
+# !!!
+# Sliding Factor
+Right now the sliding factor is computed as: 
+sf = 1/(all possible nucleations)
+But actually what I should do is: 
+sf = 1/(all possible slidings + 1) 
+where the 1 refers to the native sliding 
+Then for zippings take a zipping factor
+zf = 1/(all possible zippings)
+>>>> Check line 94 in simulator.py

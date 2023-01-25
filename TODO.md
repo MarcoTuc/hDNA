@@ -18,9 +18,6 @@ Implement the secondary structure dependance
         -- Kinetwork 
         -- Simulator
 
-# !! 
-
-
 # !!!! 
 Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A SECOND CHECK IF NEEDED)
         Kinetics class 
@@ -36,19 +33,16 @@ Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A 
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>#### IMPROVEMENTS & BUGS TO FIX
 
-# !!!
-# Sliding Factor
-Right now the sliding factor is computed as: 
-sf = 1/(all possible nucleations)
-But actually what I should do is: 
-sf = 1/(all possible slidings + 1) 
-where the 1 refers to the native sliding 
-Then for zippings take a zipping factor
-zf = 1/(all possible zippings)
->>>> Check line 94 in simulator.py
+# !!! Nonsense inside slidings thermodynamics!   
+Basal sliding rate is 2e7.
+What can happen is that the free energy difference between two slidings is positive 
+such that the fws is 2e7 and the bwd is some orders of magnitude over 2e7 (say 2e9).
+How do I fix this? 
+>>> This is also fucking kinetics up, for example see:
+    Strand 21: ACCAAACCACCAAC, trajectory #3
+    I absolutely need to correct this asap.
 
-
-# !!!! 
+# !!! 
 # Off-register nonzipping
 By looking at off-register nucleations we can see that there are direct nucleations going on directly from singlestranded to lots of base-pairs.
 This entails that off-register nucleations will have a profound impact on the dynamics since there are very short pathways connecting single stranded to duplex like:
@@ -85,13 +79,9 @@ This entails that off-register nucleations will have a profound impact on the dy
                 to make things more realistic (hopefully more accurate)
 
       
-# !!!! Nonsense inside slidings thermodynamics!   
-Basal sliding rate is 2e7.
-What can happen is that the free energy difference between two slidings is positive 
-such that the fws is 2e7 and the bwd is some orders of magnitude over 2e7 (say 2e9).
-How do I fix this? 
 
-# !!!! Wrong zipping sides: 
+
+# !! Wrong zipping sides: 
 Some forward zippings are actually referring to backward zippings. 
 Fix this (see wrongdoingszippingline64.html line 64)
 In particular it is zipping_55 that has fwd and bwd switched

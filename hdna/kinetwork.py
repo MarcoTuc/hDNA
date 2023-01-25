@@ -36,7 +36,7 @@ class Kinetwork(object):
         self.Graph.add_node(self.chamber.singlestranded, object = self.chamber.singlestranded, structure = self.chamber.singlestranded.structure, state = 'singlestranded', pairs = 0)
 
         for s in self.chamber.offcores:
-            self.Graph.add_node(s, object = s, structure = s.structure, state = 'off_register', pairs = int(s.total_nucleations))
+            self.Graph.add_node(s, object = s, structure = s.structure, state = 'off_register', pairs = int(s.total_nucleations), dpxdist = s.dpxdist)
 
         for s in self.chamber.oncores:
             self.Graph.add_node(s, object = s, structure = s.structure, state = 'on_register', pairs = int(s.total_nucleations))
@@ -51,11 +51,11 @@ class Kinetwork(object):
               from different starting native nucleations. """
 
 
-    def add_reactions(self, verbose=False):
+    def add_reactions(self, verbose=True):
 
         ON  = self.node_filter('state','on_register')
         D = self.node_filter('state', 'duplex')
-        lenD = list(D.nodes())[0].total_nucleations
+
 
         for on, data in ON.nodes.items():
             self.Graph.add_edge(self.chamber.singlestranded, on, kind = 'on_nucleation') #ADDPROPERTY
@@ -65,15 +65,22 @@ class Kinetwork(object):
             self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
 
         L, R = self.chamber.split_offcores()
-        for l, r in zip(L, R):
-            if verbose: 
+        if verbose:
+            for l, r in zip(L, R):
                 print(l.s1.sequence+'+'+l.s2.sequence)
-                print(l.structure,'L',l.total_nucleations)
+                print(l.structure,'L')
+                print('basepairs:',l.total_nucleations)
+                print('dupdist:  ',l.dpxdist)
                 print('\n')
                 print(r.s1.sequence+'+'+r.s2.sequence)
-                print(r.structure,'R',r.total_nucleations)
+                print(r.structure,'R')
+                print('basepairs:',r.total_nucleations)
+                print('dupdist:  ',r.dpxdist)
                 print('\n') 
         for i, (left, right) in enumerate(zip(L, R)):
+            if verbose:
+                print('left: ',left.dpxdist)
+                print('right:',right.dpxdist)
             self.Graph.add_edge(self.chamber.singlestranded, left, kind = 'off_nucleation')
             self.Graph.add_edge(self.chamber.singlestranded, right, kind = 'off_nucleation')
             if i > 0: 
@@ -138,6 +145,15 @@ class Kinetwork(object):
         elif onlydown == True:
             return down
         else: return up, down
+    
+    def save_graph(self, PATH, name):
+        import os 
+        #convert node object to string of object type
+        for n in self.Graph.nodes.data():
+            n[1]['object'] = str(type(n[1]['object']))
+        try: os.makedirs(PATH)
+        except FileExistsError: pass 
+        nx.write_gexf(self.Graph,f'{PATH}/{name}.gexf')
 
 
 ####################################################################################################

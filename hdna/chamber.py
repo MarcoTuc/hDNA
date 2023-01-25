@@ -1,7 +1,7 @@
 import re
 
 from .strand import Strand
-from .complex import Complex
+from .complex import Complex, Sliding 
 from .model import Model
 
 
@@ -21,13 +21,13 @@ class Chamber(object):
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
         """ General Slidings """
-        self.compute_slidings_structured(self.mincore)
+        self.compute_slidings_structured()
         
         """ Off-Register Nucleation Cores """
-        self.compute_offcores(self.mincore)
+        self.compute_offcores()
 
         """ On-Register Nucleation Cores """
-        self.compute_oncores(self.mincore)
+        self.compute_oncores()
 
         """
         self.finalstructure --->    compute the most stable structure for the 
@@ -41,27 +41,30 @@ class Chamber(object):
 ##### Non-Native Nucleation Methods #####
 #########################################
 
-    def compute_offcores(self, min_nucleation):
+    def compute_offcores(self):
         self.offcores = []
         for complex in self.slidings:
-            if complex.consecutive_nucleations >= min_nucleation:
+            if complex.consecutive_nucleations >= self.mincore:
                 self.offcores.append(complex)
 
-    def compute_slidings_structured(self, min_nucleation):
-        n = min_nucleation
+    def compute_slidings_structured(self, verbose=False):
+        n = self.mincore
         self.slidings = []
         for b in range(n, self.s1.length): 
             slidingstruct = "ì"*b+"."*(self.s1.length-b)
             slidingstruct = slidingstruct + "+" + slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
-            self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister="left"))
+            if verbose: print(self.s1.sequence+'+'+self.s2.sequence); print(slidingstruct, (self.s1.length - b)); print(structureout,'\n')
+            self.slidings.append(Sliding(self.model, self.s1, self.s2, structure=structureout, offregister="left", dpxdist=(self.s1.length - b)))
         fullstructure = "("*self.s1.length+"+"+")"*self.s2.length
+        if verbose: print(fullstructure)
         self.duplex = Complex(self.model, self.s1, self.s2, structure=fullstructure, duplex=True)
         for b in range(1, self.s1.length - n + 1):
             slidingstruct = "."*b+"ì"*(self.s1.length-b)
             slidingstruct = slidingstruct+"+"+slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
-            self.slidings.append(Complex(self.model, self.s1, self.s2, structure=structureout, offregister='right'))
+            if verbose: print(self.s1.sequence+'+'+self.s2.sequence); print(slidingstruct, b); print(structureout,'\n')
+            self.slidings.append(Sliding(self.model, self.s1, self.s2, structure=structureout, offregister='right', dpxdist=b))
 
     def split_offcores(self):
         n = int(len(self.offcores)/2)
@@ -72,23 +75,23 @@ class Chamber(object):
 ##### Native Nucleation Methods #####
 #####################################
 
-    def compute_oncores(self, min_nucleation):
+    def compute_oncores(self):
         self.oncores = []
-        self.native_nucleation_structures(min_nucleation)
+        self.native_nucleation_structures()
         for structureì in self.nativeì:
             structureout = self.parse_structure(structureì, self.s1, self.s2)
             self.oncores.append(Complex(self.model, self.s1, self.s2, structure=structureout, onregister=True))
-        self.oncores = [core for core in self.oncores if core.total_nucleations >= min_nucleation]
+        self.oncores = [core for core in self.oncores if core.total_nucleations >= self.mincore]
         return self.oncores
 
-    def clean_oncores(self, min_nucleation):
+    def clean_oncores(self):
         for core in self.oncores:
-            if core.total_nucleations < min_nucleation:
+            if core.total_nucleations < self.mincore:
                 self.oncores.pop(core)
 
-    def native_nucleation_structures(self, min_nucleation):
+    def native_nucleation_structures(self):
         """Return the onregister nucleations"""
-        n = min_nucleation
+        n = self.mincore
         self.nativeì = []
         for i in range(self.s1.length - n + 1):
             nucleation = "".join(["." * i, "ì" * n,"." * (self.s1.length - i - n), "+", "." * (self.s2.length - i - n), "ì" * n, "." * i])
