@@ -14,8 +14,8 @@ class Kinetwork(object):
     def __init__(self, model: Model, s1: Strand, s2: Strand, minimum_nucleation):
 
         self.model = model 
-        self.s1 = s1
-        self.s2 = s2
+        self.s1 = s1        #53
+        self.s2 = s2        #35
         self.mincore = minimum_nucleation
         self.chamber = Chamber(self.model, self.s1, self.s2, self.mincore)
         
@@ -55,6 +55,7 @@ class Kinetwork(object):
 
         ON  = self.node_filter('state','on_register')
         D = self.node_filter('state', 'duplex')
+        lenD = list(D.nodes())[0].total_nucleations
 
         for on, data in ON.nodes.items():
             self.Graph.add_edge(self.chamber.singlestranded, on, kind = 'on_nucleation') #ADDPROPERTY
@@ -64,6 +65,14 @@ class Kinetwork(object):
             self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
 
         L, R = self.chamber.split_offcores()
+        for l, r in zip(L, R):
+            if verbose: 
+                print(l.s1.sequence+'+'+l.s2.sequence)
+                print(l.structure,'L',l.total_nucleations)
+                print('\n')
+                print(r.s1.sequence+'+'+r.s2.sequence)
+                print(r.structure,'R',r.total_nucleations)
+                print('\n') 
         for i, (left, right) in enumerate(zip(L, R)):
             self.Graph.add_edge(self.chamber.singlestranded, left, kind = 'off_nucleation')
             self.Graph.add_edge(self.chamber.singlestranded, right, kind = 'off_nucleation')
@@ -206,7 +215,7 @@ class Kinetics(object):
         else: raise ValueError(f'{kind} not implemented')
 
     def geometric_rate(self):
-        self.georate = (np.power((self.geometry.theta/360),2))*(np.power((self.geometry.phi/360),2))*self.dlrate
+        self.georate = (np.power((self.geometry.theta/360),2))*(np.power((self.geometry.phi/360),2)) * self.dlrate
         return self.georate 
 
     def closedconfscaling(self, p_circular):

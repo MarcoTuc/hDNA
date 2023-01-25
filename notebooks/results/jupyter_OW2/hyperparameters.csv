@@ -1,9 +1,0 @@
-hyperparameters,values
-minimum_nucleation,4.0
-zipping_rate,2000000000.0
-sliding_rate,20000000.0
-temperature,25.0
-azimutal_angle,120.0
-longitudinal_angle,270.0
-runtime,5e-06
-N_simul,3000.0

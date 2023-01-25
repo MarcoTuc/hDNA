@@ -1,9 +1,9 @@
-from numpy.random import choice 
+from random import choice 
 from .model import Model
 
 class Strand(object):
 
-    def __init__(self, model: Model, sequence: str):
+    def __init__(self, model: Model, sequence: str, direction=None):
 
         #TODO: Check if the sequence has non WT stuff 
         if type(model) != Model:
@@ -13,6 +13,15 @@ class Strand(object):
         if type(sequence) != str:
             raise TypeError("Sequence must be a string")
         self.sequence = sequence
+        
+        if direction is not None: 
+            if self.direction == '53':
+                self.fivethree = self.sequence
+                self.threefive = self.invert.sequence
+            
+            if self.direction == '35':
+                self.fivethree = self.invert.sequence
+                self.threefive = self.sequence 
 
         self.length = len(sequence)
 
@@ -32,16 +41,16 @@ class Strand(object):
     def cut(self, start, stop):
         return Strand(self.model, self.sequence[start:stop])
 
-    def complementary(self):
+    def complementary(self, direction=None):
         wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
         seq = ''.join([wc[self.sequence[i]] for i in range(self.length)])
-        return Strand(self.model, seq)
+        dc = {None: None, '53':'35', '35':'53'}
+        return Strand(self.model, seq, dc[direction])
     
-    def random(model, length):
+    def random(model, length, direction=None):
         """ Generate a random sequence of given length """
         seq = ''.join([choice(['A','T','C','G']) for i in range(length)])
-        return Strand(model, seq)
-
+        return Strand(model, seq, direction)
 
     @property
     def invert(self):

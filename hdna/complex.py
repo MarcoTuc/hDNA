@@ -25,10 +25,13 @@ class Complex(object):
             raise TypeError("Model must be an instance of hdna.Model")
         self.model = model
 
-        if type(s1) != Strand or type(s2) != Strand:
+        if type(s1) != Strand:
             raise TypeError("s1 must be an instance of hdna.Strand")
-        self.s1 = s1
-        self.s2 = s2 
+        if type(s2) != Strand:
+            raise TypeError("s2 must be an instance of hdna.Strand")
+
+        self.s1 = s1    #53
+        self.s2 = s2    #35
 
         self.l1 = s1.length
         self.l2 = s2.length
