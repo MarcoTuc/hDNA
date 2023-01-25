@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from hdna.logger import Tee 
 
-EXPNAME = 'datawriting1'
+EXPNAME = 'hello'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
