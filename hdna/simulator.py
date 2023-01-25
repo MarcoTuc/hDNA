@@ -28,6 +28,7 @@ class Options(object):
                 save_graph_html = True,
                 trajstosave=10,
                 results_dir = './results', #beware if results_dir exists 
+                graphsalone = 'own_folder', 
                 stranditer = 1
                 
                 ):
@@ -43,6 +44,7 @@ class Options(object):
         self.rates_info = rates_info
         self.save_graph_html = save_graph_html
         self.results_dir = results_dir 
+        self.graphsalone = graphsalone
         self.trajstosave = trajstosave
         self.stranditer = stranditer
 
@@ -56,6 +58,7 @@ class Simulator(object):
         self.model = model 
         self.kinet = kinetwork
         self.Graph = kinetwork.Graph
+        self.overview = self.kinet.overview
 
         self.kinetics = kinetics 
 
@@ -91,7 +94,8 @@ class Simulator(object):
         SS = self.kinet.chamber.singlestranded.structure 
         ss = self.tl(SS)
         neighbors = list(nx.neighbors(self.Graph, SS))
-        sliding_factor = 1/len(neighbors)
+        sliding_factor = 1/(self.kinet.overview['off_register'] + 1)
+        zipping_factor = 1/(self.kinet.overview['on_register'])
         for n in neighbors:
             i += 1
             """ JULIA PATHOLOGY 
@@ -102,11 +106,12 @@ class Simulator(object):
                 |   ( --> b     |
                 |   ) --> d     |
                 |   + --> A     |                   """
-            neigh  = self.tl(n)
-
+            neigh = self.tl(n)
+            state = self.Graph.nodes[n]['state'] 
+            factor = sliding_factor if state == 'off_register' else zipping_factor
             # FORWARD BIMOLECULAR NUCLEATION
             name = f"f_nucleation{i}"; rule = f"{ss} + {ss} --> {neigh}"
-            kf = self.kinetics.georate * sliding_factor
+            kf = self.kinetics.georate * factor
             self.biosim <= jl.Reaction(name, kf, rule)
             self.Graph.edges[SS,n]['kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
 
@@ -159,7 +164,7 @@ class Simulator(object):
     def simulation(self):
         """ run the simulation and return the results """
         return jl.simulate(self.biosim, self.options.method, tfinal = self.options.runtime)
-        # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t}
+        # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t} OLD TRANSLATION TO DICTIONARY 
     
     def ensemble(self):
         state, model = jl.parse_model(self.biosim)
@@ -174,7 +179,8 @@ class Simulator(object):
             for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
                 traj = self.get_trajectory(s) 
                 traj.to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
-            self.save_graph(f'{self.options.results_dir}/graphs')
+            if self.options.graphsalone == 'own_folder': self.save_graph(f'{self.options.results_dir}/graphs')
+            elif self.options.graphsalone == 'strand_folder': self.save_graph(f'{DIR}')
             self.options.stranditer += 1
             return sim
 
@@ -194,10 +200,12 @@ class Simulator(object):
                 failed.append(index)
         print(f"{len(failed)} simulations didn't produce a duplex.")
         print(f"That's {100*len(failed)/len(ensemble)}% of simulations")
+        self.overview['failed'] = len(failed)
+        self.overview['fail%'] = 100*len(failed)/len(ensemble)
         return np.mean(fpts)
     
 
-    def get_trajectory(self, simulation): #TODO REDO IT EFFICIENTLY
+    def get_trajectory(self, simulation): #TODO REDO IT MORE EFFICIENTLY (?)
         
         """ Create a method for appending a simulation trajectory to each simulation result
             Over than being pretty this is a good way to see inside simulations what's happening
@@ -279,14 +287,20 @@ class Simulator(object):
         table = str.maketrans({'o':'.', 'b':'(', 'd':')', 'A':'+'})
         return s.translate(table)
 
-    ########################
-    ### Printing Methods ###
-    ########################
+    #########################
+    ### Reporting Methods ###
+    #########################
 
     def print_properties(self, *args):
         """ Define a method for printing the properties of nodes/edges 
             in the graph in a nice looking way."""
         pass
+
+    def save_overview(self, path, name):
+        df = pd.DataFrame.from_dict([self.overview]).T
+        df.rename(columns={np.int64(0):'values'}, inplace=True)
+        df.index.rename('states', inplace=True)
+        df.to_csv(f'{path}/{name}.csv')
 
     ########################
     ### Property Methods ###

@@ -3,6 +3,7 @@ import sys
 import numpy as np 
 import pandas as pd
 from hdna import *
+from conf import * 
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['seq', 'expvalue'])
@@ -10,17 +11,16 @@ expdata = pd.read_csv('./data/herteldata.csv', names=['seq', 'expvalue'])
 expdata = expdata.drop(0)
 expdata['expvalue'] = ['{:e}'.format(float(e)) for e in expdata['expvalue']]
 
-limit = len(expdata)
+limit = 3
 torun = expdata.copy().iloc[:limit]
+torun.set_index(torun['seq'], inplace=True)
 
-EXPNAME = 'MN5Z9S5_(180,360)'
-RESULTS_DIR = f"results/{EXPNAME}"
-
+# Directory Check 
 if os.path.isdir(RESULTS_DIR): 
     i = 0
     while True: 
         i += 1
-        permission = input('Folder already exists, do you want to overwrite old experiments? [Y,N]')
+        permission = input(f'Folder {RESULTS_DIR} already exists, do you want to overwrite old experiments? [Y,N]')
         if permission.lower().startswith('y'):
             print('>>>> overwriting old simulations')
             break
@@ -31,41 +31,25 @@ if os.path.isdir(RESULTS_DIR):
 else:
     os.makedirs(RESULTS_DIR)
 
-HP = {
-    
-    #model free parameters  
-    'minimum_nucleation': 5,
-    'zipping_rate':       2e9,
-    'sliding_rate':       5e5,
-    
-    #temperature
-    'temperature':        37,
-    
-    #angles
-    'azimutal_angle':     180,
-    'longitudinal_angle': 360,
-}
-
-OPT = {
-
-    #simulation options
-    'runtime': 5e-6,
-    'N_simul': 3000
-}
-
+# Leave a csv with hyperparameters 
 hyperparams = pd.DataFrame.from_dict([dict(**HP,**OPT)]).T
 hyperparams.rename(columns={np.int64(0):'values'}, inplace=True)
 hyperparams.index.rename('hyperparameters', inplace=True)
 hyperparams.to_csv(f'{RESULTS_DIR}/hyperparameters.csv')
 
+# export console output to a txt 
+f = open(f'{RESULTS_DIR}/console.txt', 'w')
+sys.stdout = Tee(sys.stdout, f)
+
 # Actual computation 
-rates = []
 model = Model('dna', '3D', celsius=HP['temperature'])
 
 for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
-    print(f'Strand number {i+1}: {seq}')
-    seq = str(seq.strip())      # make sure they are alright
-    exp = float(exp.strip())    #
+
+    print(f'Strand number {i}: {seq}')
+    seq = str(seq.strip())      
+    exp = float(exp.strip())    
+
     print(f'Creating network from sequence...')
     A = Strand(model, seq)
     B = A.complementary()
@@ -74,18 +58,33 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
     K = Kinetics(model, kinet, geo)
     K.set_slidingrate(HP['sliding_rate'])
     K.set_zippingrate(HP['zipping_rate'])
-    opts = Options(method='direct', runtime=OPT['runtime'], Nsim=OPT['N_simul'], results_dir=RESULTS_DIR, stranditer=i)
+
+    opts = Options(
+        method='direct', 
+        runtime=OPT['runtime'], 
+        Nsim=OPT['N_simul'], 
+        results_dir=RESULTS_DIR, 
+        graphsalone=SOPT['G_saving'],
+        stranditer=i)
+
     print('embedding network into biosimulator network model...')
     simulatore = Simulator(model, kinet, K, options=opts)
     print('start running simulations...')
     results = simulatore.ensemble()
     mfpt = simulatore.mfpts(results)
-    rates.append(1/mfpt)
+
+    df = pd.DataFrame.from_dict([simulatore.overview])
+    df.drop(['duplex','singlestranded'], axis=1, inplace=True)
+    newcols = list(df.columns)
+    newvals = list(df.loc[0,df.columns])
+    torun.loc[seq, 'computed'] = 1/mfpt
+    torun.loc[seq, newcols] = newvals
+
     print(f"experimental rate: {'{:e}'.format(exp)}")
     print(f"computed rate:     {'{:e}'.format(1/mfpt)}", '\n')
+
     del results
 
-torun['computed'] = rates
 torun.to_csv(f"{RESULTS_DIR}/simulationdata.csv")
 valplot(torun, EXPNAME, writepath=RESULTS_DIR, theme='dark')
 

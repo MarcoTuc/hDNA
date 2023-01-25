@@ -32,7 +32,6 @@ def valplot(data, name, writepath = None, theme = 'dark'):
                      <br>mod = %{y:.3e}
                      <br>seq:  %{customdata} </b>"""
     )
-
     trace2 = go.Scatter(
         x = X,
         y = X,
@@ -41,7 +40,6 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         line = dict(dash = 'dash'),
         name = 'bisector'
     )
-
     layout = go.Layout(
         template=THM['template'],
         title = f'Scatterplot for {name}',
@@ -64,9 +62,7 @@ def valplot(data, name, writepath = None, theme = 'dark'):
             tickmode = 'array',
             showgrid = True
         )
-
     )
-
     dados = [trace1, trace2]
     fig = go.Figure(data = dados, layout = layout)
     

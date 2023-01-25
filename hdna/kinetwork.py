@@ -25,6 +25,11 @@ class Kinetwork(object):
         self.add_reactions()
         self.clean_duplicates()
 
+        #get an overview of the network 
+        stateslist = ['singlestranded', 'off_register', 'on_register', 'zipping', 'duplex']
+        countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in stateslist]
+        self.overview = dict(zip(stateslist,countslist))
+
 
     def add_nodes(self):
 
@@ -124,7 +129,6 @@ class Kinetwork(object):
         elif onlydown == True:
             return down
         else: return up, down
-
 
 
 ####################################################################################################
