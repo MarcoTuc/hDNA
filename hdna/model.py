@@ -3,6 +3,8 @@ class Model(object):
     def __init__(   self, 
                     material, 
                     space_dimensionality,
+                    min_nucleation, 
+                    sliding_cutoff, 
                     Na=1.0, 
                     Mg=0.0, 
                     celsius=26):
@@ -19,6 +21,9 @@ class Model(object):
             raise ValueError("Supported dimensionalities: 2D and 3D")
 
         self.space_dimensionality = space_dimensionality
+
+        self.min_nucleation = min_nucleation
+        self.sliding_cutoff = sliding_cutoff
         
         self.celsius = celsius
         self.kelvin = celsius + 273.15

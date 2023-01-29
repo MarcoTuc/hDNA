@@ -4,13 +4,14 @@ import numpy as np
 import pandas as pd
 from hdna.logger import Tee 
 
-EXPNAME = 'meeting'
+EXPNAME = 'cutoff_2'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
     
     #model free parameters  
-    'minimum_nucleation': 4,
+    'minimum_nucleation': 1,
+    'sliding_cutoff':     4,
     'zipping_rate':       2e9,
     'sliding_rate':       2e7,
     

@@ -34,6 +34,7 @@ class Options(object):
                 ):
         
         # JULIA SIMULATION OPTIONS
+        self.initialamount = 2
         self.runtime = runtime
         self.Nsim = Nsim
         methods = {"direct": jl.Direct()}
@@ -53,7 +54,7 @@ class Options(object):
 
 class Simulator(object):
     
-    def __init__(self, model: Model, kinetwork: Kinetwork, kinetics: Kinetics, initialamount=2, options=Options()):
+    def __init__(self, model: Model, kinetwork: Kinetwork, kinetics: Kinetics, options=Options()):
         
         self.model = model 
         self.kinet = kinetwork
@@ -65,7 +66,7 @@ class Simulator(object):
         self.options = options 
         self.biosim = jl.Network("biosim")
 
-        self.initialamount = initialamount
+        self.initialamount = self.options.initialamount
         self.add_species()
         self.add_reactions()
 
@@ -127,7 +128,7 @@ class Simulator(object):
         subgraph.remove_node(SS)
         
         for n1, n2, data in list(subgraph.edges.data()):
-            i += 1                       # TODO RATES (data will be used to get rates etc)
+            i += 1
             
             if data['kind'] in ['sliding', 'sliding-end']:
                 l1 = self.Graph.nodes[n1]['object'].total_nucleations
@@ -267,11 +268,19 @@ class Simulator(object):
     
     def save_graph(self, PATH):
         #convert node object to string of object type
-        for n in self.digraph.nodes.data():
-            n[1]['object'] = str(type(n[1]['object']))
-        try: os.makedirs(PATH)
-        except FileExistsError: pass 
-        nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
+        try: 
+            for n in self.digraph.nodes.data():
+                n[1]['object'] = str(type(n[1]['object']))
+            try: os.makedirs(PATH)
+            except FileExistsError: pass 
+            nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
+        except AttributeError:
+            self.DiGraph() 
+            for n in self.digraph.nodes.data():
+                n[1]['object'] = str(type(n[1]['object']))
+            try: os.makedirs(PATH)
+            except FileExistsError: pass 
+            nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
         
 
     ######################

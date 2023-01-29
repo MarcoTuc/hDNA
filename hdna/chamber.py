@@ -10,14 +10,14 @@ class Chamber(object):
     """ The chamber object contains every possible
     nucleation state for the two given single strands """
 
-    def __init__(self, model: Model, s1: Strand, s2: Strand, mincore):
+    def __init__(self, model: Model, s1: Strand, s2: Strand):
 
         self.model = model
         self.s1 = s1
         self.s2 = s2.invert
 
         self.singlestranded = Complex(self.model, self.s1, self.s2, singlestranded=True)
-        self.mincore = mincore
+        self.min_nucleation = self.model.min_nucleation
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
         """ General Slidings """
@@ -44,11 +44,11 @@ class Chamber(object):
     def compute_offcores(self):
         self.offcores = []
         for complex in self.slidings:
-            if complex.consecutive_nucleations >= self.mincore:
+            if complex.consecutive_nucleations >= self.min_nucleation:
                 self.offcores.append(complex)
 
     def compute_slidings_structured(self, verbose=False):
-        n = self.mincore
+        n = self.min_nucleation
         self.slidings = []
         for b in range(n, self.s1.length): 
             slidingstruct = "ì"*b+"."*(self.s1.length-b)
@@ -81,17 +81,17 @@ class Chamber(object):
         for structureì in self.nativeì:
             structureout = self.parse_structure(structureì, self.s1, self.s2)
             self.oncores.append(Complex(self.model, self.s1, self.s2, structure=structureout, onregister=True))
-        self.oncores = [core for core in self.oncores if core.total_nucleations >= self.mincore]
+        self.oncores = [core for core in self.oncores if core.total_nucleations >= self.min_nucleation]
         return self.oncores
 
     def clean_oncores(self):
         for core in self.oncores:
-            if core.total_nucleations < self.mincore:
+            if core.total_nucleations < self.min_nucleation:
                 self.oncores.pop(core)
 
     def native_nucleation_structures(self):
         """Return the onregister nucleations"""
-        n = self.mincore
+        n = self.min_nucleation
         self.nativeì = []
         for i in range(self.s1.length - n + 1):
             nucleation = "".join(["." * i, "ì" * n,"." * (self.s1.length - i - n), "+", "." * (self.s2.length - i - n), "ì" * n, "." * i])

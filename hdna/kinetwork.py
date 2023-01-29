@@ -11,13 +11,14 @@ class Kinetwork(object):
     """Given a chamber it will generate the corresponding
     Kinetic network to be later passed to the simulator"""
 
-    def __init__(self, model: Model, s1: Strand, s2: Strand, minimum_nucleation):
+    def __init__(self, model: Model, s1: Strand, s2: Strand):
 
         self.model = model 
         self.s1 = s1        #53
         self.s2 = s2        #35
-        self.mincore = minimum_nucleation
-        self.chamber = Chamber(self.model, self.s1, self.s2, self.mincore)
+        self.min_nucleation = self.model.min_nucleation
+        self.sliding_cutoff = self.model.sliding_cutoff
+        self.chamber = Chamber(self.model, self.s1, self.s2)
         
 
         self.Graph = nx.Graph()
@@ -33,25 +34,48 @@ class Kinetwork(object):
 
     def add_nodes(self):
 
-        self.Graph.add_node(self.chamber.singlestranded, object = self.chamber.singlestranded, structure = self.chamber.singlestranded.structure, state = 'singlestranded', pairs = 0)
-
+        self.Graph.add_node(
+            self.chamber.singlestranded, 
+            object = self.chamber.singlestranded, 
+            structure = self.chamber.singlestranded.structure, 
+            state = 'singlestranded', 
+            pairs = 0)
         for s in self.chamber.offcores:
-            self.Graph.add_node(s, object = s, structure = s.structure, state = 'off_register', pairs = int(s.total_nucleations), dpxdist = s.dpxdist)
-
+            self.Graph.add_node(
+                s, 
+                object = s, 
+                structure = s.structure, 
+                state = 'off_register', 
+                pairs = int(s.total_nucleations), 
+                dpxdist = s.dpxdist)
         for s in self.chamber.oncores:
-            self.Graph.add_node(s, object = s, structure = s.structure, state = 'on_register', pairs = int(s.total_nucleations))
-
+            self.Graph.add_node(
+                s, 
+                object = s, 
+                structure = s.structure, 
+                state = 'on_register', 
+                pairs = int(s.total_nucleations))
         for s in self.chamber.oncores:
             for z in s.zipping[1:]: #first zipping value is the oncore itself so flush it away by indexing
-                self.Graph.add_node(z, object = z, structure = z.structure, state = 'zipping', pairs = int(z.total_nucleations))
+                self.Graph.add_node(
+                    z, 
+                    object = z, 
+                    structure = z.structure, 
+                    state = 'zipping', 
+                    pairs = int(z.total_nucleations))
 
-        self.Graph.add_node(self.chamber.duplex, object = self.chamber.duplex, structure = self.chamber.duplex.structure, state = 'duplex', pairs = self.chamber.duplex.total_nucleations)
+        self.Graph.add_node(
+            self.chamber.duplex, 
+            object = self.chamber.duplex, 
+            structure = self.chamber.duplex.structure, 
+            state = 'duplex', 
+            pairs = self.chamber.duplex.total_nucleations)
         """   note that duplicated nodes will not be added to the resulting graph, hence I can run through 
               all zipping states and be sure that I will only get one note per each zipping that is common
               from different starting native nucleations. """
 
 
-    def add_reactions(self, verbose=True):
+    def add_reactions(self, verbose=False):
 
         ON  = self.node_filter('state','on_register')
         D = self.node_filter('state', 'duplex')
@@ -83,17 +107,30 @@ class Kinetwork(object):
                 print('right:',right.dpxdist)
             self.Graph.add_edge(self.chamber.singlestranded, left, kind = 'off_nucleation')
             self.Graph.add_edge(self.chamber.singlestranded, right, kind = 'off_nucleation')
-            if i > 0: 
+            if i > 0 and self.slidingcondition(left, L[i-1]) and self.slidingcondition(right, R[i-1]): 
                 self.Graph.add_edge(left, L[i-1], kind = 'sliding')
                 self.Graph.add_edge(right, R[i-1], kind = 'sliding')
-        try: self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
+        try: 
+            if self.slidingcondition(L[-1], None, duplexation=True): 
+                self.Graph.add_edge(L[-1], list(D.nodes())[0], kind = 'sliding-end')
+                if verbose: print('made sliding end connection')
         except IndexError: 
             if verbose: print('no left slidings as you can see from the empty list:', L)
             else: pass
-        try: self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
+        try: 
+            if self.slidingcondition(R[-1], None, duplexation=True): 
+                self.Graph.add_edge(R[-1], list(D.nodes())[0], kind = 'sliding-end')
+                if verbose: print('made sliding end connection')
         except IndexError: 
             if verbose: print('no right slidings as you can see from the empty list:', R)
             else: pass
+        
+    def slidingcondition(self, slide0, slide1, duplexation = False):
+        if duplexation == True: 
+            if slide0.dpxdist <= self.sliding_cutoff: return True 
+            else: return False 
+        if slide1.dpxdist - slide0.dpxdist < self.sliding_cutoff: return True 
+        else: return False  
 
 
     def clean_duplicates(self):
@@ -146,14 +183,14 @@ class Kinetwork(object):
             return down
         else: return up, down
     
-    def save_graph(self, PATH, name):
+    def save_graph(self, PATH):
         import os 
         #convert node object to string of object type
         for n in self.Graph.nodes.data():
             n[1]['object'] = str(type(n[1]['object']))
         try: os.makedirs(PATH)
         except FileExistsError: pass 
-        nx.write_gexf(self.Graph,f'{PATH}/{name}.gexf')
+        nx.write_gexf(self.Graph,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
 
 
 ####################################################################################################
