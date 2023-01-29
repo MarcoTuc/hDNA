@@ -1,5 +1,6 @@
 import os 
 import sys 
+import gc 
 import numpy as np 
 import pandas as pd
 from hdna import *
@@ -66,6 +67,7 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
         method='direct', 
         runtime=OPT['runtime'], 
         Nsim=OPT['N_simul'], 
+        trajstosave=OPT['trajstosave']
         results_dir=RESULTS_DIR, 
         graphsalone=SOPT['G_saving'],
         stranditer=i)
@@ -86,7 +88,6 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
     print(f"experimental rate: {'{:e}'.format(exp)}")
     print(f"computed rate:     {'{:e}'.format(1/mfpt)}", '\n')
 
-    del results
 
 torun.to_csv(f"{RESULTS_DIR}/simulationdata.csv")
 valplot(torun, EXPNAME, writepath=RESULTS_DIR, theme='dark')

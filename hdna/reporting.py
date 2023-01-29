@@ -14,12 +14,14 @@ def valplot(data, name, writepath = None, theme = 'dark'):
                'colorline': 'royalblue'}
 
     sdata = data.sort_values('expvalue')
-    sdata.set_index('seq', inplace=True, drop=False)
+    # sdata.set_index('seq', inplace=True, drop=False)
     try: sdata.drop('Unnamed: 0', axis=1)
     except KeyError: pass 
     X = list(sdata['expvalue'].astype(float))
     Y = list(sdata['computed'].astype(float))
     S = list(sdata['seq'])
+    I = list(sdata.index)
+
 
     trace1 = go.Scatter(
         x = X, # My list of values for 'x'
@@ -27,7 +29,7 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         marker = dict(color = THM['colordots']),
         mode = 'markers',
         name = '',
-        customdata=S,
+        customdata = [f'{i}_{s}' for i, s in zip(I, S)],
         hovertemplate="""emp = %{x:.3e}
                      <br>mod = %{y:.3e}
                      <br>seq:  %{customdata} </b>"""

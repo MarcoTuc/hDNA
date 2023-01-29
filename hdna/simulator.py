@@ -130,18 +130,18 @@ class Simulator(object):
         for n1, n2, data in list(subgraph.edges.data()):
             i += 1
             
-            if data['kind'] in ['sliding', 'sliding-end']:
-                l1 = self.Graph.nodes[n1]['object'].total_nucleations
-                l2 = self.Graph.nodes[n2]['object'].total_nucleations
-                if l1 < l2:             # Left slidings
-                    n1o = self.tl(n1)
-                    n2o = self.tl(n2)
-                else:                   # Right slidings
-                    n1o = self.tl(n2)
-                    n2o = self.tl(n1)
-            else:
+            # if data['kind'] in ['sliding', 'sliding-end']:
+            l1 = self.Graph.nodes[n1]['object'].total_nucleations
+            l2 = self.Graph.nodes[n2]['object'].total_nucleations
+            if l1 < l2:             # Left slidings
                 n1o = self.tl(n1)
                 n2o = self.tl(n2)
+            else:                   # Right slidings
+                n1o = self.tl(n2)
+                n2o = self.tl(n1)
+            # else:
+            #     n1o = self.tl(n1)
+            #     n2o = self.tl(n2)
 
             # FORWARD SLIDINGS AND ZIPPINGS
             name = f"f_{data['kind']}_{i}"; rule = f"{n1o} --> {n2o}"

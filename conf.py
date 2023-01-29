@@ -4,13 +4,13 @@ import numpy as np
 import pandas as pd
 from hdna.logger import Tee 
 
-EXPNAME = 'cutoff_2'
+EXPNAME = 'cutoff_3'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
     
     #model free parameters  
-    'minimum_nucleation': 1,
+    'minimum_nucleation': 4,
     'sliding_cutoff':     4,
     'zipping_rate':       2e9,
     'sliding_rate':       2e7,
@@ -27,7 +27,8 @@ OPT = {
 
     #simulation options
     'runtime': 5e-6,
-    'N_simul': 3000,
+    'N_simul': 1500,
+    'trajstosave': 35,
 }
 
 SOPT = {    
