@@ -4,15 +4,15 @@ import numpy as np
 import pandas as pd
 from hdna.logger import Tee 
 
-EXPNAME = 'nosliding_1'
+EXPNAME = 'lowerrates_2'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
     
     #model free parameters  
-    'minimum_nucleation': 4,
-    'sliding_cutoff':     0,
-    'zipping_rate':       2e9,
+    'minimum_nucleation': 2,
+    'sliding_cutoff':     2,
+    'zipping_rate':       1e8,
     'sliding_rate':       2e7,
     
     #temperature
