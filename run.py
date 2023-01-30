@@ -22,13 +22,25 @@ if os.path.isdir(RESULTS_DIR):
     i = 0
     while True: 
         i += 1
-        permission = input(f'Folder {RESULTS_DIR} already exists, do you want to overwrite old experiments? [Y,N]')
+        permission = input(f'Folder {RESULTS_DIR} already exists, do you want to overwrite old experiments? [Y,N] ')
         if permission.lower().startswith('y'):
             print('>>>> overwriting old simulations')
             break
         elif permission.lower().startswith('n') or i == 3:
-            print(">>>> stopping the program")
-            sys.exit()
+            asknew = input(f'Do you want to make a new folder? [Y,N] ')
+            if asknew.lower().startswith('y'):
+                control = False
+                while True: 
+                    NEWEXPNAME = input(f'Write the new experiment name to put inside ./results folder:\n')
+                    RESULTS_DIR = f"results/{NEWEXPNAME}"
+                    if NEWEXPNAME != EXPNAME: 
+                        os.makedirs(RESULTS_DIR)
+                        break
+                    else: print('Bro, put a new name not the old one... \n')
+                break 
+            elif permission.lower().startswith('n'): 
+                print(">>>> stopping the program")
+                sys.exit()
         print("yes or not?") 
 else:
     os.makedirs(RESULTS_DIR)
@@ -47,6 +59,7 @@ sys.stdout = Tee(sys.stdout, f)
 MOD = Model('dna', '3D', 
         min_nucleation=HP['minimum_nucleation'], 
         sliding_cutoff=HP['sliding_cutoff'],
+        stacking='nostacking',
         celsius=HP['temperature'])
 
 for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):

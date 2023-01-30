@@ -50,10 +50,10 @@ class Kinetwork(object):
                 dpxdist = s.dpxdist)
         for s in self.chamber.oncores:
             self.Graph.add_node(
-                s, 
-                object = s, 
-                structure = s.structure, 
-                state = 'on_register', 
+                s,
+                object = s,
+                structure = s.structure,
+                state = 'on_register',
                 pairs = int(s.total_nucleations))
         for s in self.chamber.oncores:
             for z in s.zipping[1:]: #first zipping value is the oncore itself so flush it away by indexing

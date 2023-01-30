@@ -126,7 +126,6 @@ class Chamber(object):
         cut2 = ''.join([n2 for n2, s2 in zip(string2, structure2) if s2 == 'ì'])
         sx = ''
         dx = ''
-        # print(cut1, cut2)
         for n1, n2 in zip(cut1, cut2):
             if self.iswattsoncrick(n1, n2):
                 sx += '('

@@ -113,45 +113,40 @@ class Complex(object):
 
 
     def zipping_trajectory(self):
-
         """
         CAUTION:    use only for native nucleation states with no double nucleation.
                     don't use with eg "((...((..+..))...)) strands
         UPDATE:     This has been corrected but still one 
                     should use caution against this method"""
 
+        def get_i(lst):
+            indices = []
+            for i, el in enumerate(lst):
+                if i > 0 and el != lst[i-1]:
+                    indices.append(i)
+            return indices
+        
+        def update_structure(string, character: str):
+            indices = get_i(string)
+            indices_inv = get_i(string[::-1])
+            updated = string
+            for index in indices:
+                updated = updated[:index-1] + character + updated[index:]
+            updated_inv = updated[::-1]
+            for index in indices_inv:
+                updated_inv = updated_inv[:index-1] + character + updated_inv[index:]
+            return updated_inv[::-1]
+
         if self.onregister == True: 
-
-            self.zipping = [Zippo(self.model, self.s1, self.s2, self.structure, self.structureG(self.structure))]
+            self.zipping = [Zippo(self.model, self.s1, self.s2, self.structure)]
             left, right = self.structure.split('+')
-
-            def get_i(lst):
-                indices = []
-                for i, el in enumerate(lst):
-                    if i > 0 and el != lst[i-1]:
-                        indices.append(i)
-                return indices
-            
-            def update_structure(string, character: str):
-                indices = get_i(string)
-                indices_inv = get_i(string[::-1])
-                updated = string
-                for index in indices:
-                    updated = updated[:index-1] + character + updated[index:]
-                updated_inv = updated[::-1]
-                for index in indices_inv:
-                    updated_inv = updated_inv[:index-1] + character + updated_inv[index:]
-                return updated_inv[::-1]
-            
             while '.' in left and right:
-                
                 left = update_structure(left, '(')
                 right = update_structure(right, ')')
                 step = '+'.join([left,right])
                 # The generated structure is parsed to see if it is correctly base-paired 
                 candidatestep = self.parse_structure(step, self.s1, self.s2)
-                self.zipping.append(Zippo(self.model, self.s1, self.s2, candidatestep, self.structureG(candidatestep)))
-
+                self.zipping.append(Zippo(self.model, self.s1, self.s2, candidatestep))
             self.zipping.pop(-1) #remove the spurious duplex element generated at the end of the while loop
             return self.zipping
         
@@ -174,7 +169,7 @@ class Complex(object):
 
     def getnupackmodel(self):
         self.nupackmodel = nu.Model(material=self.model.material, 
-                                    ensemble='stacking', 
+                                    ensemble=self.model.stacking, 
                                     celsius=self.model.celsius, 
                                     sodium=self.model.Na, 
                                     magnesium= self.model.Mg) 
@@ -296,11 +291,9 @@ class Zippo(Complex):
                     model: Model, 
                     s1: Strand, 
                     s2: Strand, 
-                    structure,
-                    energy):
+                    structure):
         super().__init__(model,s1,s2,structure)
         self.struct = structure
-        self.G = energy
     
 class Sliding(Complex):
     def __init__(self,
@@ -312,6 +305,86 @@ class Sliding(Complex):
                     dpxdist):
         super().__init__(model,s1,s2,structure,offregister=offregister)
         self.dpxdist = dpxdist #distance in terms of basepairs from the sliding to the duplex
+        self.backfraying_trajectory()
+        self.sbackfray = [b.structure for b in self.backfray]
+        self.gbackfray = [b.G for b in self.backfray]
+        # self.maxstable = 
+
+    def backfraying_trajectory(self):
+        from itertools import zip_longest as zipp
+
+        def get_ix(string, char):
+            indices = []
+            for i, e in enumerate(list(string)):
+                if e == char:
+                    indices.append(i)
+            return indices 
+
+        def backfray_structure():
+            l, r = self.structure.split('+')
+            lix = get_ix(l, '('); ll = int(len(lix)/2)
+            rix = get_ix(r, ')'); rl = int(len(rix)/2)
+            backfray = []
+            for li, lil, ri, ril in zipp(
+                lix[:ll], lix[ll:][::-1], 
+                rix[:rl], rix[rl:][::-1]):
+                # print(li, ri, lil, ril )
+                try: l = l[:li] + '.' + l[li+1:]
+                except TypeError: pass
+                try: l = l[:lil] + '.' + l[lil+1:]
+                except TypeError: pass
+                try: r = r[:ri] + '.' + r[ri+1:]
+                except TypeError: pass
+                try: r = r[:ril] + '.' + r[ril+1:]
+                except TypeError: pass 
+                s = '+'.join([l,r])
+                backfray.append(
+                    Zippo(self.model, self.s1, self.s2, s))
+            backfray.pop(-1)
+            return backfray
+        
+        if self.consecutive_nucleations > 3:
+            steps = backfray_structure()
+            self.backfray = [self]
+            for step in steps:
+                self.backfray.append(step)
+        else: 
+            self.backfray = []
+            # print("i'm a sweet boy:", self.structure)
+
+
+        # if False: #part of backfraystructure
+        #     print('mbarestructure',self.structure)
+        #     indices = get_ix(string, char)
+        #     # indices_inv = get_ix(string[::-1], character)
+        #     print('indices dir',indices)
+        #     # print('indices inv',indices_inv)
+        #     updated = string
+        #     for index in [indices[0], indices[-1]]:
+        #         # print(string, index)
+        #         print(f'updated {char}', index, updated)
+        #         updated = updated[:index] + '.' + updated[index+1:]
+        #         print(f'updated {char}', index, updated)
+        #     # updated_inv = updated[::-1]
+        #     # for index in [indices_inv[0], indices_inv[-1]]:
+        #         # print(string, index)
+        #         # updated_inv = updated_inv[:index-1] + '.' + updated_inv[index:]
+        #     return updated
+
+        # if False:
+        #     if self.consecutive_nucleations > 3:
+        #         backfray = []
+        #         l, r = self.structure.split('+')
+        #         while '(' in l and ')' in r: 
+        #             l = backfray_structure(l, '(')
+        #             r = backfray_structure(r, ')')
+        #             step = '+'.join([l,r])
+        #             # print(l)
+        #             # print(r)
+        #             # print(self.structure)
+        #             # print(step)
+        #             backfray.append(Zippo(self.model, self.s1, self.s2, step, self.structureG(step)))
+        #     else: print("i'm a sweet boy:", self.structure)
 
 ################################################
 ##### Deprecated Methods for class Complex #####
