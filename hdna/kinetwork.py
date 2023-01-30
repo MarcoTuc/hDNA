@@ -48,6 +48,13 @@ class Kinetwork(object):
                 state = 'off_register', 
                 pairs = int(s.total_nucleations), 
                 dpxdist = s.dpxdist)
+            for bf in s.backfray[1:]: #first backfray is the offcored sliding 
+                self.Graph.add_node(
+                    bf,
+                    object = bf,
+                    structure = bf.structure,
+                    state = 'backfray',
+                    pairs = int(bf.total_nucleations))
         for s in self.chamber.oncores:
             self.Graph.add_node(
                 s,

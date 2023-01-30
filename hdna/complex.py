@@ -348,6 +348,7 @@ class Sliding(Complex):
             self.backfray = [self]
             for step in steps:
                 self.backfray.append(step)
+            self.backfray = self.backfray[::-1]
         else: 
             self.backfray = []
             # print("i'm a sweet boy:", self.structure)
