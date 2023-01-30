@@ -14,6 +14,7 @@ expdata['expvalue'] = ['{:e}'.format(float(e)) for e in expdata['expvalue']]
 
 limit = len(expdata)
 torun = expdata.copy().iloc[:limit]
+torun['index'] = torun.index 
 torun.set_index(torun['seq'], inplace=True)
 
 # Directory Check 
@@ -62,12 +63,13 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
     K = Kinetics(MOD, kinet, geo)
     K.set_slidingrate(HP['sliding_rate'])
     K.set_zippingrate(HP['zipping_rate'])
+    print(kinet.overview)
 
     opts = Options(
         method='direct', 
         runtime=OPT['runtime'], 
         Nsim=OPT['N_simul'], 
-        trajstosave=OPT['trajstosave']
+        trajstosave=OPT['trajstosave'],
         results_dir=RESULTS_DIR, 
         graphsalone=SOPT['G_saving'],
         stranditer=i)

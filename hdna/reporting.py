@@ -20,7 +20,7 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     X = list(sdata['expvalue'].astype(float))
     Y = list(sdata['computed'].astype(float))
     S = list(sdata['seq'])
-    I = list(sdata.index)
+    I = list(sdata['index'])
 
 
     trace1 = go.Scatter(

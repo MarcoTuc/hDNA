@@ -95,7 +95,7 @@ class Simulator(object):
         SS = self.kinet.chamber.singlestranded.structure 
         ss = self.tl(SS)
         neighbors = list(nx.neighbors(self.Graph, SS))
-        sliding_factor = 1/(self.kinet.overview['off_register'] + 1)
+        sliding_factor = 1/(self.kinet.s1.length + self.kinet.s2.length - 1)
         zipping_factor = 1/(self.kinet.overview['on_register'])
         for n in neighbors:
             i += 1
