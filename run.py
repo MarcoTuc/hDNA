@@ -13,7 +13,7 @@ expdata = expdata.drop(0)
 expdata['expvalue'] = ['{:e}'.format(float(e)) for e in expdata['expvalue']]
 
 limit = len(expdata)
-torun = expdata.copy().iloc[:limit]
+torun = expdata.copy().iloc[31:32]
 torun['index'] = torun.index 
 torun.set_index(torun['seq'], inplace=True)
 
@@ -59,7 +59,7 @@ sys.stdout = Tee(sys.stdout, f)
 MOD = Model('dna', '3D', 
         min_nucleation=HP['minimum_nucleation'], 
         sliding_cutoff=HP['sliding_cutoff'],
-        stacking='nostacking',
+        stacking=OPT['stacking'],
         celsius=HP['temperature'])
 
 for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):

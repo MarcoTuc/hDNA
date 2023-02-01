@@ -10,8 +10,8 @@ RESULTS_DIR = f"results/{EXPNAME}"
 HP = {
     
     #model free parameters  
-    'minimum_nucleation': 3,
-    'sliding_cutoff':     2,
+    'minimum_nucleation': 2,
+    'sliding_cutoff':     3,
     'zipping_rate':       1e8,
     'sliding_rate':       2e7,
     
@@ -29,6 +29,9 @@ OPT = {
     'runtime': 5e-6,
     'N_simul': 1500,
     'trajstosave': 35,
+
+    #nupack options
+    'stacking': 'nostacking'
 }
 
 SOPT = {    

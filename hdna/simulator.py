@@ -71,14 +71,15 @@ class Simulator(object):
         self.add_reactions()
 
 
-    def add_species(self):
+    def add_species(self, verbose=False):
         """DONE"""
         # self.biosim <= jl.Species(self.tl(str(list(self.Graph.nodes())[0])), self.initialamount)
         ss = self.tl(self.kinet.chamber.singlestranded.structure) 
         self.biosim <= jl.Species(ss, self.initialamount)
         for node in list(self.Graph.nodes())[1:]:
+            if verbose: print(f'trying {node}')
+            if verbose: print('TRANSLATION',self.tl(node)) 
             self.biosim <= jl.Species(self.tl(node))
-
 
     def add_reactions(self):
         i = 0  #for now reaction names will just be sequential numbers
@@ -262,6 +263,8 @@ class Simulator(object):
         # loop for inheriting node properties from self.Graph to self.digraph
         for g in list(self.Graph.nodes):
             for key in list(self.Graph.nodes[g].keys()):
+                # print(self.digraph.nodes[g][key])
+                print(self.Graph.nodes[g][key])
                 self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
 
         return self.digraph
@@ -274,7 +277,7 @@ class Simulator(object):
             try: os.makedirs(PATH)
             except FileExistsError: pass 
             nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
-        except AttributeError:
+        except:
             self.DiGraph() 
             for n in self.digraph.nodes.data():
                 n[1]['object'] = str(type(n[1]['object']))

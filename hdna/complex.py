@@ -291,9 +291,15 @@ class Zippo(Complex):
                     model: Model, 
                     s1: Strand, 
                     s2: Strand, 
-                    structure):
+                    structure,
+                    backfray=None,
+                    origin=None):
         super().__init__(model,s1,s2,structure)
-        self.struct = structure
+        self.structure = structure
+        if backfray != None:
+            self.backfray = backfray
+        if origin != None:
+            self.origin = origin 
     
 class Sliding(Complex):
     def __init__(self,
@@ -308,7 +314,8 @@ class Sliding(Complex):
         self.backfraying_trajectory()
         self.sbackfray = [b.structure for b in self.backfray]
         self.gbackfray = [b.G for b in self.backfray]
-        # self.maxstable = 
+        try: self.maxstable = self.backfray[np.argmin(self.gbackfray)]
+        except ValueError: self.maxstable = self 
 
     def backfraying_trajectory(self):
         from itertools import zip_longest as zipp
@@ -339,11 +346,11 @@ class Sliding(Complex):
                 except TypeError: pass 
                 s = '+'.join([l,r])
                 backfray.append(
-                    Zippo(self.model, self.s1, self.s2, s))
+                    Zippo(self.model, self.s1, self.s2, s, backfray='backfray', origin=self))
             backfray.pop(-1)
             return backfray
         
-        if self.consecutive_nucleations > 3:
+        if self.total_nucleations > 3 & self.consecutive_nucleations:
             steps = backfray_structure()
             self.backfray = [self]
             for step in steps:
@@ -352,6 +359,10 @@ class Sliding(Complex):
         else: 
             self.backfray = []
             # print("i'm a sweet boy:", self.structure)
+    
+    @property
+    def bfempty(self):
+        return self.backfray == []
 
 
         # if False: #part of backfraystructure
