@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np 
 import pandas as pd 
 
-from itertools import pairwise
+from itertools import pairwise, chain
 
 from .chamber import Chamber
 from .model import Model, Geometry
@@ -21,114 +21,168 @@ class Kinetwork(object):
         self.min_nucleation = self.model.min_nucleation
         self.sliding_cutoff = self.model.sliding_cutoff
         self.chamber = Chamber(self.model, self.s1, self.s2)
-        self.Graph = nx.Graph()
-        
-        if not clean:
+        self.Graph = nx.DiGraph()
+        self.add_nodes()
+        self.relabel_nodes()
 
-            self.add_nodes()
+        if not clean:           
             self.add_reactions()
             self.clean_duplicates_relabel()
 
             #get an overview of the network 
-            stateslist = ['singlestranded', 'off_register', 'on_register', 'zipping', 'duplex']
-            countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in stateslist]
-            self.overview = dict(zip(stateslist,countslist))
+        self.possible_states = [ None,
+                                'singlestranded',
+                                'duplex',
+                                'zipping',
+                                'on_nucleation',
+                                'off_nucleation', 
+                                'backfray',
+                                'sliding' ]   
+
+        countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in self.possible_states]
+        self.overview = dict(zip(self.possible_states,countslist))
 
 
     def add_nodes(self):
 
-        self.Graph.add_node(
-            self.chamber.singlestranded, 
-            object = self.chamber.singlestranded, 
-            structure = self.chamber.singlestranded.structure, 
-            state = 'singlestranded', 
-            pairs = 0)
-        for s in self.chamber.offcores:
-            check = len(s.backfray) > 1
-            self.Graph.add_node(
-                s, 
-                object = s, 
-                structure = s.structure, 
-                state = 'off_register', 
-                pairs = int(s.total_nucleations), 
-                dpxdist = s.dpxdist)
-            if check:
-                for bf in s.backfray: #first backfray is the offcored sliding 
-                    self.Graph.add_node(
-                        bf,
-                        object = bf,
-                        structure = bf.structure,
-                        state = 'backfray',
-                        pairs = int(bf.total_nucleations))
+        # Make a list of notes object from chamber
+        nodes = [self.chamber.singlestranded]
+        for s in self.chamber.slidings:
+            nodes.append(s)
+            for bf in s.backfray:
+                nodes.append(bf)
+                for z in bf.zipping:
+                    nodes.append(z)
         for s in self.chamber.oncores:
+            nodes.append(s)
+            for z in s.zipping:
+                nodes.append(z)
+        nodes.append(self.chamber.duplex)
+        
+        # Chamber makes (lots of) duplicate objects when 
+        # parsing structures, here I remove that shit 
+        DF = pd.DataFrame(nodes)
+        DF.columns = ['object']
+        DF['structure'] = [e.structure for e in DF['object']]
+        DF = DF.drop_duplicates(subset='structure', keep='first')
+        DF = DF.reset_index()
+        DF = DF.drop('index', axis=1)
+        
+        for i, row in DF.iterrows():
+            try: statecheck = row['object'].state
+            except: print(row['object'], row['object'].structure)
             self.Graph.add_node(
-                s,
-                object = s,
-                structure = s.structure,
-                state = 'on_register',
-                pairs = int(s.total_nucleations))
-        for s in self.chamber.oncores:
-            for z in s.zipping[1:]: #first zipping value is the oncore itself so flush it away by indexing
-                self.Graph.add_node(
-                    z, 
-                    object = z, 
-                    structure = z.structure, 
-                    state = 'zipping', 
-                    pairs = int(z.total_nucleations))
+                row['object'],
+                obj = row['object'],
+                structure = row['structure'],
+                state = statecheck,
+                pairs = row['object'].total_nucleations
+            )
 
-        self.Graph.add_node(
-            self.chamber.duplex, 
-            object = self.chamber.duplex, 
-            structure = self.chamber.duplex.structure, 
-            state = 'duplex', 
-            pairs = self.chamber.duplex.total_nucleations)
-        """   note that duplicated nodes will not be added to the resulting graph, hence I can run through 
-              all zipping states and be sure that I will only get one note per each zipping that is common
-              from different starting native nucleations. """
+    def relabel_nodes(self):
+        struct = [e['structure'] for e in self.Graph._node.values()]
+        labels = self.Graph._node.keys()
+        diz = dict(zip(labels, struct))
+        Relabeled = nx.relabel_nodes(self.Graph, diz)
+        self.Graph = Relabeled
 
 
     def add_reactions(self, verbose=False):
+        
+        simplex = self.chamber.singlestranded.structure
+        duplex  = self.chamber.duplex.structure
+        
+        df = pd.DataFrame(self.nodata('state'), columns=['structure','state'])
+        
+        native = df[df['state'] == 'on_nucleation']
+        for n in native['structure']:
+            cplx = self.nodes[n]['obj']
+            self.Graph.add_edge(simplex, n, kind = 'f_on_core')
+            self.Graph.add_edge(n, simplex, kind = 'b_on_core')
+            self.Graph.add_edge(n, cplx.zipping[0].structure, kind = 'f_zipping')
+            self.Graph.add_edge(cplx.zipping[0].structure, n, kind = 'b_zipping')
+            for z1, z2 in pairwise(cplx.zipping):
+                self.Graph.add_edge(z1.structure, z2.structure, kind = 'f_zipping')
+                self.Graph.add_edge(z2.structure, z1.structure, kind = 'b_zipping')
+            self.Graph.add_edge(z2.structure, duplex, kind = 'f_zipping-end')
+            self.Graph.add_edge(duplex, z2.structure, kind = 'b_zipping-end')
+        
+        nonnative = df[df['state'] == 'sliding']
+        return nonnative
+        for n, next in pairwise(nonnative['structure']):
+            cplx = self.nodes[n]['obj']
+            cnxt = self.nodes[next]['obj']
+            self.Graph.add_edge(simplex, cplx.backfray[0].structure, kind = 'f_off_core')
+            self.Graph.add_edge(cplx.backfray[0].structure, simplex, kind = 'b_off_core')
+            for bf in cplx.backfray:
+                print(n, bf.structure)
+                self.Graph.add_edge(simplex, bf.structure, kind = 'f_off_core')
+                self.Graph.add_edge(bf.structure, simplex, kind = 'b_off_core')
+                for z1, z2 in pairwise(bf.zipping): 
+                    print(z1.structure, z2.structure)
+                    self.Graph.add_edge(z1, z2, kind = 'f_backfray')
+                    self.Graph.add_edge(z2, z1, kind = 'b_backfray')
+                if len(bf.zipping) > 1:
+                    self.Graph.add_edge(bf.zipping[-1].structure, n, kind = 'f_backfray_end')
+                    self.Graph.add_edge(n, bf.zipping[-1].structure, kind = 'b_backfray_end')
+                elif len(bf.zipping) == 1:
+                    self.Graph.add_edge(bf.zipping[0].structure, n, kind = 'f_backfray_end')
+                    self.Graph.add_edge(n, bf.zipping[0].structure, kind = 'b_backfray_end')    
+                if self.slidingcondition(cplx, self.chamber.duplex):
+                    self.Graph.add_edge(n, duplex, kind = 'f_sliding_end')
+                    self.Graph.add_edge(duplex, n, kind = 'b_sliding_end')
+            if self.slidingcondition(cplx, cnxt):
+                if cplx.dpxdist > cnxt.dpxdist:
+                    self.Graph.add_edge(n, next, kind = 'f_sliding')
+                    self.Graph.add_edge(next, n, kind = 'b_sliding')
+                else:                 
+                    self.Graph.add_edge(next, n, kind = 'f_sliding')
+                    self.Graph.add_edge(next, n, kind = 'b_sliding')
+                
 
-        ON  = self.node_filter('state','on_register')
-        D = self.node_filter('state', 'duplex')
-        duplex = list(D.nodes())[0]
 
-        for on, data in ON.nodes.items():
-            self.Graph.add_edge(self.chamber.singlestranded, on, kind = 'on_nucleation') #ADDPROPERTY
-            self.Graph.add_edge(on, on.zipping[1], kind = 'zipping')
-            for i, z in enumerate(on.zipping[2:], start=2):
-                self.Graph.add_edge(z, on.zipping[i-1], kind = 'zipping')
-            self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
 
-        L, R = self.chamber.split_offcores()
-        for l1, l2 in pairwise(L):
-            print(l1.bfempty)
-            print(l2.bfempty)
-            if l1.bfempty:
-                self.Graph.add_edge(self.chamber.singlestranded, l1, kind = 'off_nucleation')
-            else:
-                self.Graph.add_edge(self.chamber.singlestranded, l1.backfray[0], kind = 'off_nucleation')
-                for bf1, bf2 in pairwise(l1.backfray[1:]):
-                    self.Graph.add_edge(bf1, bf2, kind = 'off_zipping') 
-                if self.slidingcondition(l1.backfray[-1], duplex):
-                    self.Graph.add_edge(l1.backfray[-1], duplex, kind = 'off_zipping_end')
 
-            if l2.bfempty: 
-                self.Graph.add_edge(self.chamber.singlestranded, l2, kind = 'off_nucleation')
-            else:
-                self.Graph.add_edge(self.chamber.singlestranded, l2.backfray[0], kind = 'off_nucleation')
-                for bf1, bf2 in pairwise(l2.backfray[1:]):
-                    self.Graph.add_edge(bf1, bf2, kind = 'off_zipping') 
-                if self.slidingcondition(l2.backfray[-1], duplex):
-                    self.Graph.add_edge(l2.backfray[-1], duplex, kind = 'off_zipping_end')
+        # ON  = self.node_filter('state','on_register')
+        # D = self.node_filter('state', 'duplex')
+        # duplex = list(D.nodes())[0]
+
+        # for on, data in ON.nodes.items():
+        #     self.Graph.add_edge(self.chamber.singlestranded, on, kind = 'on_nucleation') #ADDPROPERTY
+        #     self.Graph.add_edge(on, on.zipping[1], kind = 'zipping')
+        #     for i, z in enumerate(on.zipping[2:], start=2):
+        #         self.Graph.add_edge(z, on.zipping[i-1], kind = 'zipping')
+        #     self.Graph.add_edge(on.zipping[-1], self.chamber.duplex, kind = 'zipping-end')
+
+        # L, R = self.chamber.split_slidings()
+        # for l1, l2 in pairwise(L):
+        #     print(l1.bfempty)
+        #     print(l2.bfempty)
+        #     if l1.bfempty:
+        #         self.Graph.add_edge(self.chamber.singlestranded, l1, kind = 'off_nucleation')
+        #     else:
+        #         self.Graph.add_edge(self.chamber.singlestranded, l1.backfray[0], kind = 'off_nucleation')
+        #         for bf1, bf2 in pairwise(l1.backfray[1:]):
+        #             self.Graph.add_edge(bf1, bf2, kind = 'off_zipping') 
+        #         if self.slidingcondition(l1.backfray[-1], duplex):
+        #             self.Graph.add_edge(l1.backfray[-1], duplex, kind = 'off_zipping_end')
+
+        #     if l2.bfempty: 
+        #         self.Graph.add_edge(self.chamber.singlestranded, l2, kind = 'off_nucleation')
+        #     else:
+        #         self.Graph.add_edge(self.chamber.singlestranded, l2.backfray[0], kind = 'off_nucleation')
+        #         for bf1, bf2 in pairwise(l2.backfray[1:]):
+        #             self.Graph.add_edge(bf1, bf2, kind = 'off_zipping') 
+        #         if self.slidingcondition(l2.backfray[-1], duplex):
+        #             self.Graph.add_edge(l2.backfray[-1], duplex, kind = 'off_zipping_end')
             
-            if self.slidingcondition(l1, l2):
-                self.Graph.add_edge(l1, l2)
+        #     if self.slidingcondition(l1, l2):
+        #         self.Graph.add_edge(l1, l2)
             
 
 
     # if False:
-    #     L, R = self.chamber.split_offcores()
+    #     L, R = self.chamber.split_slidings()
     #     if verbose:
     #         for l, r in zip(L, R):
     #             print(l.s1.sequence+'+'+l.s2.sequence)
@@ -180,10 +234,10 @@ class Kinetwork(object):
     #         else: pass
         
     def slidingcondition(self, slide0, slide1, duplexation = False):
-        if duplexation == True: 
-            if slide0.dpxdist <= self.sliding_cutoff: return True 
-            else: return False 
-        if slide1.dpxdist - slide0.dpxdist < self.sliding_cutoff: return True 
+        # if duplexation == True: 
+        #     if slide0.dpxdist <= self.sliding_cutoff: return True 
+        #     else: return False 
+        if slide0.dpxdist - slide1.dpxdist < self.sliding_cutoff: return True 
         else: return False  
 
 
@@ -199,12 +253,10 @@ class Kinetwork(object):
         diz = dict(zip(labels, struct))
         Relabeled = nx.relabel_nodes(self.Graph, diz)
         self.Graph = Relabeled
-    
 
     def node_filter(self, property, attribute):
         return self.Graph.subgraph( 
         [n for n, attrdict in self.Graph.nodes.items() if attrdict [str(property)] == str(attribute)])
-
 
     def get_neighbor_zippings(self, structure, onlyup = False, onlydown = False):
 
@@ -241,11 +293,19 @@ class Kinetwork(object):
         import os 
         #convert node object to string of object type
         for n in self.Graph.nodes.data():
-            n[1]['object'] = str(type(n[1]['object']))
+            n[1]['obj'] = str(type(n[1]['obj']))
         try: os.makedirs(PATH)
         except FileExistsError: pass 
         nx.write_gexf(self.Graph,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
 
+    @property
+    def nodes(self):
+        return self.Graph.nodes()
+    
+    def nodata(self, *attributes):
+        if attributes != None: 
+            return list(self.Graph.nodes.data(*attributes))
+        else: return list(self.Graph.nodes.data())
 
 ####################################################################################################
 ####################################################################################################
@@ -427,3 +487,54 @@ class Kinetics(object):
 class FatalError(Exception):
     def __init__(self, message):
         super().__init__(message)
+
+
+#################################################################################################################
+###########################################À GRAVEYARD ##########################################################
+################################ MAY THESE FUNCTIONS REST IN PEACE ##############################################
+################################################################################################################# 
+  
+
+
+                # self.Graph.add_node(
+        #     self.chamber.singlestranded, 
+        #     structure = self.chamber.singlestranded.structure, 
+        #     state = 'singlestranded', 
+        #     pairs = 0)
+        # for s in self.chamber.slidings:
+        #     check = len(s.backfray) > 1
+        #     self.Graph.add_node(
+        #         s, 
+        #         structure = s.structure, 
+        #         state = 'off_register', 
+        #         pairs = int(s.total_nucleations), 
+        #         dpxdist = s.dpxdist)
+        #     if check:
+        #         for bf in s.backfray: #first backfray is the offcored sliding 
+        #             self.Graph.add_node(
+        #                 bf,
+        #                 structure = bf.structure,
+        #                 state = 'backfray',
+        #                 pairs = int(bf.total_nucleations))
+        # for s in self.chamber.oncores:
+        #     self.Graph.add_node(
+        #         s,
+        #         structure = s.structure,
+        #         state = 'on_register',
+        #         pairs = int(s.total_nucleations))
+        # for s in self.chamber.oncores:
+        #     for z in s.zipping[1:]: #first zipping value is the oncore itself so flush it away by indexing
+        #         self.Graph.add_node(
+        #             z, 
+        #             structure = z.structure, 
+        #             state = 'zipping', 
+        #             pairs = int(z.total_nucleations))
+
+        # self.Graph.add_node(
+        #     self.chamber.duplex, 
+        #     structure = self.chamber.duplex.structure, 
+        #     state = 'duplex', 
+        #     pairs = self.chamber.duplex.total_nucleations)
+        # """   note that duplicated nodes will not be added to the resulting graph, hence I can run through 
+        #       all zipping states and be sure that I will only get one note per each zipping that is common
+        #       from different starting native nucleations. """

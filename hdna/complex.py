@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd 
 import re
 
+from itertools import tee
+
 from .strand import Strand
 from .model import Model
 
@@ -13,12 +15,9 @@ class Complex(object):
                     model: Model, 
                     s1: Strand, 
                     s2: Strand, 
+                    state,
                     structure=None,
-                    singlestranded=False,
-                    duplex=False,
-                    offregister=False,
-                    onregister=False,
-
+                    dpxdist=None,
                 ):
         
         if type(model) != Model:
@@ -40,36 +39,52 @@ class Complex(object):
         # I didn't change it because of laziness 
         self.structure = structure
 
+        self.dpxdist = dpxdist
+
         self.getnupackmodel()
         self.getnupackproperties()
         self.G = self.structureG(self.structure)
 
         self.mismatches = []
         self._get_mismatches()
+
+        self.possible_states = [ None,
+                            'singlestranded',
+                            'duplex',
+                            'zipping',
+                            'on_nucleation',
+                            'off_nucleation', 
+                            'backfray',
+                            'sliding' ]   
+
+    
+        if state not in self.possible_states:
+            raise ValueError(f'state must be one among {self.possible_states} but you gave {state}')
+        else: self.state = state 
         
-        self.duplex = duplex
-        self.singlestranded = singlestranded
-        
-        if self.duplex == True:
+        if self.state == 'duplex':
             #TODO update this when considering mismatches 
             self.consecutive_nucleations = min(self.l1, self.l2)
             self.total_nucleations = self.consecutive_nucleations
-        elif self.singlestranded == True:
+            self.dpxdist = 0
+        elif self.state == 'singlestranded':
             self.total_nucleations = 0
             self.consecutive_nucleations = 0
             self.structure = '.'*self.s1.length+'+'+'.'*self.s2.length
             self.G = 0
         else:
-            self.nucleationsize()
+            self.total_nucleations = self.totbasepairs(self.structure)
+            self.consecutive_nucleations = self.maxconsbp(self.structure)
 
         """ These variables are used to say if the current
         Coils object is duplexed, is offregister or is onregister
         to be comunicated to classes higher in the hierarchy"""
 
-        self.offregister = offregister
-        self.onregister = onregister
-        self.check_onregister()
-        self.zipping_trajectory()
+        if self.state == 'on_nucleation': self.zipping_trajectory()
+    
+    def set_state(self, target):
+        if target != self.state:
+            self.state = target
 
         
     
@@ -83,33 +98,20 @@ class Complex(object):
     # 'CUC':  {'A':-7.6,'C':-11.3,'G':-8.3,'T':-11.3},
     # }
 
-    def nucleationsize(self):
-
-        """ This method gives back two quantities:
-            - Total number of non-mismatched nucleated base pairs
-            - Size of the biggest consecutive sequence of nucleated base pairs """
-
-        A, B = self.splitstructure()
-        A, B = pd.Series(A), pd.Series(B)
-
-        nA = A.str.count("\(").sum()
-        nB = B.str.count("\)").sum()
-
-        if nA != nB: raise ValueError('total number of based pairs should match for each strand')
-        else: self.total_nucleations = nA 
-
-        splitsA = A.str.split('[^(]')
-        splitsB = B.str.split('[^)]')
-
-        lensA = splitsA.apply(pd.Series).stack().str.len()
-        lensB = splitsB.apply(pd.Series).stack().str.len()
-
-        maxA = lensA.max()
-        maxB = lensB.max()
-
-        self.consecutive_nucleations = max(maxA, maxB)
-
-        return self.consecutive_nucleations, self.total_nucleations    
+    def totbasepairs(self, structure):
+        nl = structure.count('(')
+        nr = structure.count(')')
+        if nl == nr: tot = nl
+        else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
+        return tot
+    
+    def maxconsbp(self, structure):
+        l, r = structure.split('+')
+        maxl = len(max(l.split('.')))
+        maxr = len(max(r.split('.')))
+        if maxl == maxr: cons = maxl
+        else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
+        return cons
 
 
     def zipping_trajectory(self):
@@ -118,14 +120,14 @@ class Complex(object):
                     don't use with eg "((...((..+..))...)) strands
         UPDATE:     This has been corrected but still one 
                     should use caution against this method"""
-
+        
         def get_i(lst):
             indices = []
             for i, el in enumerate(lst):
                 if i > 0 and el != lst[i-1]:
                     indices.append(i)
             return indices
-        
+
         def update_structure(string, character: str):
             indices = get_i(string)
             indices_inv = get_i(string[::-1])
@@ -137,8 +139,8 @@ class Complex(object):
                 updated_inv = updated_inv[:index-1] + character + updated_inv[index:]
             return updated_inv[::-1]
 
-        if self.onregister == True: 
-            self.zipping = [Zippo(self.model, self.s1, self.s2, self.structure)]
+        if self.state == 'on_nucleation': 
+            self.zipping = []
             left, right = self.structure.split('+')
             while '.' in left and right:
                 left = update_structure(left, '(')
@@ -146,12 +148,13 @@ class Complex(object):
                 step = '+'.join([left,right])
                 # The generated structure is parsed to see if it is correctly base-paired 
                 candidatestep = self.parse_structure(step, self.s1, self.s2)
-                self.zipping.append(Zippo(self.model, self.s1, self.s2, candidatestep))
+                self.zipping.append(Zippo(self.model, self.s1, self.s2, state='zipping', structure=candidatestep))
             self.zipping.pop(-1) #remove the spurious duplex element generated at the end of the while loop
             return self.zipping
-        
         else: self.zipping = None; return self.zipping
         
+    def inherit_zipping(self, listofzippings):
+        self.zipping = listofzippings
 
 
 #####################################
@@ -159,7 +162,6 @@ class Complex(object):
 #####################################
 
     def structureG(self, structure):
-
         """ Nupack related properties """
         nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
         nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
@@ -179,7 +181,6 @@ class Complex(object):
             self.nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
             self.nuStrand2 = nu.Strand(self.s2.invert.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
             self.nuComplex = nu.Complex([self.nuStrand1,self.nuStrand2], name = 'c')
-
             j = nu.pfunc(self.nuComplex, self.nupackmodel)
             self.duplexG = j[1]
             self.duplexZ = float(j[0])
@@ -247,17 +248,10 @@ class Complex(object):
     def _get_mismatches(self):
         for nuc1, nuc2 in zip(self.s1.sequence, self.s2.sequence):
             self.mismatches.append(self._iswattsoncrick(nuc1, nuc2))
-        
 
     def splitstructure(self):
         self.struct_a, self.struct_b = self.structure.split('+')
         return self.struct_a, self.struct_b
-
-    def check_onregister(self):
-            if self.onregister == True:
-                if self.total_nucleations == 0:
-                    self.onregister = False 
-
 
 ######################################
 ##### Methods Under Construction #####
@@ -276,7 +270,6 @@ class Complex(object):
         calculated free energy """
         pass
 
-
 ######################
 ##### Properties #####
 ######################
@@ -286,36 +279,162 @@ class Complex(object):
         return self.s1.sequence+"+"+self.s2.sequence
 
 
+
+""" ---------------- SUBCLASSES ------------------ """
+
+
+
 class Zippo(Complex):
     def __init__(self, 
                     model: Model, 
                     s1: Strand, 
                     s2: Strand, 
+                    state,
                     structure,
-                    backfray=None,
-                    origin=None):
-        super().__init__(model,s1,s2,structure)
-        self.structure = structure
-        if backfray != None:
-            self.backfray = backfray
-        if origin != None:
-            self.origin = origin 
-    
+                    dpxdist=None):
+        super().__init__(model,s1,s2,state,structure)
+        self.dpxdist = dpxdist
+
+
 class Sliding(Complex):
     def __init__(self,
                     model:Model,
                     s1: Strand,
                     s2: Strand,
+                    state,
                     structure,
-                    offregister,
                     dpxdist):
-        super().__init__(model,s1,s2,structure,offregister=offregister)
+        super().__init__(model,s1,s2,state,structure)
         self.dpxdist = dpxdist #distance in terms of basepairs from the sliding to the duplex
-        self.backfraying_trajectory()
-        self.sbackfray = [b.structure for b in self.backfray]
-        self.gbackfray = [b.G for b in self.backfray]
-        try: self.maxstable = self.backfray[np.argmin(self.gbackfray)]
-        except ValueError: self.maxstable = self 
+        # self.backfraying_trajectory()
+        self.off_nucleations()
+        # self.sbackfray = [b.structure for b in self.backfray]
+        # self.gbackfray = [b.G for b in self.backfray]
+        # try: self.maxstable = self.backfray[np.argmin(self.gbackfray)]
+        # except ValueError: self.maxstable = self 
+
+    def off_nucleations(self, verbose=False):
+        
+        def get_ix(string, char):
+            indices = []
+            for i, e in enumerate(list(string)):
+                if e == char:
+                    indices.append(i)
+            return indices 
+
+        def trans(l):
+            trans = str.maketrans({'(': 'b', ')': 'd'})
+            return l.translate(trans)
+
+        def backtrans(l):
+            trans = str.maketrans({'b': '(', 'd': ')'})
+            return l.translate(trans)
+        
+        def transparens(l):
+            trans = str.maketrans({'(':'.', ')':'.'})
+            return l.translate(trans)
+
+        def nwise(iterable,n):
+            iterators = tee(iterable, n)
+            for i, iter in enumerate(iterators):
+                for j in range(i):
+                    next(iter, None)
+            return zip(*iterators)
+
+        def replace(index_list,character,string):
+            string=list(string)
+            for index in index_list:
+                string[index]=character
+            return "".join(string)
+
+        def update(struct, verbose=False):
+            ixl = get_ix(struct, '(')
+            ixr = get_ix(struct, ')')
+            ixb = get_ix(struct, 'b')
+            ixd = get_ix(struct, 'd')
+            if verbose: print(ixl, ixr, ixb, ixd)
+            try: nldo = min([j for j in ixl if j<ixb[0]],  key=lambda x:abs(x-ixb[0]))
+            except ValueError: nldo = ixb[0]
+            try: nlup = min([j for j in ixl if j>ixb[-1]], key=lambda x:(abs(x-ixb[-1])))
+            except ValueError: nlup = ixb[-1]
+            try: nrdo = min([j for j in ixr if j<ixd[0]],  key=lambda x:abs(x-ixd[0]))
+            except ValueError: nrdo = ixd[0]
+            try: nrup = min([j for j in ixr if j>ixd[-1]], key=lambda x:abs(x-ixd[-1]))
+            except ValueError: nrup = ixd[-1]
+            if verbose: print(ixb);print(ixl);print(nldo, nlup, nrdo, nrup)
+            struct = replace([nldo, nlup], 'b', struct)
+            struct = replace([nrdo, nrup], 'd', struct)
+            return struct 
+        
+        ixl = get_ix(self.structure, '(')
+        ixr = get_ix(self.structure, ')')
+
+        self.backfray = []
+        for l, r in zip(
+            nwise(ixl, self.model.min_nucleation),
+            nwise(ixr[::-1], self.model.min_nucleation)):
+            new = replace(l, 'b', self.structure)
+            new = replace(r, 'd', new)
+            newtrans = backtrans(transparens(new))
+            offcore = Complex(
+                self.model, 
+                self.s1, 
+                self.s2, 
+                state='off_nucleation',
+                structure=newtrans,
+                dpxdist=self.dpxdist)
+            self.backfray.append(offcore)
+            itszippings = []
+            while new != trans(self.structure):
+                new = update(new)
+                newtrans = backtrans(transparens(new))
+                if verbose: 
+                    print('slidings backfray routine produced','\n',newtrans)
+                    print('from source', self.structure)
+                itszippings.append(Zippo(
+                    self.model, 
+                    self.s1, 
+                    self.s2, 
+                    state='backfray',
+                    structure=newtrans,
+                    dpxdist=self.dpxdist))
+            offcore.inherit_zipping(itszippings[:-1])
+         
+        
+        # #internal utility function for getting indices 
+        # def get_ix(string, char):
+        #     indices = []
+        #     for i, e in enumerate(list(string)):
+        #         if e == char:
+        #             indices.append(i)
+        #     return indices 
+        # #internal utility function for string translation
+        # def trans(l):
+        #     trans = str.maketrans({'.': '.', '(': 'ì', ')': 'ì'})
+        #     return l.translate(trans)
+        # #internal utility function for generating nwise iterators 
+        # #see itertools pairwise but now nwise dude 
+        # def nwise(iterable,n):
+        #     iterators = tee(iterable, n)
+        #     for i, iter in enumerate(iterators):
+        #         for j in range(i):
+        #             next(iter, None)
+        #     return zip(*iterators)
+        # #iuf for replacement of string with character at list of indices 
+        # def replace(index_list,character,string):
+        #     string=list(string)
+        #     for index in index_list:
+        #         string[index]=character
+        #     return "".join(string)
+        
+        # #Actual output of the method 
+        # ixl = get_ix(self.structure, '(') #get left strand indices
+        # ixr = get_ix(self.structure, ')') #get right strand indices 
+        # self.offcores = []
+        # for l, r in zip(
+        #     nwise(ixl, self.model.min_nucleation), 
+        #     nwise(ixr, self.model.min_nucleation)):
+        #     self.offcores.append([*l, *r], 'ì', self.structure)
 
     def backfraying_trajectory(self):
         from itertools import zip_longest as zipp
@@ -346,19 +465,20 @@ class Sliding(Complex):
                 except TypeError: pass 
                 s = '+'.join([l,r])
                 backfray.append(
-                    Zippo(self.model, self.s1, self.s2, s, backfray='backfray', origin=self))
+                    Zippo(self.model, self.s1, self.s2, state='backfray', structure=s))
             backfray.pop(-1)
             return backfray
         
-        if self.total_nucleations > 3 & self.consecutive_nucleations:
+        if self.total_nucleations >= self.model.min_nucleation and self.consecutive_nucleations >= self.model.min_nucleation:
             steps = backfray_structure()
             self.backfray = [self]
             for step in steps:
                 self.backfray.append(step)
             self.backfray = self.backfray[::-1]
+            self.backfray[0].set_state('off_nucleation')
         else: 
+            self.set_state('off_nucleation')
             self.backfray = []
-            # print("i'm a sweet boy:", self.structure)
     
     @property
     def bfempty(self):
@@ -398,9 +518,11 @@ class Sliding(Complex):
         #             backfray.append(Zippo(self.model, self.s1, self.s2, step, self.structureG(step)))
         #     else: print("i'm a sweet boy:", self.structure)
 
-################################################
-##### Deprecated Methods for class Complex #####
-################################################
+
+################################################################################################################################
+##########################################################À CEMETERY ###########################################################
+############################################### MAY THESE FUNCTIONS REST IN PEACE ##############################################
+################################################################################################################################ 
   
     # def gotnucleationhere(self, mincore):
     #     self.nucleation = None
@@ -427,4 +549,21 @@ class Sliding(Complex):
     #             return True 
     #     return False 
 
-
+    # def nucleationsize(self):
+    #     """ This method gives back two quantities:
+    #         - Total number of non-mismatched nucleated base pairs
+    #         - Size of the biggest consecutive sequence of nucleated base pairs """
+    #     A, B = self.splitstructure()
+    #     A, B = pd.Series(A), pd.Series(B)
+    #     nA = A.str.count("\(").sum()
+    #     nB = B.str.count("\)").sum()
+    #     if nA != nB: raise ValueError('total number of based pairs should match for each strand')
+    #     else: self.total_nucleations = nA 
+    #     splitsA = A.str.split('[^(]')
+    #     splitsB = B.str.split('[^)]')
+    #     lensA = splitsA.apply(pd.Series).stack().str.len()
+    #     lensB = splitsB.apply(pd.Series).stack().str.len()
+    #     maxA = lensA.max()
+    #     maxB = lensB.max()
+    #     self.consecutive_nucleations = max(maxA, maxB)
+    #     return self.consecutive_nucleations, self.total_nucleations   

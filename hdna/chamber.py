@@ -16,16 +16,13 @@ class Chamber(object):
         self.s1 = s1
         self.s2 = s2.invert
 
-        self.singlestranded = Complex(self.model, self.s1, self.s2, singlestranded=True)
+        self.singlestranded = Complex(self.model, self.s1, self.s2, state='singlestranded')
         self.min_nucleation = self.model.min_nucleation
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
         """ General Slidings """
-        self.compute_slidings_structured()
+        self.compute_slidings()
         
-        """ Off-Register Nucleation Cores """
-        self.compute_offcores()
-
         """ On-Register Nucleation Cores """
         self.compute_oncores()
 
@@ -41,34 +38,44 @@ class Chamber(object):
 ##### Non-Native Nucleation Methods #####
 #########################################
 
-    def compute_offcores(self):
-        self.offcores = []
-        for complex in self.slidings:
-            if complex.consecutive_nucleations >= self.min_nucleation:
-                self.offcores.append(complex)
+    def totbasepairs(self, structure):
+        nl = structure.count('(')
+        nr = structure.count(')')
+        if nl == nr: tot = nl
+        else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
+        return tot
+    
+    def maxconsbp(self, structure):
+        l, r = structure.split('+')
+        maxl = len(max(l.split('.')))
+        maxr = len(max(r.split('.')))
+        if maxl == maxr: cons = maxl
+        else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
+        return cons
 
-    def compute_slidings_structured(self, verbose=False):
-        n = self.min_nucleation
+    def compute_slidings(self, verbose=False):
         self.slidings = []
-        for b in range(n, self.s1.length): 
+        for b in range(self.min_nucleation, self.s1.length): 
             slidingstruct = "ì"*b+"."*(self.s1.length-b)
             slidingstruct = slidingstruct + "+" + slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
             if verbose: print(self.s1.sequence+'+'+self.s2.sequence); print(slidingstruct, (self.s1.length - b)); print(structureout,'\n')
-            self.slidings.append(Sliding(self.model, self.s1, self.s2, structure=structureout, offregister="left", dpxdist=(self.s1.length - b)))
+            if self.maxconsbp(structureout) >= self.min_nucleation:
+                self.slidings.append(Sliding(self.model, self.s1, self.s2, state='sliding', structure=structureout, dpxdist=(self.s1.length - b)))
         fullstructure = "("*self.s1.length+"+"+")"*self.s2.length
         if verbose: print(fullstructure)
-        self.duplex = Complex(self.model, self.s1, self.s2, structure=fullstructure, duplex=True)
-        for b in range(1, self.s1.length - n + 1):
+        self.duplex = Complex(self.model, self.s1, self.s2, state='duplex', structure=fullstructure)
+        for b in range(1, self.s1.length - self.min_nucleation + 1):
             slidingstruct = "."*b+"ì"*(self.s1.length-b)
             slidingstruct = slidingstruct+"+"+slidingstruct
             structureout = self.parse_structure(slidingstruct, self.s1, self.s2)
             if verbose: print(self.s1.sequence+'+'+self.s2.sequence); print(slidingstruct, b); print(structureout,'\n')
-            self.slidings.append(Sliding(self.model, self.s1, self.s2, structure=structureout, offregister='right', dpxdist=b))
+            if self.maxconsbp(structureout) >= self.min_nucleation:
+                self.slidings.append(Sliding(self.model, self.s1, self.s2, state='sliding', structure=structureout, dpxdist=b))
 
-    def split_offcores(self):
-        n = int(len(self.offcores)/2)
-        return self.offcores[:n], self.offcores[n:][::-1]
+    def split_slidings(self):
+        n = int(len(self.slidings)/2)
+        return self.slidings[:n], self.slidings[n:][::-1]
 
 
 #####################################
@@ -80,7 +87,7 @@ class Chamber(object):
         self.native_nucleation_structures()
         for structureì in self.nativeì:
             structureout = self.parse_structure(structureì, self.s1, self.s2)
-            self.oncores.append(Complex(self.model, self.s1, self.s2, structure=structureout, onregister=True))
+            self.oncores.append(Complex(self.model, self.s1, self.s2, state='on_nucleation', structure=structureout))
         self.oncores = [core for core in self.oncores if core.total_nucleations >= self.min_nucleation]
         return self.oncores
 
