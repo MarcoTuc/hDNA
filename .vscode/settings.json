@@ -1,3 +1,4 @@
 {
     "julia.NumThreads": 1,
+    "git.ignoreLimitWarning": true,
 }

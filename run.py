@@ -13,7 +13,7 @@ expdata = expdata.drop(0)
 expdata['expvalue'] = ['{:e}'.format(float(e)) for e in expdata['expvalue']]
 
 limit = len(expdata)
-torun = expdata.copy().iloc[31:32]
+torun = expdata.copy().iloc[:limit]
 torun['index'] = torun.index 
 torun.set_index(torun['seq'], inplace=True)
 

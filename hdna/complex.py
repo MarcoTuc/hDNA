@@ -148,7 +148,7 @@ class Complex(object):
                 step = '+'.join([left,right])
                 # The generated structure is parsed to see if it is correctly base-paired 
                 candidatestep = self.parse_structure(step, self.s1, self.s2)
-                self.zipping.append(Zippo(self.model, self.s1, self.s2, state='zipping', structure=candidatestep))
+                self.zipping.append(Zippo(self.model, self.s1, self.s2, state='zipping', structure=candidatestep, dpxdist=0))
             self.zipping.pop(-1) #remove the spurious duplex element generated at the end of the while loop
             return self.zipping
         else: self.zipping = None; return self.zipping
@@ -369,37 +369,39 @@ class Sliding(Complex):
         ixl = get_ix(self.structure, '(')
         ixr = get_ix(self.structure, ')')
 
-        self.backfray = []
-        for l, r in zip(
-            nwise(ixl, self.model.min_nucleation),
-            nwise(ixr[::-1], self.model.min_nucleation)):
-            new = replace(l, 'b', self.structure)
-            new = replace(r, 'd', new)
-            newtrans = backtrans(transparens(new))
-            offcore = Complex(
-                self.model, 
-                self.s1, 
-                self.s2, 
-                state='off_nucleation',
-                structure=newtrans,
-                dpxdist=self.dpxdist)
-            self.backfray.append(offcore)
-            itszippings = []
-            while new != trans(self.structure):
-                new = update(new)
+        if self.consecutive_nucleations > self.model.min_nucleation:
+            self.backfray = []
+            for l, r in zip(
+                nwise(ixl, self.model.min_nucleation),
+                nwise(ixr[::-1], self.model.min_nucleation)):
+                new = replace(l, 'b', self.structure)
+                new = replace(r, 'd', new)
                 newtrans = backtrans(transparens(new))
-                if verbose: 
-                    print('slidings backfray routine produced','\n',newtrans)
-                    print('from source', self.structure)
-                itszippings.append(Zippo(
+                offcore = Complex(
                     self.model, 
                     self.s1, 
                     self.s2, 
-                    state='backfray',
+                    state='off_nucleation',
                     structure=newtrans,
-                    dpxdist=self.dpxdist))
-            offcore.inherit_zipping(itszippings[:-1])
-         
+                    dpxdist=self.dpxdist)
+                self.backfray.append(offcore)
+                itszippings = []
+                while new != trans(self.structure):
+                    new = update(new)
+                    newtrans = backtrans(transparens(new))
+                    if verbose: 
+                        print('slidings backfray routine produced','\n',newtrans)
+                        print('from source', self.structure)
+                    itszippings.append(Zippo(
+                        self.model, 
+                        self.s1, 
+                        self.s2, 
+                        state='backfray',
+                        structure=newtrans,
+                        dpxdist=self.dpxdist))
+                offcore.inherit_zipping(itszippings[:-1])
+        else: self.backfray = []
+            
         
         # #internal utility function for getting indices 
         # def get_ix(string, char):

@@ -96,8 +96,9 @@ class Simulator(object):
         SS = self.kinet.chamber.singlestranded.structure 
         ss = self.tl(SS)
         neighbors = list(nx.neighbors(self.Graph, SS))
+        print(neighbors)
         sliding_factor = 1/(self.kinet.s1.length + self.kinet.s2.length - 1)
-        zipping_factor = 1/(self.kinet.overview['on_register'])
+        zipping_factor = 1/(self.kinet.overview['on_nucleation'])
         for n in neighbors:
             i += 1
             """ JULIA PATHOLOGY 
@@ -119,7 +120,7 @@ class Simulator(object):
 
             # BACKWARD UNIMOLECULAR DISSOCIATION            
             name = f"b_nucleation{i}"; rule = f"{neigh} --> {ss} + {ss}"
-            DG = self.Graph.nodes[n]['object'].G
+            DG = self.Graph.nodes[n]['obj'].G
             kb = self.kinetics.k_back(kf, DG)
             self.biosim <= jl.Reaction(name, kb, rule)
             self.Graph.edges[SS,n]['kb'] = kb   # Also add the rate as a new property to the graph, it will be useful for visualization
@@ -132,8 +133,8 @@ class Simulator(object):
             i += 1
             
             # if data['kind'] in ['sliding', 'sliding-end']:
-            l1 = self.Graph.nodes[n1]['object'].total_nucleations
-            l2 = self.Graph.nodes[n2]['object'].total_nucleations
+            l1 = self.Graph.nodes[n1]['obj'].total_nucleations
+            l2 = self.Graph.nodes[n2]['obj'].total_nucleations
             if l1 < l2:             # Left slidings
                 n1o = self.tl(n1)
                 n2o = self.tl(n2)
@@ -146,7 +147,7 @@ class Simulator(object):
 
             # FORWARD SLIDINGS AND ZIPPINGS
             name = f"f_{data['kind']}_{i}"; rule = f"{n1o} --> {n2o}"
-            kf = self.kinetics.generalforward(data['kind'])
+            kf = self.kinetics.rates(data['kind'])
             self.biosim <= jl.Reaction(name, kf, rule)
             self.Graph.edges[n1,n2][f'kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
 
@@ -261,11 +262,12 @@ class Simulator(object):
         self.digraph = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', 
                                             edge_attr=['name', 'rate'], create_using=nx.DiGraph())
         # loop for inheriting node properties from self.Graph to self.digraph
-        for g in list(self.Graph.nodes):
-            for key in list(self.Graph.nodes[g].keys()):
-                # print(self.digraph.nodes[g][key])
-                print(self.Graph.nodes[g][key])
-                self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
+        # for g in list(self.Graph.nodes):
+        #     print(g)
+            # for key in list(self.Graph.nodes[g].keys()):
+            #     # print(self.digraph.nodes[g][key])
+            #     print(self.Graph.nodes[g][key])
+            #     self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
 
         return self.digraph
     

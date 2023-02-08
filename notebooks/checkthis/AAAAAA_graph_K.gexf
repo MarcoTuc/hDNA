@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
-  <meta lastmodifieddate="2023-02-02">
+  <meta lastmodifieddate="2023-02-08">
     <creator>NetworkX 3.0</creator>
   </meta>
   <graph defaultedgetype="directed" mode="static" name="">
     <attributes mode="static" class="edge">
       <attribute id="4" title="kind" type="string" />
+      <attribute id="5" title="k" type="float" />
     </attributes>
     <attributes mode="static" class="node">
       <attribute id="0" title="obj" type="string" />
@@ -259,346 +260,523 @@
       <edge source="......+......" target="(((...+...)))" id="0">
         <attvalues>
           <attvalue for="4" value="f_on_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target=".(((..+..)))." id="1">
         <attvalues>
           <attvalue for="4" value="f_on_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="..(((.+.))).." id="2">
         <attvalues>
           <attvalue for="4" value="f_on_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="...(((+)))..." id="3">
         <attvalues>
           <attvalue for="4" value="f_on_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="(((...+)))..." id="4">
         <attvalues>
-          <attvalue for="4" value="f_off_core" />
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="(((...+.))).." id="5">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target=".(((..+)))..." id="6">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="(((...+..)))." id="7">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target=".(((..+.))).." id="8">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="..(((.+)))..." id="9">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target=".(((..+...)))" id="10">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="..(((.+..)))." id="11">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="...(((+.))).." id="12">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="..(((.+...)))" id="13">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
       <edge source="......+......" target="...(((+..)))." id="14">
         <attvalues>
           <attvalue for="4" value="f_off_core" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
-      <edge source="(((...+)))..." target="......+......" id="15">
+      <edge source="......+......" target="...(((+...)))" id="15">
         <attvalues>
-          <attvalue for="4" value="b_off_core" />
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="476502006.7639831" />
         </attvalues>
       </edge>
-      <edge source="(((...+)))..." target="((((..+)))).." id="16">
+      <edge source="(((...+)))..." target="......+......" id="16">
         <attvalues>
-          <attvalue for="4" value="f_sliding" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="((((..+)))).." target="(((...+)))..." id="17">
-        <attvalues>
-          <attvalue for="4" value="b_sliding" />
-        </attvalues>
-      </edge>
-      <edge source="((((..+)))).." target="((((((+))))))" id="18">
-        <attvalues>
-          <attvalue for="4" value="f_sliding_end" />
-        </attvalues>
-      </edge>
-      <edge source="((((..+)))).." target="(((((.+)))))." id="19">
+      <edge source="(((...+)))..." target="((((..+)))).." id="17">
         <attvalues>
           <attvalue for="4" value="f_sliding" />
+          <attvalue for="5" value="20000000.0" />
         </attvalues>
       </edge>
-      <edge source="(((...+.))).." target="......+......" id="20">
-        <attvalues>
-          <attvalue for="4" value="b_off_core" />
-        </attvalues>
-      </edge>
-      <edge source=".(((..+)))..." target="......+......" id="21">
-        <attvalues>
-          <attvalue for="4" value="b_off_core" />
-        </attvalues>
-      </edge>
-      <edge source="(((((.+)))))." target="((((..+)))).." id="22">
+      <edge source="((((..+)))).." target="(((...+)))..." id="18">
         <attvalues>
           <attvalue for="4" value="b_sliding" />
+          <attvalue for="5" value="58699564.17337533" />
         </attvalues>
       </edge>
-      <edge source="(((((.+)))))." target="((((..+.))))." id="23">
+      <edge source="((((..+)))).." target="(((...+.))).." id="19">
         <attvalues>
-          <attvalue for="4" value="b_backfray_end" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.17337533" />
         </attvalues>
       </edge>
-      <edge source="(((((.+)))))." target="((((((+))))))" id="24">
+      <edge source="((((..+)))).." target=".(((..+)))..." id="20">
         <attvalues>
-          <attvalue for="4" value="f_sliding_end" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.17337533" />
         </attvalues>
       </edge>
-      <edge source="(((((.+)))))." target=".((((.+)))).." id="25">
+      <edge source="((((..+)))).." target="((((((+))))))" id="21">
         <attvalues>
-          <attvalue for="4" value="b_backfray_end" />
+          <attvalue for="4" value="f_sliding-end" />
+          <attvalue for="5" value="20000000.0" />
         </attvalues>
       </edge>
-      <edge source="(((...+..)))." target="......+......" id="26">
+      <edge source="((((..+)))).." target="(((((.+)))))." id="22">
         <attvalues>
-          <attvalue for="4" value="b_off_core" />
+          <attvalue for="4" value="f_sliding" />
+          <attvalue for="5" value="20000000.0" />
         </attvalues>
       </edge>
-      <edge source="((((..+.))))." target="(((((.+)))))." id="27">
-        <attvalues>
-          <attvalue for="4" value="f_backfray_end" />
-        </attvalues>
-      </edge>
-      <edge source=".(((..+.))).." target="......+......" id="28">
-        <attvalues>
-          <attvalue for="4" value="b_off_core" />
-        </attvalues>
-      </edge>
-      <edge source="..(((.+)))..." target="......+......" id="29">
+      <edge source="(((...+.))).." target="......+......" id="23">
         <attvalues>
           <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source=".((((.+)))).." target="(((((.+)))))." id="30">
+      <edge source="(((...+.))).." target="((((..+)))).." id="24">
         <attvalues>
-          <attvalue for="4" value="f_backfray_end" />
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source=".(((((+.)))))" target="(((((.+)))))." id="31">
+      <edge source=".(((..+)))..." target="......+......" id="25">
+        <attvalues>
+          <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source=".(((..+)))..." target="((((..+)))).." id="26">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="(((((.+)))))." target="((((..+)))).." id="27">
         <attvalues>
           <attvalue for="4" value="b_sliding" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source=".(((((+.)))))" target=".((((.+..))))" id="32">
+      <edge source="(((((.+)))))." target="((((..+.))))." id="28">
         <attvalues>
-          <attvalue for="4" value="b_backfray_end" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source=".(((((+.)))))" target="((((((+))))))" id="33">
+      <edge source="(((((.+)))))." target=".(((..+.))).." id="29">
         <attvalues>
-          <attvalue for="4" value="f_sliding_end" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="7231110.856267346" />
         </attvalues>
       </edge>
-      <edge source=".(((((+.)))))" target="..((((+.))))." id="34">
+      <edge source="(((((.+)))))." target=".((((.+)))).." id="30">
         <attvalues>
-          <attvalue for="4" value="b_backfray_end" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source=".(((..+...)))" target="......+......" id="35">
+      <edge source="(((((.+)))))." target="((((((+))))))" id="31">
         <attvalues>
-          <attvalue for="4" value="b_off_core" />
+          <attvalue for="4" value="f_sliding-end" />
+          <attvalue for="5" value="20000000.0" />
         </attvalues>
       </edge>
-      <edge source=".((((.+..))))" target=".(((((+.)))))" id="36">
-        <attvalues>
-          <attvalue for="4" value="f_backfray_end" />
-        </attvalues>
-      </edge>
-      <edge source="..(((.+..)))." target="......+......" id="37">
-        <attvalues>
-          <attvalue for="4" value="b_off_core" />
-        </attvalues>
-      </edge>
-      <edge source="...(((+.))).." target="......+......" id="38">
+      <edge source="(((...+..)))." target="......+......" id="32">
         <attvalues>
           <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="..((((+.))))." target=".(((((+.)))))" id="39">
+      <edge source="(((...+..)))." target="((((..+.))))." id="33">
         <attvalues>
-          <attvalue for="4" value="f_backfray_end" />
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="..((((+..))))" target=".(((((+.)))))" id="40">
+      <edge source="((((..+.))))." target="(((((.+)))))." id="34">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((..+.))).." target="......+......" id="35">
+        <attvalues>
+          <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source=".(((..+.))).." target="(((((.+)))))." id="36">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.+)))..." target="......+......" id="37">
+        <attvalues>
+          <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.+)))..." target=".((((.+)))).." id="38">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".((((.+)))).." target="(((((.+)))))." id="39">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((+.)))))" target="(((((.+)))))." id="40">
         <attvalues>
           <attvalue for="4" value="b_sliding" />
+          <attvalue for="5" value="20000000.0" />
         </attvalues>
       </edge>
-      <edge source="..((((+..))))" target="((((((+))))))" id="41">
+      <edge source=".(((((+.)))))" target=".((((.+..))))" id="41">
         <attvalues>
-          <attvalue for="4" value="f_sliding_end" />
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source="..(((.+...)))" target="......+......" id="42">
+      <edge source=".(((((+.)))))" target="..(((.+..)))." id="42">
+        <attvalues>
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="7231110.856267346" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((+.)))))" target="..((((+.))))." id="43">
+        <attvalues>
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.173375435" />
+        </attvalues>
+      </edge>
+      <edge source=".(((((+.)))))" target="((((((+))))))" id="44">
+        <attvalues>
+          <attvalue for="4" value="f_sliding-end" />
+          <attvalue for="5" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source=".(((..+...)))" target="......+......" id="45">
         <attvalues>
           <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="...(((+..)))." target="......+......" id="43">
+      <edge source=".(((..+...)))" target=".((((.+..))))" id="46">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source=".((((.+..))))" target=".(((((+.)))))" id="47">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.+..)))." target="......+......" id="48">
         <attvalues>
           <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="...(((+...)))" target="..((((+..))))" id="44">
+      <edge source="..(((.+..)))." target=".(((((+.)))))" id="49">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((+.))).." target="......+......" id="50">
+        <attvalues>
+          <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source="...(((+.))).." target="..((((+.))))." id="51">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..((((+.))))." target=".(((((+.)))))" id="52">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="..((((+..))))" target=".(((((+.)))))" id="53">
         <attvalues>
           <attvalue for="4" value="b_sliding" />
+          <attvalue for="5" value="20000000.0" />
         </attvalues>
       </edge>
-      <edge source="(((...+...)))" target="......+......" id="45">
+      <edge source="..((((+..))))" target="..(((.+...)))" id="54">
+        <attvalues>
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.17337533" />
+        </attvalues>
+      </edge>
+      <edge source="..((((+..))))" target="...(((+..)))." id="55">
+        <attvalues>
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="58699564.17337533" />
+        </attvalues>
+      </edge>
+      <edge source="..((((+..))))" target="((((((+))))))" id="56">
+        <attvalues>
+          <attvalue for="4" value="f_sliding-end" />
+          <attvalue for="5" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.+...)))" target="......+......" id="57">
+        <attvalues>
+          <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source="..(((.+...)))" target="..((((+..))))" id="58">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((+..)))." target="......+......" id="59">
+        <attvalues>
+          <attvalue for="4" value="b_off_core" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source="...(((+..)))." target="..((((+..))))" id="60">
+        <attvalues>
+          <attvalue for="4" value="f_backfray-end" />
+          <attvalue for="5" value="7624032108.223729" />
+        </attvalues>
+      </edge>
+      <edge source="...(((+...)))" target="..((((+..))))" id="61">
+        <attvalues>
+          <attvalue for="4" value="b_sliding" />
+          <attvalue for="5" value="20000000.0" />
+        </attvalues>
+      </edge>
+      <edge source="...(((+...)))" target="......+......" id="62">
+        <attvalues>
+          <attvalue for="4" value="b_backfray-end" />
+          <attvalue for="5" value="4864182.577594317" />
+        </attvalues>
+      </edge>
+      <edge source="(((...+...)))" target="......+......" id="63">
         <attvalues>
           <attvalue for="4" value="b_on_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="(((...+...)))" target="((((..+..))))" id="46">
+      <edge source="(((...+...)))" target="((((..+..))))" id="64">
         <attvalues>
           <attvalue for="4" value="f_zipping" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="((((..+..))))" target="(((...+...)))" id="47">
+      <edge source="((((..+..))))" target="(((...+...)))" id="65">
         <attvalues>
           <attvalue for="4" value="b_zipping" />
+          <attvalue for="5" value="58699564.17337533" />
         </attvalues>
       </edge>
-      <edge source="((((..+..))))" target="(((((.+.)))))" id="48">
+      <edge source="((((..+..))))" target="(((((.+.)))))" id="66">
         <attvalues>
           <attvalue for="4" value="f_zipping" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="(((((.+.)))))" target="((((..+..))))" id="49">
+      <edge source="(((((.+.)))))" target="((((..+..))))" id="67">
         <attvalues>
           <attvalue for="4" value="b_zipping" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source="(((((.+.)))))" target="((((((+))))))" id="50">
+      <edge source="(((((.+.)))))" target="((((((+))))))" id="68">
         <attvalues>
           <attvalue for="4" value="f_zipping-end" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="(((((.+.)))))" target=".(((..+..)))." id="51">
+      <edge source="(((((.+.)))))" target=".(((..+..)))." id="69">
         <attvalues>
           <attvalue for="4" value="b_zipping" />
+          <attvalue for="5" value="7231110.856267346" />
         </attvalues>
       </edge>
-      <edge source=".(((..+..)))." target="......+......" id="52">
+      <edge source=".(((..+..)))." target="......+......" id="70">
         <attvalues>
           <attvalue for="4" value="b_on_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source=".(((..+..)))." target="(((((.+.)))))" id="53">
+      <edge source=".(((..+..)))." target="(((((.+.)))))" id="71">
         <attvalues>
           <attvalue for="4" value="f_zipping" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="..(((.+.))).." target="......+......" id="54">
+      <edge source="..(((.+.))).." target="......+......" id="72">
         <attvalues>
           <attvalue for="4" value="b_on_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="..(((.+.))).." target=".(((((+)))))." id="55">
+      <edge source="..(((.+.))).." target=".(((((+)))))." id="73">
         <attvalues>
           <attvalue for="4" value="f_zipping" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source=".(((((+)))))." target="..(((.+.))).." id="56">
+      <edge source=".(((((+)))))." target="..(((.+.))).." id="74">
         <attvalues>
           <attvalue for="4" value="b_zipping" />
+          <attvalue for="5" value="7231110.856267346" />
         </attvalues>
       </edge>
-      <edge source=".(((((+)))))." target="..((((+)))).." id="57">
+      <edge source=".(((((+)))))." target="..((((+)))).." id="75">
         <attvalues>
           <attvalue for="4" value="b_zipping" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source=".(((((+)))))." target="((((((+))))))" id="58">
+      <edge source=".(((((+)))))." target="((((((+))))))" id="76">
         <attvalues>
           <attvalue for="4" value="f_zipping-end" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="...(((+)))..." target="......+......" id="59">
+      <edge source="...(((+)))..." target="......+......" id="77">
         <attvalues>
           <attvalue for="4" value="b_on_core" />
+          <attvalue for="5" value="4864182.577594317" />
         </attvalues>
       </edge>
-      <edge source="...(((+)))..." target="..((((+)))).." id="60">
+      <edge source="...(((+)))..." target="..((((+)))).." id="78">
         <attvalues>
           <attvalue for="4" value="f_zipping" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="..((((+)))).." target="...(((+)))..." id="61">
+      <edge source="..((((+)))).." target="...(((+)))..." id="79">
         <attvalues>
           <attvalue for="4" value="b_zipping" />
+          <attvalue for="5" value="58699564.17337533" />
         </attvalues>
       </edge>
-      <edge source="..((((+)))).." target=".(((((+)))))." id="62">
+      <edge source="..((((+)))).." target=".(((((+)))))." id="80">
         <attvalues>
           <attvalue for="4" value="f_zipping" />
+          <attvalue for="5" value="7624032108.223729" />
         </attvalues>
       </edge>
-      <edge source="((((((+))))))" target="(((((.+.)))))" id="63">
+      <edge source="((((((+))))))" target="(((((.+.)))))" id="81">
         <attvalues>
           <attvalue for="4" value="b_zipping-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source="((((((+))))))" target=".(((((+)))))." id="64">
+      <edge source="((((((+))))))" target=".(((((+)))))." id="82">
         <attvalues>
           <attvalue for="4" value="b_zipping-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source="((((((+))))))" target="((((..+)))).." id="65">
+      <edge source="((((((+))))))" target="((((..+)))).." id="83">
         <attvalues>
-          <attvalue for="4" value="b_sliding_end" />
+          <attvalue for="4" value="b_sliding-end" />
+          <attvalue for="5" value="7231110.85626736" />
         </attvalues>
       </edge>
-      <edge source="((((((+))))))" target="(((((.+)))))." id="66">
+      <edge source="((((((+))))))" target="(((((.+)))))." id="84">
         <attvalues>
-          <attvalue for="4" value="b_sliding_end" />
+          <attvalue for="4" value="b_sliding-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source="((((((+))))))" target=".(((((+.)))))" id="67">
+      <edge source="((((((+))))))" target=".(((((+.)))))" id="85">
         <attvalues>
-          <attvalue for="4" value="b_sliding_end" />
+          <attvalue for="4" value="b_sliding-end" />
+          <attvalue for="5" value="58699564.173375435" />
         </attvalues>
       </edge>
-      <edge source="((((((+))))))" target="..((((+..))))" id="68">
+      <edge source="((((((+))))))" target="..((((+..))))" id="86">
         <attvalues>
-          <attvalue for="4" value="b_sliding_end" />
+          <attvalue for="4" value="b_sliding-end" />
+          <attvalue for="5" value="7231110.85626736" />
         </attvalues>
       </edge>
     </edges>

@@ -16,7 +16,7 @@ class Chamber(object):
         self.s1 = s1
         self.s2 = s2.invert
 
-        self.singlestranded = Complex(self.model, self.s1, self.s2, state='singlestranded')
+        self.singlestranded = Complex(self.model, self.s1, self.s2, state='singlestranded', dpxdist=s1.length+s2.length)
         self.min_nucleation = self.model.min_nucleation
         #TODO: generalize the minimum nucleation size, right now it is just 3
 
@@ -64,7 +64,7 @@ class Chamber(object):
                 self.slidings.append(Sliding(self.model, self.s1, self.s2, state='sliding', structure=structureout, dpxdist=(self.s1.length - b)))
         fullstructure = "("*self.s1.length+"+"+")"*self.s2.length
         if verbose: print(fullstructure)
-        self.duplex = Complex(self.model, self.s1, self.s2, state='duplex', structure=fullstructure)
+        self.duplex = Complex(self.model, self.s1, self.s2, state='duplex', structure=fullstructure, dpxdist=0)
         for b in range(1, self.s1.length - self.min_nucleation + 1):
             slidingstruct = "."*b+"ì"*(self.s1.length-b)
             slidingstruct = slidingstruct+"+"+slidingstruct
@@ -87,7 +87,7 @@ class Chamber(object):
         self.native_nucleation_structures()
         for structureì in self.nativeì:
             structureout = self.parse_structure(structureì, self.s1, self.s2)
-            self.oncores.append(Complex(self.model, self.s1, self.s2, state='on_nucleation', structure=structureout))
+            self.oncores.append(Complex(self.model, self.s1, self.s2, state='on_nucleation', structure=structureout, dpxdist=0))
         self.oncores = [core for core in self.oncores if core.total_nucleations >= self.min_nucleation]
         return self.oncores
 
