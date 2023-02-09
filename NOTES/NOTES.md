@@ -31,3 +31,10 @@ Then it nucleates like: AAAAAAAAAG
 It is clear that here there's no information about spatial permanence of objects 
 which will eventually influence markovianity rendering the process actually dependant
 on current state + state previous to that (it is just order 1 nonmarkovian)
+
+
+<Multistrand>
+The multistrand package doesn't have the minimum nucleation parameter.
+
+
+10, 11, 26

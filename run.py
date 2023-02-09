@@ -60,6 +60,8 @@ MOD = Model('dna', '3D',
         min_nucleation=HP['minimum_nucleation'], 
         sliding_cutoff=HP['sliding_cutoff'],
         stacking=OPT['stacking'],
+        sliding=HP['sliding_rate'],
+        zipping=HP['zipping_rate'],
         celsius=HP['temperature'])
 
 for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
@@ -71,11 +73,8 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
     print(f'Creating network from sequence...')
     A = Strand(MOD, seq)
     B = A.complementary()
-    kinet = Kinetwork(MOD, A, B)
     geo = Geometry(HP['azimutal_angle'], HP['longitudinal_angle'])
-    K = Kinetics(MOD, kinet, geo)
-    K.set_slidingrate(HP['sliding_rate'])
-    K.set_zippingrate(HP['zipping_rate'])
+    kinet = Kinetwork(MOD, A, B, geo)
     print(kinet.overview)
 
     opts = Options(
@@ -88,7 +87,7 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
         stranditer=i)
 
     print('embedding network into biosimulator network model...')
-    simulatore = Simulator(MOD, kinet, K, options=opts)
+    simulatore = Simulator(MOD, kinet, options=opts)
     print('start running simulations...')
     results = simulatore.ensemble()
     mfpt = simulatore.mfpts(results)

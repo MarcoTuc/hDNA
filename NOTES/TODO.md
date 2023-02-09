@@ -24,6 +24,10 @@ Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A 
             -   there's clearlys some wrong shit as one can see
                 by the orders of magnitude you get for diffusion
 
+# !!!
+Implement nucleation factors for keeping probability safe
+>>>> PROBLEM:
+        - When you have a strand with no slidings for saying, we are not normalizing the on-register nucleation rate by the number of possible slidings. This leads to very high on-register nucleation events leading to fast zipping of say strand #1  
 
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>>#### Experimental verification

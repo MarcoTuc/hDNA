@@ -60,12 +60,14 @@ class Complex(object):
     
         if state not in self.possible_states:
             raise ValueError(f'state must be one among {self.possible_states} but you gave {state}')
-        else: self.state = state 
+        else: 
+            self.state = state 
         
         if self.state == 'duplex':
             #TODO update this when considering mismatches 
             self.consecutive_nucleations = min(self.l1, self.l2)
             self.total_nucleations = self.consecutive_nucleations
+            self.structure = '('*self.s1.length+'+'+')'*self.s2.length
             self.dpxdist = 0
         elif self.state == 'singlestranded':
             self.total_nucleations = 0
@@ -161,8 +163,9 @@ class Complex(object):
 ##### Nupack-dependant Methods  #####
 #####################################
 
-    def structureG(self, structure):
+    def structureG(self, structure=None):
         """ Nupack related properties """
+        if structure == None: structure = self.structure
         nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
         nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
         nuStructure = nu.Structure(structure)
@@ -178,12 +181,14 @@ class Complex(object):
 
     def getnupackproperties(self):
             """ Nupack related properties """
+            self.getnupackmodel()
             self.nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
-            self.nuStrand2 = nu.Strand(self.s2.invert.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
+            self.nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
             self.nuComplex = nu.Complex([self.nuStrand1,self.nuStrand2], name = 'c')
             j = nu.pfunc(self.nuComplex, self.nupackmodel)
             self.duplexG = j[1]
             self.duplexZ = float(j[0])
+            self.mfe = nu.mfe([self.nuStrand1, self.nuStrand2], model=self.nupackmodel)
 
 
 #############################################

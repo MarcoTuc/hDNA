@@ -1,11 +1,12 @@
 
 import sys
-sys.path.insert(0, '..')
 sys.path.insert(0, '.')
 
-from kinetics.values import *
-from kinetics.kineticsfunctions import *
-from kinetics.conf import *
+from values import *
+from kineticsfunctions import *
+from conf import *
+
+TEMPERATURE = 273.15+26
 
 
 def iswc(n1,n2):

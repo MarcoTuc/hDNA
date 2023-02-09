@@ -3,9 +3,11 @@ class Model(object):
     def __init__(   self, 
                     material, 
                     space_dimensionality,
-                    min_nucleation, 
-                    sliding_cutoff, 
-                    stacking, 
+                    min_nucleation=1, 
+                    sliding_cutoff=1, 
+                    stacking='nostacking', 
+                    sliding=2e7,
+                    zipping=2e9,
                     Na=1.0, 
                     Mg=0.0, 
                     celsius=26):
@@ -32,6 +34,9 @@ class Model(object):
        
         self.Na = Na
         self.Mg = Mg 
+
+        self.sliding = sliding
+        self.zipping = zipping
 
 class Geometry(object):
 

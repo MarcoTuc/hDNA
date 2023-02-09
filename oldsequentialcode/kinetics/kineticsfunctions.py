@@ -3,9 +3,8 @@ import math
 import numpy as np
 
 import sys
-sys.path.insert(0, '..')
 sys.path.insert(0, '.')
-from kinetics.values import *
+from values import *
 
 
 #### THERMODYNAMICS 

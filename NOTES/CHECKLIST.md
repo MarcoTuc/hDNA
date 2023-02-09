@@ -1,7 +1,11 @@
 # TODO TOMORROW:
->>>> 1. Run simulations with parameters: zipping 1e8, sliding 5e6, minnucleation 2 and see what happens. 
->>>> 2. Refine the sliding mechanism as detailed below 
->>>> 3. Understand why strands with no kinetic trapping slidings exhibit such high rates. 
+>>> Check Kawasaki, Metropolis and Entropy/Enthalpy rate methods from Schaffer Master Thesis
+>>> Get a method for histogramming first passage times of each simulation ensemble 
+>>> Get a method for percent completion by simulation time 
+>>> Introduce boltzmann sampling of single stranded to nucleated transition 
+    > either use NUPACK integrated boltzmann sampling or
+    > implement it myself by taking free energy of each nucleation and distribute it in boltzmann fashion myself
+>>> Implement 6.6.2 from Schaffer Master Thesis to properly calculate K_eff 
 
 # Slidings
 Slidings happen to be kinetic traps because they are: 

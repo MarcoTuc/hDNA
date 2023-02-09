@@ -8,7 +8,7 @@ import numpy as np
 import juliacall
 # print("Julia has",juliacall.Main.seval("Threads.nthreads()"),"threads")
 
-jl = juliacall.Main
+jl = juliacall.newmodule("hDNA")
 
 jl.seval('using BioSimulator')
 
@@ -54,18 +54,19 @@ class Options(object):
 
 class Simulator(object):
     
-    def __init__(self, model: Model, kinetwork: Kinetwork, kinetics: Kinetics, options=Options()):
+    def __init__(self, model: Model, kinetwork: Kinetwork, options=Options()):
         
         self.model = model 
         self.kinet = kinetwork
         self.Graph = kinetwork.Graph
         self.overview = self.kinet.overview
 
-        self.kinetics = kinetics 
+        self.kinetics = kinetwork.kinetics
 
         self.options = options 
         self.biosim = jl.Network("biosim")
 
+        self.sss = self.kinet.chamber.singlestranded.structure
         self.initialamount = self.options.initialamount
         self.add_species()
         self.add_reactions()
@@ -81,7 +82,32 @@ class Simulator(object):
             if verbose: print('TRANSLATION',self.tl(node)) 
             self.biosim <= jl.Species(self.tl(node))
 
-    def add_reactions(self):
+    def add_reactions(self, verbose=False):
+        #NUCLEATIONS:
+        for i, (e1, e2, data) in enumerate(self.Graph.edges.data()):
+            name = f"{data['kind']}_{i}"
+            rate = data['k']
+            etl1 = self.tl(e1)
+            etl2 = self.tl(e2)
+            if verbose:
+                print(name)
+                print(rate)               
+            if e1 == self.sss:
+                rule = f"{etl1} + {etl1} --> {etl2}"
+                if verbose: print(rule)
+                self.biosim <= jl.Reaction(str(name), float(rate), str(rule))
+            elif e2 == self.sss:
+                rule = f"{etl1} --> {etl2} + {etl2}"
+                if verbose: print(rule)
+                self.biosim <= jl.Reaction(str(name), float(rate), str(rule))
+            else: 
+                rule = f"{etl1} --> {etl2}"
+                if verbose: print(rule)
+                self.biosim <= jl.Reaction(str(name), float(rate), str(rule))   
+                
+
+    
+    def add_reactions_old(self):
         i = 0  #for now reaction names will just be sequential numbers
         """PSEUDOCODE:
         
@@ -147,15 +173,15 @@ class Simulator(object):
 
             # FORWARD SLIDINGS AND ZIPPINGS
             name = f"f_{data['kind']}_{i}"; rule = f"{n1o} --> {n2o}"
-            kf = self.kinetics.rates(data['kind'])
+            kf = data['k']
             self.biosim <= jl.Reaction(name, kf, rule)
             self.Graph.edges[n1,n2][f'kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
 
             # BACKWARD SLIDINGS AND ZIPPINGS 
             name = f"b_{data['kind']}_{i}"; rule = f'{n2o} --> {n1o}'
-            DG = self.Graph.nodes[n2]['object'].G - self.Graph.nodes[n1]['object'].G
-            if self.Graph.nodes[n1]['object'].total_nucleations > self.Graph.nodes[n2]['object'].total_nucleations: DG = - DG
-            kb = self.kinetics.k_back(kf, DG)
+            DG = self.Graph.nodes[n2]['obj'].G - self.Graph.nodes[n1]['obj'].G
+            if self.Graph.nodes[n1]['obj'].total_nucleations > self.Graph.nodes[n2]['obj'].total_nucleations: DG = - DG
+            kb = data['k']
             self.biosim <= jl.Reaction(name, kb, rule)
             self.Graph.edges[n1,n2][f'kb'] = kb   # Also add the rate as a new property to the graph, it will be useful for visualization
 
@@ -247,7 +273,7 @@ class Simulator(object):
                                 index=['trajectory', 'next step rate', 'step name']).T
             return DF
 
-    def DiGraph(self):
+    def DiGraph(self, verbose=False):
         """ Return a digraph post-biosim to see if it matches with the pre-biosim graph.
             This is useful to see if there are any errors in the kinetwork-biosim translation"""
         R = self.biosim.reaction_list
@@ -262,12 +288,12 @@ class Simulator(object):
         self.digraph = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', 
                                             edge_attr=['name', 'rate'], create_using=nx.DiGraph())
         # loop for inheriting node properties from self.Graph to self.digraph
-        # for g in list(self.Graph.nodes):
-        #     print(g)
-            # for key in list(self.Graph.nodes[g].keys()):
-            #     # print(self.digraph.nodes[g][key])
-            #     print(self.Graph.nodes[g][key])
-            #     self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
+        for g in list(self.Graph.nodes):
+            if verbose: print(g)
+            for key in list(self.Graph.nodes[g].keys()):
+                # print(self.digraph.nodes[g][key])
+                if verbose: print(self.Graph.nodes[g][key])
+                self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
 
         return self.digraph
     
@@ -275,14 +301,14 @@ class Simulator(object):
         #convert node object to string of object type
         try: 
             for n in self.digraph.nodes.data():
-                n[1]['object'] = str(type(n[1]['object']))
+                n[1]['obj'] = str(type(n[1]['obj']))
             try: os.makedirs(PATH)
             except FileExistsError: pass 
             nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
         except:
             self.DiGraph() 
             for n in self.digraph.nodes.data():
-                n[1]['object'] = str(type(n[1]['object']))
+                n[1]['obj'] = str(type(n[1]['obj']))
             try: os.makedirs(PATH)
             except FileExistsError: pass 
             nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')

@@ -2,11 +2,12 @@ import sys
 sys.path.insert(0, 'lidakinetics')
 sys.path.insert(0, 'nupackrelated')
 sys.path.insert(0, 'dnapoly')
+sys.path.insert(0, '../polymer')
 sys.path.insert(0, '..')
 sys.path.insert(0, '.')
 
-from kinetics.values import *
-from kinetics.kineticsfunctions import *
+from values import *
+from kineticsfunctions import *
 from polymer import dnageometry
 #from NaqviCollinsKimball import naqvi_integral
 
