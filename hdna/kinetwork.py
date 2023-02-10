@@ -103,6 +103,214 @@ class Kinetwork(object):
         duplex  = self.chamber.duplex.structure
         
         df = pd.DataFrame(self.nodata('state'), columns=['structure','state'])
+        #####USE THIS TO CHANGE METHOD##############
+        kzipp = self.kinetics.kawasaki################
+        kslid = self.kinetics.kawasaki##################
+        knucl = self.kinetics.kawasaki################
+        ############################################        
+        native = df[df['state'] == 'on_nucleation']
+        for n in native['structure']:
+            cplx = self.nodes[n]['obj']
+
+            fwd, bwd = knucl('nucleation', 0, cplx.G)
+            self.Graph.add_edge(simplex, 
+                                n, 
+                                kind = 'f_on_core', 
+                                k = fwd)
+            self.Graph.add_edge(n, 
+                                simplex, 
+                                kind = 'b_on_core', 
+                                k = bwd)
+
+            fwd, bwd = kzipp('zipping', cplx.G, cplx.zipping[0].G)
+            self.Graph.add_edge(n, 
+                                cplx.zipping[0].structure, 
+                                kind = 'f_zipping',
+                                k = fwd)
+            self.Graph.add_edge(cplx.zipping[0].structure, 
+                                n, 
+                                kind = 'b_zipping',
+                                k = bwd)
+
+            for z1, z2 in pairwise(cplx.zipping):
+
+                fwd, bwd = kzipp('zipping', z1.G, z2.G)
+                self.Graph.add_edge(z1.structure, 
+                                    z2.structure, 
+                                    kind = 'f_zipping',
+                                    k = fwd)
+                self.Graph.add_edge(z2.structure, 
+                                    z1.structure, 
+                                    kind = 'b_zipping',
+                                    k = bwd)
+
+            fwd, bwd = kzipp('zipping', z2.G, self.chamber.duplex.G)
+            self.Graph.add_edge(z2.structure, 
+                                duplex, 
+                                kind = 'f_zipping-end',
+                                k = fwd)
+            self.Graph.add_edge(duplex, 
+                                z2.structure, 
+                                kind = 'b_zipping-end',
+                                k = bwd)
+        
+        nonnative = df[df['state'] == 'sliding']      
+         
+        for n, nxt in pairwisend(nonnative['structure']):
+
+            cplx = self.nodes[n]['obj']
+            if nxt != None:
+                cnxt = self.nodes[nxt]['obj']
+
+            if not cplx.bfempty:
+                #FORWARD
+                fwd, bwd = knucl('nucleation', 0, cplx.backfray[0].G)
+                self.Graph.add_edge(simplex, 
+                                    cplx.backfray[0].structure, 
+                                    kind = 'f_off_core',
+                                    k = fwd)
+                #BACKWARD
+                self.Graph.add_edge(cplx.backfray[0].structure, 
+                                    simplex, 
+                                    kind = 'b_off_core',
+                                    k = bwd)
+                for bf in cplx.backfray:
+                    fwd, bwd = knucl('nucleation', 0, bf.G)
+                    #FORWARD
+                    self.Graph.add_edge(simplex, 
+                                        bf.structure, 
+                                        kind = 'f_off_core',
+                                        k = fwd)
+                    #BACKWARD
+                    self.Graph.add_edge(bf.structure, 
+                                        simplex, 
+                                        kind = 'b_off_core',
+                                        k = bwd)
+                    if len(bf.zipping) > 1:
+                        fwd, bwd = kzipp('zipping', bf.G, bf.zipping[0].G)
+                        #FORWARD
+                        self.Graph.add_edge(bf.structure, 
+                                            bf.zipping[0].structure, 
+                                            kind = 'f_backfray',
+                                            k = fwd)
+                        #BACKWARD
+                        self.Graph.add_edge(bf.zipping[0].structure, 
+                                            bf.structure, 
+                                            kind = 'b_backfray',
+                                            k = bwd)
+                        for z1, z2 in pairwise(bf.zipping): 
+                            fwd, bwd = kzipp('zipping', z1.G, z2.G)
+                            #FORWARD
+                            self.Graph.add_edge(z1.structure, 
+                                                z2.structure, 
+                                                kind = 'f_backfray',
+                                                k = fwd)
+                            #BACKWARD
+                            self.Graph.add_edge(z2.structure, 
+                                                z1.structure, 
+                                                kind = 'b_backfray',
+                                                k = bwd)
+
+                        fwd, bwd = kzipp('zipping', bf.zipping[-1].G, cplx.G)
+                        #FORWARD
+                        self.Graph.add_edge(bf.zipping[-1].structure, 
+                                            n, 
+                                            kind = 'f_backfray-end',
+                                            k = fwd)
+                        #BACKWARD
+                        self.Graph.add_edge(n, 
+                                            bf.zipping[-1].structure, 
+                                            kind = 'b_backfray-end',
+                                            k = bwd)
+                    elif len(bf.zipping) == 1:
+                        if verbose: print('im here in 1')
+                        #BF0TOITSZIPP
+                        fwd, bwd = kzipp('zipping', bf.G, bf.zipping[0].G)
+                        #FORWARD
+                        self.Graph.add_edge(bf.structure, 
+                                            bf.zipping[0].structure, 
+                                            kind = 'f_backfray-end',
+                                            k = fwd)
+                        #BACKWARD
+                        self.Graph.add_edge(bf.zipping[0].structure, 
+                                            bf.structure,
+                                            kind = 'b_backfray-end',
+                                            k = bwd)    
+                        #ZIPPTOSTRUCT
+                        fwd, bwd = kzipp('zipping', bf.zipping[0].G, cplx.G)
+                        #FORWARD
+                        self.Graph.add_edge(bf.zipping[0].structure, 
+                                            n, 
+                                            kind = 'f_backfray-end',
+                                            k = fwd)
+                        #BACKWARD
+                        self.Graph.add_edge(n, 
+                                            bf.zipping[0].structure, 
+                                            kind = 'b_backfray-end',
+                                            k = bwd)    
+                    elif len(bf.zipping) == 0:
+                        fwd, bwd = kzipp('zipping', bf.G, cplx.G)
+                        #FORWARD
+                        self.Graph.add_edge(bf.structure, 
+                                            n, 
+                                            kind = 'f_backfray-end',
+                                            k = fwd)
+                        #BACKWARD
+                        self.Graph.add_edge(n, 
+                                            bf.structure, 
+                                            kind = 'b_backfray-end',
+                                            k = bwd)
+            else: 
+                fwd, bwd = kzipp('zipping', 0, cplx.G)
+                #FORWARD
+                self.Graph.add_edge(simplex, 
+                                    n, 
+                                    kind = 'f_backfray-end',
+                                    k = fwd)
+                #BACKWARD
+                self.Graph.add_edge(n, 
+                                    simplex, 
+                                    kind = 'b_backfray-end',
+                                    k = bwd)
+
+            if self.slidingcondition(cplx, self.chamber.duplex):
+                fwd, bwd = kslid('sliding', cplx.G, self.chamber.duplex.G)
+                #FORWARD
+                self.Graph.add_edge(n, 
+                                    duplex, 
+                                    kind = 'f_sliding-end',
+                                    k = fwd)
+                #BACKWARD
+                self.Graph.add_edge(duplex, 
+                                    n, 
+                                    kind = 'b_sliding-end',
+                                    k = bwd)
+                
+            if self.slidingcondition(cplx, cnxt) and nxt != None:
+                fwd, bwd = kslid('sliding', cplx.G, cnxt.G)
+                self.Graph.add_edge(n, 
+                                    nxt, 
+                                    kind = 'f_sliding',
+                                    k = fwd)
+                #BACKWARD
+                self.Graph.add_edge(nxt, 
+                                    n, 
+                                    kind = 'b_sliding',
+                                    k = bwd)
+            if verbose: print('\n')
+
+    def add_reactions_old(self, verbose=False):
+
+        def pairwisend(iterable):
+            from itertools import zip_longest
+            a, b = tee(iterable)
+            next(b, None)
+            return zip_longest(a, b)
+        
+        simplex = self.chamber.singlestranded.structure
+        duplex  = self.chamber.duplex.structure
+        
+        df = pd.DataFrame(self.nodata('state'), columns=['structure','state'])
         
         native = df[df['state'] == 'on_nucleation']
         for n in native['structure']:
@@ -476,6 +684,31 @@ class Kinetics(object):
                         }
         return correspondence[kind]
 
+    def kawasaki(self, rate, dgi, dgj):
+        ratesdict = {'zipping': self.zippingrate,
+                     'sliding': self.slidingrate,
+                     'nucleation': self.georate}
+        ka = ratesdict[rate]
+        kij = ka*np.exp(-(dgj-dgi)/(2*self.phys['R(kcal/molK)']*(self.T)))
+        kji = ka*np.exp(-(dgi-dgj)/(2*self.phys['R(kcal/molK)']*(self.T)))
+        return kij, kji
+    
+    def metropolis(self, rate, dgi, dgj):
+        ratesdict = {'zipping': self.zippingrate,
+                'sliding': self.slidingrate,
+                'nucleation': self.georate}
+        ka = ratesdict[rate]
+        if dgi > dgj:
+            kij = rate
+            kji = rate * np.exp((dgi-dgj)/(self.phys['R(kcal/molK)']*(self.T)))
+        elif dgi < dgj:
+            kij = rate * np.exp((dgj-dgi)/(self.phys['R(kcal/molK)']*(self.T)))
+            kji = rate 
+        else: 
+            kij = rate
+            kji = rate 
+        return kij, kji
+            
 
     ##################################################
     #################### General #####################

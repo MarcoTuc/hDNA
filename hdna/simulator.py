@@ -214,7 +214,7 @@ class Simulator(object):
             return sim
 
 
-    def mfpts(self, ensemble):
+    def mfpt(self, ensemble):
         """
         node referring to Duplex should be the last one so the result spot for duplex should just be something like simresults[-1] i hope 
         first i need to understand how the simresult looks like out of the juliacalled biosimlator """
@@ -232,6 +232,25 @@ class Simulator(object):
         self.overview['failed'] = len(failed)
         self.overview['fail%'] = 100*len(failed)/len(ensemble)
         return np.mean(fpts)
+
+    def fpts(self, ensemble):
+        """
+        node referring to Duplex should be the last one so the result spot for duplex should just be something like simresults[-1] i hope 
+        first i need to understand how the simresult looks like out of the juliacalled biosimlator """
+
+        fpts = []
+        failed = []
+        for sim in ensemble:
+            index = jl.findfirst(jl.isone, sim[-1,:])
+            try: fpts.append(sim.t[index-1])
+            except TypeError: 
+                fpts.append(self.options.runtime)
+                failed.append(index)
+        print(f"{len(failed)} simulations didn't produce a duplex.")
+        print(f"That's {100*len(failed)/len(ensemble)}% of simulations")
+        self.overview['failed'] = len(failed)
+        self.overview['fail%'] = 100*len(failed)/len(ensemble)
+        return fpts
     
 
     def get_trajectory(self, simulation): #TODO REDO IT MORE EFFICIENTLY (?)
@@ -264,9 +283,11 @@ class Simulator(object):
             return self.trajectory
         else:
             G = self.DiGraph()
+            fe = []
             rates = []
             names = []
             for i, step in enumerate(self.trajectory[:-1], start=1):
+                fe.append(G.edges[str(step),str(self.trajectory[i])]['obj'].G)
                 rates.append('{:e}'.format(G.edges[str(step),str(self.trajectory[i])]['rate']))
                 names.append(G.edges[str(step),str(self.trajectory[i])]['name'])
             DF = pd.DataFrame([self.trajectory, rates, names], 

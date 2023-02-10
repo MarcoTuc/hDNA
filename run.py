@@ -90,7 +90,7 @@ for i, (seq, exp) in enumerate(zip(torun['seq'], torun['expvalue'])):
     simulatore = Simulator(MOD, kinet, options=opts)
     print('start running simulations...')
     results = simulatore.ensemble()
-    mfpt = simulatore.mfpts(results)
+    mfpt = simulatore.mfpt(results)
 
     df = pd.DataFrame.from_dict([simulatore.overview])
     df.drop(['duplex','singlestranded'], axis=1, inplace=True)

@@ -13,7 +13,7 @@ HP = {
     'minimum_nucleation': 1,
     'sliding_cutoff':     3,
     'zipping_rate':       2e8,
-    'sliding_rate':       2e7,
+    'sliding_rate':       5e5,
     
     #temperature
     'temperature':        25,       #### HERTEL EXPERIMENTAL TEMPERATURE 

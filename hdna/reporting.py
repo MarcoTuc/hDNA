@@ -67,7 +67,9 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     )
     dados = [trace1, trace2]
     fig = go.Figure(data = dados, layout = layout)
-    
+    fig.update_xaxes(exponentformat="e")
+    fig.update_yaxes(exponentformat="e")
+
     if writepath == None:
         fig.show()
     else:
