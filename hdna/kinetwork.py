@@ -4,31 +4,40 @@ import pandas as pd
 
 from itertools import pairwise, chain, tee
 
+from .complex import Zippo, Sliding, Complex
 from .chamber import Chamber
 from .model import Model, Geometry
 from .strand import Strand
  
 class Kinetwork(object):
 
-    """Given a chamber it will generate the corresponding
-    Kinetic network to be later passed to the simulator"""
+    """
+    Given a chamber it will generate the corresponding
+    Kinetic network to be later passed to the simulator.
+    To do so it composes two graphs: 
+        - Zipping Graph 
+        - Sliding Graph
+    The Zipping Graph is the composition of single zipping graphs ---> See zippingraph() method
+    corresponding to each oncore taken from the chamber.
+    The Sliding Graph is the composition of single sliding graphs ---> See slidingraph() method
+    """
 
     def __init__(self, model: Model, s1: Strand, s2: Strand, geometry: Geometry, clean=False):
 
         self.model = model 
         self.s1 = s1        #53
-        self.s2 = s2        #35
+        self.s2 = s2.invert        #35
         self.min_nucleation = self.model.min_nucleation
         self.sliding_cutoff = self.model.sliding_cutoff
-        self.chamber = Chamber(self.model, self.s1, self.s2)
+        self.chamber = Chamber(self.model, self.s1, self.s2.invert)
         self.kinetics = Kinetics(self.model, self.chamber, geometry)
         self.kinetics.set_slidingrate(self.model.sliding)
         self.kinetics.set_zippingrate(self.model.zipping)
         self.Graph = nx.DiGraph()
-        self.add_nodes()
-        self.relabel_nodes()
 
-        if not clean:           
+        if not clean: 
+            self.add_nodes()
+            self.relabel_nodes()          
             self.add_reactions()
             self.clean_duplicates_relabel()
 
@@ -45,7 +54,58 @@ class Kinetwork(object):
         countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in self.possible_states]
         self.overview = dict(zip(self.possible_states,countslist))
 
+    def zippingraph(self):
+        self.ZG = nx.DiGraph()
 
+        def subzippingraph(oncore):
+            def get_i(lst):
+                indices = []
+                for i, (el1, el2) in enumerate(pairwise(lst)):
+                    if el1 == '.' and el2 != '.':
+                        indices.append(i)
+                    if el1 != '.' and el2 == '.':
+                        indices.append(i+1)
+                return indices
+            def update_structure(string, side, character: str):
+                updated = string
+                moveslist = []
+                moves = get_i(string)[::side]
+                for m in moves:
+                    up = updated[:m] + character + updated[m+1:]
+                    moveslist.append(up)
+                return moveslist
+            def leafs(left, right, graph):
+                lmoves = update_structure(left, 1, '(')
+                rmoves = update_structure(right, -1, ')')
+                inbound = '+'.join([left, right])
+                zobj = Zippo(self.model, self.s1, self.s2, state='zipping', structure=inbound)
+                graph.add_node( inbound,
+                                obj = zobj,
+                                pairs = zobj.total_nucleations)
+                for lmove, rmove in zip(lmoves, rmoves):
+                    outbound = '+'.join([lmove,rmove])
+                    zobj = Zippo(self.model, self.s1, self.s2, state='zipping', structure=outbound)
+                    graph.add_node(outbound,
+                                   obj = zobj,
+                                   pairs = zobj.total_nucleations)
+                    #FORWARD
+                    graph.add_edge(inbound, outbound)
+                    #BACKWARD
+                    graph.add_edge(outbound, inbound)
+
+                    yield list(leafs(lmove,rmove,graph))
+            
+            left, right = oncore.structure.split('+')
+            subZG = nx.DiGraph()
+            list(leafs(left, right, subZG))
+            return subZG 
+        
+        for on in self.chamber.oncores:
+            addgraph = subzippingraph(on)
+            self.ZG.update(addgraph)
+
+
+###################################################################################################À FUTURE GRAVEYARD
     def add_nodes(self):
 
         # Make a list of notes object from chamber

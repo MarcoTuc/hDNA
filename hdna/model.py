@@ -1,3 +1,5 @@
+import nupack as nu 
+
 class Model(object):
 
     def __init__(   self, 
@@ -37,6 +39,13 @@ class Model(object):
 
         self.sliding = sliding
         self.zipping = zipping
+
+        self.nupack = nu.Model(material=self.material, 
+                                    ensemble=self.stacking, 
+                                    celsius=self.celsius, 
+                                    sodium=self.Na, 
+                                    magnesium= self.Mg) 
+
 
 class Geometry(object):
 

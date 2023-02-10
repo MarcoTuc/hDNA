@@ -8,7 +8,10 @@ from .model import Model
 class Chamber(object):
 
     """ The chamber object contains every possible
-    nucleation state for the two given single strands """
+        nucleation state for the two given single strands.
+        Its main purpose is to produce the following properties:
+        Chamber.oncores  --> Native nucleation structures from which to zip
+        Chamber.slidings --> Target sliding structures from which to backfray """
 
     def __init__(self, model: Model, s1: Strand, s2: Strand):
 
@@ -30,13 +33,13 @@ class Chamber(object):
         self.finalstructure --->    compute the most stable structure for the 
                                     given sequence, this will be the arrival 
                                     of trajectories on the kinetic simulation
+                                    use nupack MFE for this 
         """
 
 
-
-#########################################
-##### Non-Native Nucleation Methods #####
-#########################################
+##############################################
+##### Non-Native Target Slidings Methods #####
+##############################################
 
     def totbasepairs(self, structure):
         nl = structure.count('(')

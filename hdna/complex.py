@@ -8,7 +8,6 @@ from itertools import pairwise, tee
 
 from .strand import Strand
 from .model import Model
-from .kinetwork import Kinetics
 
 
 class Complex(object):
@@ -43,10 +42,7 @@ class Complex(object):
 
         self.dpxdist = dpxdist
 
-        self.zipgraph = nx.DiGraph()
-
-        self.getnupackmodel()
-        self.getnupackproperties()
+        # self.getnupackproperties()
         self.G = self.structureG(self.structure)
 
         self.mismatches = []
@@ -86,7 +82,7 @@ class Complex(object):
         Coils object is duplexed, is offregister or is onregister
         to be comunicated to classes higher in the hierarchy"""
 
-        if self.state == 'on_nucleation': self.zipping_trajectory()
+        # if self.state == 'on_nucleation': self.zipping_trajectory()
     
     def set_state(self, target):
         if target != self.state:
@@ -154,47 +150,6 @@ class Complex(object):
             
                 yield list(leafs(lmove,rmove,graph))
 
-
-    
-
-    def zipping_trajectory(self):
-        """
-        CAUTION:    use only for native nucleation states with no double nucleation.
-                    don't use with eg "((...((..+..))...)) strands
-        UPDATE:     This has been corrected but still one 
-                    should use caution against this method"""
-        
-        def get_i(lst):
-            indices = []
-            for i, el in enumerate(lst):
-                if i > 0 and el != lst[i-1]:
-                    indices.append(i)
-            return indices
-
-        def update_structure(string, character: str):
-            indices = get_i(string)
-            indices_inv = get_i(string[::-1])
-            updated = string
-            for index in indices:
-                updated = updated[:index-1] + character + updated[index:]
-            updated_inv = updated[::-1]
-            for index in indices_inv:
-                updated_inv = updated_inv[:index-1] + character + updated_inv[index:]
-            return updated_inv[::-1]
-
-        if self.state == 'on_nucleation': 
-            self.zipping = []
-            left, right = self.structure.split('+')
-            while '.' in left and right:
-                left = update_structure(left, '(')
-                right = update_structure(right, ')')
-                step = '+'.join([left,right])
-                # The generated structure is parsed to see if it is correctly base-paired 
-                candidatestep = self.parse_structure(step, self.s1, self.s2)
-                self.zipping.append(Zippo(self.model, self.s1, self.s2, state='zipping', structure=candidatestep, dpxdist=0))
-            self.zipping.pop(-1) #remove the spurious duplex element generated at the end of the while loop
-            return self.zipping
-        else: self.zipping = None; return self.zipping
         
     def inherit_zipping(self, listofzippings):
         self.zipping = listofzippings
@@ -210,15 +165,9 @@ class Complex(object):
         nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
         nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
         nuStructure = nu.Structure(structure)
-        dG = nu.structure_energy(strands=[nuStrand1,nuStrand2], structure=nuStructure, model=self.nupackmodel)
+        dG = nu.structure_energy(strands=[nuStrand1,nuStrand2], structure=nuStructure, model=self.model.nupack)
         return dG
 
-    def getnupackmodel(self):
-        self.nupackmodel = nu.Model(material=self.model.material, 
-                                    ensemble=self.model.stacking, 
-                                    celsius=self.model.celsius, 
-                                    sodium=self.model.Na, 
-                                    magnesium= self.model.Mg) 
 
     def getnupackproperties(self):
             """ Nupack related properties """
@@ -226,10 +175,10 @@ class Complex(object):
             self.nuStrand1 = nu.Strand(self.s1.sequence, name = 'a')
             self.nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
             self.nuComplex = nu.Complex([self.nuStrand1,self.nuStrand2], name = 'c')
-            j = nu.pfunc(self.nuComplex, self.nupackmodel)
+            j = nu.pfunc(self.nuComplex, self.model.nupack)
             self.duplexG = j[1]
             self.duplexZ = float(j[0])
-            self.mfe = nu.mfe([self.nuStrand1, self.nuStrand2], model=self.nupackmodel)
+            self.mfe = nu.mfe([self.nuStrand1, self.nuStrand2], model=self.model.nupack)
 
 
 #############################################
