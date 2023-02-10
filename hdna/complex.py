@@ -1,12 +1,14 @@
 import nupack as nu 
 import numpy as np 
 import pandas as pd 
+import networkx as nx 
 import re
 
-from itertools import tee
+from itertools import pairwise, tee
 
 from .strand import Strand
 from .model import Model
+from .kinetwork import Kinetics
 
 
 class Complex(object):
@@ -40,6 +42,8 @@ class Complex(object):
         self.structure = structure
 
         self.dpxdist = dpxdist
+
+        self.zipgraph = nx.DiGraph()
 
         self.getnupackmodel()
         self.getnupackproperties()
@@ -115,6 +119,43 @@ class Complex(object):
         else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
         return cons
 
+
+    def zippingraph(self):
+
+        def get_i(lst):
+            indices = []
+            for i, (el1, el2) in enumerate(pairwise(lst)):
+                if el1 == '.' and el2 != '.':
+                    indices.append(i)
+                if el1 != '.' and el2 == '.':
+                    indices.append(i+1)
+            return indices
+
+        def update_structure(string, side, character: str):
+            updated = string
+            moveslist = []
+            moves = get_i(string)[::side]
+            for m in moves:
+                up = updated[:m] + character + updated[m+1:]
+                moveslist.append(up)
+            return moveslist
+    
+        def leafs(left, right, graph):
+            lmoves = update_structure(left, 1, '(')
+            rmoves = update_structure(right, -1, ')')
+            for lmove, rmove in zip(lmoves, rmoves):
+                
+                #FORWARD
+                self.zipgraph.add_edge(Zippo(self.model, self.s1, self.s2, structure='+'.join([left, right])), 
+                                       Zippo(self.model, self.s1, self.s2, structure='+'.join([lmove,rmove])))
+                #BACKWARD
+                self.zipgraph.add_edge(Zippo(self.model, self.s1, self.s2, structure='+'.join([lmove,rmove])),
+                                       Zippo(self.model, self.s1, self.s2, structure='+'.join([left, right])))      
+            
+                yield list(leafs(lmove,rmove,graph))
+
+
+    
 
     def zipping_trajectory(self):
         """

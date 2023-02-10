@@ -154,4 +154,4 @@ class Chamber(object):
             return False 
 
     def duplexenergy(self):
-        return self.duplex.fenergy
+        return self.duplex.G
