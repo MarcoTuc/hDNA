@@ -9,6 +9,7 @@ from itertools import pairwise, tee
 from .strand import Strand
 from .model import Model
 
+nu.config.cache = 8.0
 
 class Complex(object):
     
@@ -19,6 +20,7 @@ class Complex(object):
                     state,
                     structure=None,
                     dpxdist=None,
+                    clean=False
                 ):
         
         if type(model) != Model:
@@ -43,10 +45,8 @@ class Complex(object):
         self.dpxdist = dpxdist
 
         # self.getnupackproperties()
-        self.G = self.structureG(self.structure)
-
-        self.mismatches = []
-        self._get_mismatches()
+        if not clean:
+            self.structureG(self.structure)        
 
         self.possible_states = [ None,
                             'singlestranded',
@@ -114,42 +114,6 @@ class Complex(object):
         if maxl == maxr: cons = maxl
         else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
         return cons
-
-
-    def zippingraph(self):
-
-        def get_i(lst):
-            indices = []
-            for i, (el1, el2) in enumerate(pairwise(lst)):
-                if el1 == '.' and el2 != '.':
-                    indices.append(i)
-                if el1 != '.' and el2 == '.':
-                    indices.append(i+1)
-            return indices
-
-        def update_structure(string, side, character: str):
-            updated = string
-            moveslist = []
-            moves = get_i(string)[::side]
-            for m in moves:
-                up = updated[:m] + character + updated[m+1:]
-                moveslist.append(up)
-            return moveslist
-    
-        def leafs(left, right, graph):
-            lmoves = update_structure(left, 1, '(')
-            rmoves = update_structure(right, -1, ')')
-            for lmove, rmove in zip(lmoves, rmoves):
-                
-                #FORWARD
-                self.zipgraph.add_edge(Zippo(self.model, self.s1, self.s2, structure='+'.join([left, right])), 
-                                       Zippo(self.model, self.s1, self.s2, structure='+'.join([lmove,rmove])))
-                #BACKWARD
-                self.zipgraph.add_edge(Zippo(self.model, self.s1, self.s2, structure='+'.join([lmove,rmove])),
-                                       Zippo(self.model, self.s1, self.s2, structure='+'.join([left, right])))      
-            
-                yield list(leafs(lmove,rmove,graph))
-
         
     def inherit_zipping(self, listofzippings):
         self.zipping = listofzippings
@@ -166,7 +130,8 @@ class Complex(object):
         nuStrand2 = nu.Strand(self.s2.sequence, name = 'b') # An inversion here is needed because in this program strands are defined as 5-3 against 3-5 but in NUPACK all strands are defined 5-3 and the program takes care to turn them around and so on
         nuStructure = nu.Structure(structure)
         dG = nu.structure_energy(strands=[nuStrand1,nuStrand2], structure=nuStructure, model=self.model.nupack)
-        return dG
+        self.G = dG
+        return dG 
 
 
     def getnupackproperties(self):
@@ -286,8 +251,9 @@ class Zippo(Complex):
                     s2: Strand, 
                     state,
                     structure,
-                    dpxdist=None):
-        super().__init__(model,s1,s2,state,structure)
+                    dpxdist=None,
+                    clean=False):
+        super().__init__(model,s1,s2,state,structure,clean=clean)
         self.dpxdist = dpxdist
 
 
@@ -398,53 +364,53 @@ class Sliding(Complex):
         else: self.backfray = []
             
 
-    def backfraying_trajectory(self):
-        from itertools import zip_longest as zipp
+    # def backfraying_trajectory(self):
+    #     from itertools import zip_longest as zipp
 
-        def get_ix(string, char):
-            indices = []
-            for i, e in enumerate(list(string)):
-                if e == char:
-                    indices.append(i)
-            return indices 
+    #     def get_ix(string, char):
+    #         indices = []
+    #         for i, e in enumerate(list(string)):
+    #             if e == char:
+    #                 indices.append(i)
+    #         return indices 
 
-        def backfray_structure():
-            l, r = self.structure.split('+')
-            lix = get_ix(l, '('); ll = int(len(lix)/2)
-            rix = get_ix(r, ')'); rl = int(len(rix)/2)
-            backfray = []
-            for li, lil, ri, ril in zipp(
-                lix[:ll], lix[ll:][::-1], 
-                rix[:rl], rix[rl:][::-1]):
-                # print(li, ri, lil, ril )
-                try: l = l[:li] + '.' + l[li+1:]
-                except TypeError: pass
-                try: l = l[:lil] + '.' + l[lil+1:]
-                except TypeError: pass
-                try: r = r[:ri] + '.' + r[ri+1:]
-                except TypeError: pass
-                try: r = r[:ril] + '.' + r[ril+1:]
-                except TypeError: pass 
-                s = '+'.join([l,r])
-                backfray.append(
-                    Zippo(self.model, self.s1, self.s2, state='backfray', structure=s))
-            backfray.pop(-1)
-            return backfray
+    #     def backfray_structure():
+    #         l, r = self.structure.split('+')
+    #         lix = get_ix(l, '('); ll = int(len(lix)/2)
+    #         rix = get_ix(r, ')'); rl = int(len(rix)/2)
+    #         backfray = []
+    #         for li, lil, ri, ril in zipp(
+    #             lix[:ll], lix[ll:][::-1], 
+    #             rix[:rl], rix[rl:][::-1]):
+    #             # print(li, ri, lil, ril )
+    #             try: l = l[:li] + '.' + l[li+1:]
+    #             except TypeError: pass
+    #             try: l = l[:lil] + '.' + l[lil+1:]
+    #             except TypeError: pass
+    #             try: r = r[:ri] + '.' + r[ri+1:]
+    #             except TypeError: pass
+    #             try: r = r[:ril] + '.' + r[ril+1:]
+    #             except TypeError: pass 
+    #             s = '+'.join([l,r])
+    #             backfray.append(
+    #                 Zippo(self.model, self.s1, self.s2, state='backfray', structure=s))
+    #         backfray.pop(-1)
+    #         return backfray
         
-        if self.total_nucleations >= self.model.min_nucleation and self.consecutive_nucleations >= self.model.min_nucleation:
-            steps = backfray_structure()
-            self.backfray = [self]
-            for step in steps:
-                self.backfray.append(step)
-            self.backfray = self.backfray[::-1]
-            self.backfray[0].set_state('off_nucleation')
-        else: 
-            self.set_state('off_nucleation')
-            self.backfray = []
+    #     if self.total_nucleations >= self.model.min_nucleation and self.consecutive_nucleations >= self.model.min_nucleation:
+    #         steps = backfray_structure()
+    #         self.backfray = [self]
+    #         for step in steps:
+    #             self.backfray.append(step)
+    #         self.backfray = self.backfray[::-1]
+    #         self.backfray[0].set_state('off_nucleation')
+    #     else: 
+    #         self.set_state('off_nucleation')
+    #         self.backfray = []
     
-    @property
-    def bfempty(self):
-        return self.backfray == []
+    # @property
+    # def bfempty(self):
+    #     return self.backfray == []
 
 
         # if False: #part of backfraystructure
