@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np 
 import pandas as pd 
 
-from itertools import pairwise, chain, tee
+from itertools import pairwise, combinations, tee
 
 from .complex import Zippo, Sliding, Complex
 from .chamber import Chamber
@@ -41,7 +41,7 @@ class Kinetwork(object):
             self.add_reactions()
             self.clean_duplicates_relabel()
 
-            #get an overview of the network 
+        #get an overview of the network 
         self.possible_states = [ None,
                                 'singlestranded',
                                 'duplex',
@@ -54,10 +54,28 @@ class Kinetwork(object):
         countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in self.possible_states]
         self.overview = dict(zip(self.possible_states,countslist))
 
+        self.simplex = self.chamber.singlestranded.structure
+        self.duplex = self.chamber.duplex.structure
+
+
+    def completegraph(self):
+        self.DG = nx.compose(self.SG, self.ZG)
+
     def zippingraph(self):
         self.ZG = nx.DiGraph()
-
+        self.ZG.add_node(self.simplex, 
+                         obj = self.chamber.singlestranded,
+                         pairs = 0, 
+                         state = 'singlestranded',
+                         dpxdist = self.chamber.singlestranded.dpxdist)
+        self.ZG.add_node(self.duplex, 
+                         obj = self.chamber.duplex, 
+                         pairs = self.chamber.duplex.total_nucleations, 
+                         state = 'duplex',
+                         dpxdist = 0)
+        #general subfunction to compute zippingraphs of each oncore 
         def subzippingraph(oncore):
+            #utility to get indices of string update
             def get_i(lst):
                 indices = []
                 for i, (el1, el2) in enumerate(pairwise(lst)):
@@ -66,6 +84,7 @@ class Kinetwork(object):
                     if el1 != '.' and el2 == '.':
                         indices.append(i+1)
                 return indices
+            #updates current the given structure
             def update_structure(string, side, character: str):
                 updated = string
                 moveslist = []
@@ -74,6 +93,8 @@ class Kinetwork(object):
                     up = updated[:m] + character + updated[m+1:]
                     moveslist.append(up)
                 return moveslist
+            #recursively add nodes and edges to their leafs in a tree like manner until duplexation
+            #duplexation is automatically recognised by the production of an empty moveslist list 
             def leafs(left, right, graph):
                 lmoves = update_structure(left, 1, '(')
                 rmoves = update_structure(right, -1, ')')
@@ -81,29 +102,200 @@ class Kinetwork(object):
                 zobj = Zippo(self.model, self.s1, self.s2, state='zipping', structure=inbound)
                 graph.add_node( inbound,
                                 obj = zobj,
+                                state = zobj.state,
                                 pairs = zobj.total_nucleations)
                 for lmove, rmove in zip(lmoves, rmoves):
                     outbound = '+'.join([lmove,rmove])
                     zobj = Zippo(self.model, self.s1, self.s2, state='zipping', structure=outbound)
                     graph.add_node(outbound,
                                    obj = zobj,
+                                   state = zobj.state,
                                    pairs = zobj.total_nucleations)
-                    #FORWARD
-                    graph.add_edge(inbound, outbound)
-                    #BACKWARD
-                    graph.add_edge(outbound, inbound)
+                    graph.add_edge(inbound, outbound) #TODO ADD RATES
+                    graph.add_edge(outbound, inbound) #TODO ADD RATES
 
                     yield list(leafs(lmove,rmove,graph))
-            
+            #takes inputted oncore and splits it to update structure simultaneously on the left and the right
             left, right = oncore.structure.split('+')
             subZG = nx.DiGraph()
             list(leafs(left, right, subZG))
             return subZG 
-        
+        #add the subzippingraph to the general zipping graph for each oncore
         for on in self.chamber.oncores:
             addgraph = subzippingraph(on)
             self.ZG.update(addgraph)
+        
+        nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.ZG)
+        for node in list(nucleations.nodes()):
+            self.ZG.add_edge(self.simplex, node)
+            self.ZG.add_edge(node, self.simplex)
+    
+    def slidingraph(self):
+        self.SG = nx.DiGraph()
 
+        self.SG.add_node(self.simplex, 
+                         obj = self.chamber.singlestranded,
+                         pairs = 0, 
+                         state = 'singlestranded',
+                         dpxdist = self.chamber.singlestranded.dpxdist)
+        self.SG.add_node(self.duplex, 
+                         obj = self.chamber.duplex, 
+                         state = 'duplex',
+                         pairs = self.chamber.duplex.total_nucleations, 
+                         dpxdist = 0)
+
+        def backfraygraph(sliding, side):
+            #get indices where the sliding has possible basepairs by parsing its completed structure
+            def getix(string):
+                lix = []
+                rix = []
+                for i, e in enumerate(list(string)):
+                    if e == '(':
+                        lix.append(i)
+                    if e == ')':
+                        rix.append(i)
+                return [(l,r) for l,r in zip(lix, rix[::-1])]
+            #confront currently given structure with target sliding to get adjacent next basepairs to form
+            def adjacent(source, target):
+                adj = []
+                tx = getix(target)
+                sx = getix(source)
+                for i, item in enumerate(tx):
+                    if len(sx) > 1:
+                        check = [sx[0], sx[-1]]
+                        if item in check:
+                            if i == 0:
+                                pass
+                                # adj.append(tx[i+1])
+                            elif i == len(tx)-1:
+                                pass
+                                # adj.append(tx[i-1])
+                            else:
+                                if tx[i-1] not in sx:
+                                    if tx[i-1] not in adj:
+                                        adj.append(tx[i-1])
+                                if tx[i+1] not in sx:
+                                    if tx[i+1] not in adj:
+                                        adj.append(tx[i+1])
+                    else:
+                        check = sx
+                        if item in check:
+                            if i == 0:
+
+                                adj.append(tx[i+1])
+                            elif i == len(tx)-1:
+                                adj.append(tx[i-1])
+                            else:
+                                adj.append(tx[i-1])
+                                adj.append(tx[i+1])
+                return adj 
+            #update once every new adjacent basepair to form
+            def update_structure(structure, target):
+                updated = structure
+                moveslist = []
+                moves = adjacent(structure, target)
+                for m in moves:
+                    up = updated[:m[0]] + '(' + updated[m[0]+1:m[1]] + ')' + updated[m[1]+1:]
+                    moveslist.append(up)
+                return moveslist
+            #leafing tree recursive function for generating all moves 
+            def leafs(structure, target, graph):
+                moves = update_structure(structure, target)
+                obj = Complex(  self.model,
+                                self.s1,
+                                self.s2, 
+                                state='backfray',
+                                structure = structure,
+                                dpxdist=sliding.dpxdist)
+                obj.dtc = sliding.total_nucleations - obj.total_nucleations
+                obj.side = side
+                graph.add_node( structure,
+                                obj = obj, 
+                                pairs = obj.total_nucleations,
+                                state = obj.state,
+                                dpxdist = obj.dpxdist,
+                                dtc = obj.dtc,
+                                side = obj.side)
+                for move in moves:
+                    obj = Complex(
+                                self.model,
+                                self.s1,
+                                self.s2, 
+                                state='backfray',
+                                structure = move,
+                                dpxdist=sliding.dpxdist)
+                    obj.dtc = sliding.total_nucleations - obj.total_nucleations
+                    obj.side = side 
+                    graph.add_node( move,
+                                    obj = obj, 
+                                    pairs = obj.total_nucleations,
+                                    state = obj.state,
+                                    dpxdist = obj.dpxdist,
+                                    dtc = obj.dtc,
+                                    side = obj.side)
+                    graph.add_edge(structure, move) #TODO ADD RATED
+                    graph.add_edge(move, structure) #TODO ADD RATES
+                    yield list(leafs(move, target, graph))
+            #perform leafing for each backfray and connect everything in a unique graph
+            subSG = nx.DiGraph()
+            for bf in sliding.backfray:
+                bfG = nx.DiGraph()
+                list(leafs(bf.structure, sliding.structure, bfG))
+                subSG.update(bfG)
+            return subSG
+        
+        split = self.chamber.split_slidings()
+        for l, r in zip(split[0], split[1]):
+            lsubSG = backfraygraph(l, 'l')
+            rsubSG = backfraygraph(r, 'r')
+            self.SG.update(lsubSG)
+            self.SG.update(rsubSG)
+
+        #MAKE SLIDING CONNECTIONS
+        left = self.filternodes('side', lambda x: x == 'l', self.SG)
+        right = self.filternodes('side', lambda x: x == 'r', self.SG)
+        lcompl = self.filternodes('dtc', lambda x: x == 0, left)
+        rcompl = self.filternodes('dtc', lambda x: x == 0, right)
+        for l, r in combinations([*list(lcompl.nodes.data()), *list(rcompl.nodes.data())], 2):
+            #CONNECT SLIDINGS TO DUPLEX
+            if l[1]['dpxdist'] <= self.sliding_cutoff:
+                self.SG.add_edge(self.duplex, l[0])
+                self.SG.add_edge(l[0], self.duplex)
+            if r[1]['dpxdist'] <= self.sliding_cutoff:
+                self.SG.add_edge(self.duplex, r[0])
+                self.SG.add_edge(r[0], self.duplex)
+            #CONNECT SLIDINGS BETWEEN THEMSELVES
+            if l[1]['side'] == r[1]['side']:
+                distance = abs(l[1]['dpxdist'] - r[1]['dpxdist'])
+                if distance <= self.sliding_cutoff:
+                    self.SG.add_edge(l[0], r[0])
+                    self.SG.add_edge(r[0], l[0])
+            else:
+                distance = abs(l[1]['dpxdist'] + r[1]['dpxdist'])
+                if distance <= self.sliding_cutoff:
+                    self.SG.add_edge(l[0], r[0])
+                    self.SG.add_edge(r[0], l[0])
+        
+        #CONNECT NUCLEATIONS TO SIMPLEX
+        nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.SG)
+        for node in list(nucleations.nodes()):
+            self.SG.add_edge(self.simplex, node)
+            self.SG.add_edge(node, self.simplex)
+
+
+    def filternodes(self, property, function, graph):
+        def filternode(node):
+            try: 
+                try:
+                    return function(graph.nodes[node][property])
+                except KeyError: pass
+            except TypeError: 
+                try: 
+                    value = function([e[1][property] for e in list(self.SG.nodes.data())])
+                    return graph.nodes[node][property] == value
+                except KeyError: pass
+        Rgraph = nx.subgraph_view(graph, filter_node=filternode)
+        return Rgraph
 
 ###################################################################################################À FUTURE GRAVEYARD
     def add_nodes(self):

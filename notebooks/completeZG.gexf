@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2023-02-12">
+    <creator>NetworkX 3.0</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <attributes mode="static" class="node">
+      <attribute id="0" title="obj" type="string" />
+      <attribute id="1" title="pairs" type="long" />
+    </attributes>
+    <nodes>
+      <node id="(........+........)" label="(........+........)">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id="((.......+.......))" label="((.......+.......))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id="(((......+......)))" label="(((......+......)))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id="((((.....+.....))))" label="((((.....+.....))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="4" />
+        </attvalues>
+      </node>
+      <node id="(((((....+....)))))" label="(((((....+....)))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="5" />
+        </attvalues>
+      </node>
+      <node id="((((((...+...))))))" label="((((((...+...))))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="6" />
+        </attvalues>
+      </node>
+      <node id="(((((((..+..)))))))" label="(((((((..+..)))))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="7" />
+        </attvalues>
+      </node>
+      <node id="((((((((.+.))))))))" label="((((((((.+.))))))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="8" />
+        </attvalues>
+      </node>
+      <node id="(((((((((+)))))))))" label="(((((((((+)))))))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="9" />
+        </attvalues>
+      </node>
+      <node id=".(.......+.......)." label=".(.......+.......).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id=".((......+......))." label=".((......+......)).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id=".(((.....+.....)))." label=".(((.....+.....))).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id=".((((....+....))))." label=".((((....+....)))).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="4" />
+        </attvalues>
+      </node>
+      <node id=".(((((...+...)))))." label=".(((((...+...))))).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="5" />
+        </attvalues>
+      </node>
+      <node id=".((((((..+..))))))." label=".((((((..+..)))))).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="6" />
+        </attvalues>
+      </node>
+      <node id=".(((((((.+.)))))))." label=".(((((((.+.))))))).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="7" />
+        </attvalues>
+      </node>
+      <node id=".((((((((+))))))))." label=".((((((((+)))))))).">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="8" />
+        </attvalues>
+      </node>
+      <node id="..(......+......).." label="..(......+......)..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id="..((.....+.....)).." label="..((.....+.....))..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id="..(((....+....))).." label="..(((....+....)))..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id="..((((...+...)))).." label="..((((...+...))))..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="4" />
+        </attvalues>
+      </node>
+      <node id="..(((((..+..))))).." label="..(((((..+..)))))..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="5" />
+        </attvalues>
+      </node>
+      <node id="..((((((.+.)))))).." label="..((((((.+.))))))..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="6" />
+        </attvalues>
+      </node>
+      <node id="..(((((((+))))))).." label="..(((((((+)))))))..">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="7" />
+        </attvalues>
+      </node>
+      <node id="...(.....+.....)..." label="...(.....+.....)...">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id="...((....+....))..." label="...((....+....))...">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id="...(((...+...)))..." label="...(((...+...)))...">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id="...((((..+..))))..." label="...((((..+..))))...">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="4" />
+        </attvalues>
+      </node>
+      <node id="...(((((.+.)))))..." label="...(((((.+.)))))...">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="5" />
+        </attvalues>
+      </node>
+      <node id="...((((((+))))))..." label="...((((((+))))))...">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="6" />
+        </attvalues>
+      </node>
+      <node id="....(....+....)...." label="....(....+....)....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id="....((...+...))...." label="....((...+...))....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id="....(((..+..)))...." label="....(((..+..)))....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id="....((((.+.))))...." label="....((((.+.))))....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="4" />
+        </attvalues>
+      </node>
+      <node id="....(((((+)))))...." label="....(((((+)))))....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="5" />
+        </attvalues>
+      </node>
+      <node id=".....(...+...)....." label=".....(...+...).....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id=".....((..+..))....." label=".....((..+..)).....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id=".....(((.+.)))....." label=".....(((.+.))).....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id=".....((((+))))....." label=".....((((+)))).....">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="4" />
+        </attvalues>
+      </node>
+      <node id="......(..+..)......" label="......(..+..)......">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id="......((.+.))......" label="......((.+.))......">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id="......(((+)))......" label="......(((+)))......">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="3" />
+        </attvalues>
+      </node>
+      <node id=".......(.+.)......." label=".......(.+.).......">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+      <node id=".......((+))......." label=".......((+)).......">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="2" />
+        </attvalues>
+      </node>
+      <node id="........(+)........" label="........(+)........">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
+          <attvalue for="1" value="1" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="(........+........)" target="((.......+.......))" id="0" />
+      <edge source="((.......+.......))" target="(........+........)" id="1" />
+      <edge source="((.......+.......))" target="(((......+......)))" id="2" />
+      <edge source="((.......+.......))" target=".(.......+.......)." id="3" />
+      <edge source="(((......+......)))" target="((.......+.......))" id="4" />
+      <edge source="(((......+......)))" target="((((.....+.....))))" id="5" />
+      <edge source="(((......+......)))" target=".((......+......))." id="6" />
+      <edge source="((((.....+.....))))" target="(((......+......)))" id="7" />
+      <edge source="((((.....+.....))))" target="(((((....+....)))))" id="8" />
+      <edge source="((((.....+.....))))" target=".(((.....+.....)))." id="9" />
+      <edge source="(((((....+....)))))" target="((((.....+.....))))" id="10" />
+      <edge source="(((((....+....)))))" target="((((((...+...))))))" id="11" />
+      <edge source="(((((....+....)))))" target=".((((....+....))))." id="12" />
+      <edge source="((((((...+...))))))" target="(((((....+....)))))" id="13" />
+      <edge source="((((((...+...))))))" target="(((((((..+..)))))))" id="14" />
+      <edge source="((((((...+...))))))" target=".(((((...+...)))))." id="15" />
+      <edge source="(((((((..+..)))))))" target="((((((...+...))))))" id="16" />
+      <edge source="(((((((..+..)))))))" target="((((((((.+.))))))))" id="17" />
+      <edge source="(((((((..+..)))))))" target=".((((((..+..))))))." id="18" />
+      <edge source="((((((((.+.))))))))" target="(((((((..+..)))))))" id="19" />
+      <edge source="((((((((.+.))))))))" target="(((((((((+)))))))))" id="20" />
+      <edge source="((((((((.+.))))))))" target=".(((((((.+.)))))))." id="21" />
+      <edge source="(((((((((+)))))))))" target="((((((((.+.))))))))" id="22" />
+      <edge source="(((((((((+)))))))))" target=".((((((((+))))))))." id="23" />
+      <edge source=".(.......+.......)." target="((.......+.......))" id="24" />
+      <edge source=".(.......+.......)." target=".((......+......))." id="25" />
+      <edge source=".((......+......))." target=".(.......+.......)." id="26" />
+      <edge source=".((......+......))." target="(((......+......)))" id="27" />
+      <edge source=".((......+......))." target=".(((.....+.....)))." id="28" />
+      <edge source=".((......+......))." target="..(......+......).." id="29" />
+      <edge source=".(((.....+.....)))." target=".((......+......))." id="30" />
+      <edge source=".(((.....+.....)))." target="((((.....+.....))))" id="31" />
+      <edge source=".(((.....+.....)))." target=".((((....+....))))." id="32" />
+      <edge source=".(((.....+.....)))." target="..((.....+.....)).." id="33" />
+      <edge source=".((((....+....))))." target=".(((.....+.....)))." id="34" />
+      <edge source=".((((....+....))))." target="(((((....+....)))))" id="35" />
+      <edge source=".((((....+....))))." target=".(((((...+...)))))." id="36" />
+      <edge source=".((((....+....))))." target="..(((....+....))).." id="37" />
+      <edge source=".(((((...+...)))))." target=".((((....+....))))." id="38" />
+      <edge source=".(((((...+...)))))." target="((((((...+...))))))" id="39" />
+      <edge source=".(((((...+...)))))." target=".((((((..+..))))))." id="40" />
+      <edge source=".(((((...+...)))))." target="..((((...+...)))).." id="41" />
+      <edge source=".((((((..+..))))))." target=".(((((...+...)))))." id="42" />
+      <edge source=".((((((..+..))))))." target="(((((((..+..)))))))" id="43" />
+      <edge source=".((((((..+..))))))." target=".(((((((.+.)))))))." id="44" />
+      <edge source=".((((((..+..))))))." target="..(((((..+..))))).." id="45" />
+      <edge source=".(((((((.+.)))))))." target=".((((((..+..))))))." id="46" />
+      <edge source=".(((((((.+.)))))))." target="((((((((.+.))))))))" id="47" />
+      <edge source=".(((((((.+.)))))))." target=".((((((((+))))))))." id="48" />
+      <edge source=".(((((((.+.)))))))." target="..((((((.+.)))))).." id="49" />
+      <edge source=".((((((((+))))))))." target=".(((((((.+.)))))))." id="50" />
+      <edge source=".((((((((+))))))))." target="(((((((((+)))))))))" id="51" />
+      <edge source=".((((((((+))))))))." target="..(((((((+))))))).." id="52" />
+      <edge source="..(......+......).." target=".((......+......))." id="53" />
+      <edge source="..(......+......).." target="..((.....+.....)).." id="54" />
+      <edge source="..((.....+.....)).." target="..(......+......).." id="55" />
+      <edge source="..((.....+.....)).." target=".(((.....+.....)))." id="56" />
+      <edge source="..((.....+.....)).." target="..(((....+....))).." id="57" />
+      <edge source="..((.....+.....)).." target="...(.....+.....)..." id="58" />
+      <edge source="..(((....+....))).." target="..((.....+.....)).." id="59" />
+      <edge source="..(((....+....))).." target=".((((....+....))))." id="60" />
+      <edge source="..(((....+....))).." target="..((((...+...)))).." id="61" />
+      <edge source="..(((....+....))).." target="...((....+....))..." id="62" />
+      <edge source="..((((...+...)))).." target="..(((....+....))).." id="63" />
+      <edge source="..((((...+...)))).." target=".(((((...+...)))))." id="64" />
+      <edge source="..((((...+...)))).." target="..(((((..+..))))).." id="65" />
+      <edge source="..((((...+...)))).." target="...(((...+...)))..." id="66" />
+      <edge source="..(((((..+..))))).." target="..((((...+...)))).." id="67" />
+      <edge source="..(((((..+..))))).." target=".((((((..+..))))))." id="68" />
+      <edge source="..(((((..+..))))).." target="..((((((.+.)))))).." id="69" />
+      <edge source="..(((((..+..))))).." target="...((((..+..))))..." id="70" />
+      <edge source="..((((((.+.)))))).." target="..(((((..+..))))).." id="71" />
+      <edge source="..((((((.+.)))))).." target=".(((((((.+.)))))))." id="72" />
+      <edge source="..((((((.+.)))))).." target="..(((((((+))))))).." id="73" />
+      <edge source="..((((((.+.)))))).." target="...(((((.+.)))))..." id="74" />
+      <edge source="..(((((((+))))))).." target="..((((((.+.)))))).." id="75" />
+      <edge source="..(((((((+))))))).." target=".((((((((+))))))))." id="76" />
+      <edge source="..(((((((+))))))).." target="...((((((+))))))..." id="77" />
+      <edge source="...(.....+.....)..." target="..((.....+.....)).." id="78" />
+      <edge source="...(.....+.....)..." target="...((....+....))..." id="79" />
+      <edge source="...((....+....))..." target="...(.....+.....)..." id="80" />
+      <edge source="...((....+....))..." target="..(((....+....))).." id="81" />
+      <edge source="...((....+....))..." target="...(((...+...)))..." id="82" />
+      <edge source="...((....+....))..." target="....(....+....)...." id="83" />
+      <edge source="...(((...+...)))..." target="...((....+....))..." id="84" />
+      <edge source="...(((...+...)))..." target="..((((...+...)))).." id="85" />
+      <edge source="...(((...+...)))..." target="...((((..+..))))..." id="86" />
+      <edge source="...(((...+...)))..." target="....((...+...))...." id="87" />
+      <edge source="...((((..+..))))..." target="...(((...+...)))..." id="88" />
+      <edge source="...((((..+..))))..." target="..(((((..+..))))).." id="89" />
+      <edge source="...((((..+..))))..." target="...(((((.+.)))))..." id="90" />
+      <edge source="...((((..+..))))..." target="....(((..+..)))...." id="91" />
+      <edge source="...(((((.+.)))))..." target="...((((..+..))))..." id="92" />
+      <edge source="...(((((.+.)))))..." target="..((((((.+.)))))).." id="93" />
+      <edge source="...(((((.+.)))))..." target="...((((((+))))))..." id="94" />
+      <edge source="...(((((.+.)))))..." target="....((((.+.))))...." id="95" />
+      <edge source="...((((((+))))))..." target="...(((((.+.)))))..." id="96" />
+      <edge source="...((((((+))))))..." target="..(((((((+))))))).." id="97" />
+      <edge source="...((((((+))))))..." target="....(((((+)))))...." id="98" />
+      <edge source="....(....+....)...." target="...((....+....))..." id="99" />
+      <edge source="....(....+....)...." target="....((...+...))...." id="100" />
+      <edge source="....((...+...))...." target="....(....+....)...." id="101" />
+      <edge source="....((...+...))...." target="...(((...+...)))..." id="102" />
+      <edge source="....((...+...))...." target="....(((..+..)))...." id="103" />
+      <edge source="....((...+...))...." target=".....(...+...)....." id="104" />
+      <edge source="....(((..+..)))...." target="....((...+...))...." id="105" />
+      <edge source="....(((..+..)))...." target="...((((..+..))))..." id="106" />
+      <edge source="....(((..+..)))...." target="....((((.+.))))...." id="107" />
+      <edge source="....(((..+..)))...." target=".....((..+..))....." id="108" />
+      <edge source="....((((.+.))))...." target="....(((..+..)))...." id="109" />
+      <edge source="....((((.+.))))...." target="...(((((.+.)))))..." id="110" />
+      <edge source="....((((.+.))))...." target="....(((((+)))))...." id="111" />
+      <edge source="....((((.+.))))...." target=".....(((.+.)))....." id="112" />
+      <edge source="....(((((+)))))...." target="....((((.+.))))...." id="113" />
+      <edge source="....(((((+)))))...." target="...((((((+))))))..." id="114" />
+      <edge source="....(((((+)))))...." target=".....((((+))))....." id="115" />
+      <edge source=".....(...+...)....." target="....((...+...))...." id="116" />
+      <edge source=".....(...+...)....." target=".....((..+..))....." id="117" />
+      <edge source=".....((..+..))....." target=".....(...+...)....." id="118" />
+      <edge source=".....((..+..))....." target="....(((..+..)))...." id="119" />
+      <edge source=".....((..+..))....." target=".....(((.+.)))....." id="120" />
+      <edge source=".....((..+..))....." target="......(..+..)......" id="121" />
+      <edge source=".....(((.+.)))....." target=".....((..+..))....." id="122" />
+      <edge source=".....(((.+.)))....." target="....((((.+.))))...." id="123" />
+      <edge source=".....(((.+.)))....." target=".....((((+))))....." id="124" />
+      <edge source=".....(((.+.)))....." target="......((.+.))......" id="125" />
+      <edge source=".....((((+))))....." target=".....(((.+.)))....." id="126" />
+      <edge source=".....((((+))))....." target="....(((((+)))))...." id="127" />
+      <edge source=".....((((+))))....." target="......(((+)))......" id="128" />
+      <edge source="......(..+..)......" target=".....((..+..))....." id="129" />
+      <edge source="......(..+..)......" target="......((.+.))......" id="130" />
+      <edge source="......((.+.))......" target="......(..+..)......" id="131" />
+      <edge source="......((.+.))......" target=".....(((.+.)))....." id="132" />
+      <edge source="......((.+.))......" target="......(((+)))......" id="133" />
+      <edge source="......((.+.))......" target=".......(.+.)......." id="134" />
+      <edge source="......(((+)))......" target="......((.+.))......" id="135" />
+      <edge source="......(((+)))......" target=".....((((+))))....." id="136" />
+      <edge source="......(((+)))......" target=".......((+))......." id="137" />
+      <edge source=".......(.+.)......." target="......((.+.))......" id="138" />
+      <edge source=".......(.+.)......." target=".......((+))......." id="139" />
+      <edge source=".......((+))......." target=".......(.+.)......." id="140" />
+      <edge source=".......((+))......." target="......(((+)))......" id="141" />
+      <edge source=".......((+))......." target="........(+)........" id="142" />
+      <edge source="........(+)........" target=".......((+))......." id="143" />
+    </edges>
+  </graph>
+</gexf>

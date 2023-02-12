@@ -332,7 +332,7 @@ class Sliding(Complex):
         def nwise(iterable,n):
             iterators = tee(iterable, n)
             for i, iter in enumerate(iterators):
-                for j in range(i):
+                for _ in range(i):
                     next(iter, None)
             return zip(*iterators)
 
@@ -397,41 +397,6 @@ class Sliding(Complex):
                 offcore.inherit_zipping(itszippings[:-1])
         else: self.backfray = []
             
-        
-        # #internal utility function for getting indices 
-        # def get_ix(string, char):
-        #     indices = []
-        #     for i, e in enumerate(list(string)):
-        #         if e == char:
-        #             indices.append(i)
-        #     return indices 
-        # #internal utility function for string translation
-        # def trans(l):
-        #     trans = str.maketrans({'.': '.', '(': 'ì', ')': 'ì'})
-        #     return l.translate(trans)
-        # #internal utility function for generating nwise iterators 
-        # #see itertools pairwise but now nwise dude 
-        # def nwise(iterable,n):
-        #     iterators = tee(iterable, n)
-        #     for i, iter in enumerate(iterators):
-        #         for j in range(i):
-        #             next(iter, None)
-        #     return zip(*iterators)
-        # #iuf for replacement of string with character at list of indices 
-        # def replace(index_list,character,string):
-        #     string=list(string)
-        #     for index in index_list:
-        #         string[index]=character
-        #     return "".join(string)
-        
-        # #Actual output of the method 
-        # ixl = get_ix(self.structure, '(') #get left strand indices
-        # ixr = get_ix(self.structure, ')') #get right strand indices 
-        # self.offcores = []
-        # for l, r in zip(
-        #     nwise(ixl, self.model.min_nucleation), 
-        #     nwise(ixr, self.model.min_nucleation)):
-        #     self.offcores.append([*l, *r], 'ì', self.structure)
 
     def backfraying_trajectory(self):
         from itertools import zip_longest as zipp
