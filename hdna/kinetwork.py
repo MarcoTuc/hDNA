@@ -35,11 +35,13 @@ class Kinetwork(object):
         self.kinetics.set_zippingrate(self.model.zipping)
         self.Graph = nx.DiGraph()
 
+        self.simplex = self.chamber.singlestranded.structure
+        self.duplex = self.chamber.duplex.structure
+
         if not clean: 
-            self.add_nodes()
-            self.relabel_nodes()          
-            self.add_reactions()
-            self.clean_duplicates_relabel()
+            self.zippingraph()
+            self.slidingraph()
+            self.completegraph()
 
         #get an overview of the network 
         self.possible_states = [ None,
@@ -54,8 +56,7 @@ class Kinetwork(object):
         countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in self.possible_states]
         self.overview = dict(zip(self.possible_states,countslist))
 
-        self.simplex = self.chamber.singlestranded.structure
-        self.duplex = self.chamber.duplex.structure
+
 
 
     def completegraph(self):
@@ -123,16 +124,38 @@ class Kinetwork(object):
         for on in self.chamber.oncores:
             addgraph = subzippingraph(on)
             self.ZG.update(addgraph)
-        
-        nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.ZG)
-        for node in list(nucleations.nodes()):
-            self.ZG.nodes[node]['state'] = 'on_nucleation'
-            self.ZG.add_edge(self.simplex, node)
-            self.ZG.add_edge(node, self.simplex)
-        
+
         for node in self.ZG.nodes():
             self.ZG.nodes[node]['obj'].structureG()
         
+        nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.ZG)
+        for node in list(nucleations.nodes()):
+            state = 'on_nucleation'
+            self.ZG.nodes[node]['state'] = state
+            dgss = 0 #reference simplex state
+            dgnuc = self.ZG.nodes[node]['obj'].G #nucleation free energy
+            # compute forward and backward rates
+            fwd, bwd = self.kinetics.kawasaki(state, dgss, dgnuc) 
+            self.ZG.add_edge(self.simplex, node, k = fwd)
+            self.ZG.add_edge(node, self.simplex, k = bwd)
+            next = list(self.ZG.neighbors(node))
+            next.remove(self.simplex)
+            for e in next:
+                dge = self.ZG.nodes[e]['obj'].G
+                # compute forward and backward rates
+                fwd, bwd = self.kinetics.kawasaki(state, dgnuc, dge) 
+                self.ZG.add_edge(node, e, k = fwd)
+                self.ZG.add_edge(e, node, k = bwd)
+                
+        
+        mbare = list(set(self.ZG.nodes()) - set(nucleations.nodes()))
+        for e1, e2 in nx.subgraph_view(self.ZG, lambda x: x in mbare).to_undirected().edges(): 
+            dg1 = self.ZG.nodes[e1]['obj'].G
+            dg2 = self.ZG.nodes[e2]['obj'].G
+            fwd, bwd = self.kinetics.kawasaki(state, dg1, dg2)
+            self.ZG[e1][e2]['k'] = fwd
+            self.ZG[e2][e1]['k'] = bwd
+
         self.ZG.nodes[self.duplex]['state'] = 'duplex'
 
 ##############################################################################################            
@@ -252,13 +275,16 @@ class Kinetwork(object):
                 list(leafs(bf.structure, sliding.structure, bfG))
                 subSG.update(bfG)
             return subSG
-        
+                
         split = self.chamber.split_slidings()
         for l, r in zip(split[0], split[1]):
             lsubSG = backfraygraph(l, 'l')
             rsubSG = backfraygraph(r, 'r')
             self.SG.update(lsubSG)
             self.SG.update(rsubSG)
+        
+        for node in self.SG.nodes():
+            self.SG.nodes[node]['obj'].structureG()
 
         #MAKE SLIDING CONNECTIONS
         left = self.filternodes('side', lambda x: x == 'l', self.SG)
@@ -266,37 +292,67 @@ class Kinetwork(object):
         lcompl = self.filternodes('dtc', lambda x: x == 0, left)
         rcompl = self.filternodes('dtc', lambda x: x == 0, right)
         for l, r in combinations([*list(lcompl.nodes.data()), *list(rcompl.nodes.data())], 2):
-            self.SG.nodes[l[0]]['state'] = 'sliding'
-            self.SG.nodes[r[0]]['state'] = 'sliding'
+            state = 'sliding'
+            self.SG.nodes[l[0]]['state'] = state
+            self.SG.nodes[r[0]]['state'] = state
             #CONNECT SLIDINGS TO DUPLEX
             if l[1]['dpxdist'] <= self.sliding_cutoff:
-                self.SG.add_edge(self.duplex, l[0])
-                self.SG.add_edge(l[0], self.duplex)
+                dgduplex = self.chamber.duplex.G
+                dgsliding = self.SG.nodes[l[0]]['obj'].G
+                fwd, bwd = self.kinetics.kawasaki(state, dgsliding, dgduplex)
+                self.SG.add_edge(self.duplex, l[0], k = fwd)
+                self.SG.add_edge(l[0], self.duplex, k = bwd)
             if r[1]['dpxdist'] <= self.sliding_cutoff:
-                self.SG.add_edge(self.duplex, r[0])
-                self.SG.add_edge(r[0], self.duplex)
+                dgduplex = self.chamber.duplex.G
+                dgsliding = self.SG.nodes[r[0]]['obj'].G
+                fwd, bwd = self.kinetics.kawasaki(state, dgsliding, dgduplex)
+                self.SG.add_edge(self.duplex, r[0], k = fwd)
+                self.SG.add_edge(r[0], self.duplex, k = bwd)
             #CONNECT SLIDINGS BETWEEN THEMSELVES
             if l[1]['side'] == r[1]['side']:
                 distance = abs(l[1]['dpxdist'] - r[1]['dpxdist'])
                 if distance <= self.sliding_cutoff:
-                    self.SG.add_edge(l[0], r[0])
-                    self.SG.add_edge(r[0], l[0])
+                    dgl = self.SG.nodes[l[0]]['obj'].G
+                    dgr = self.SG.nodes[r[0]]['obj'].G
+                    fwd, bwd = self.kinetics.kawasaki(state, dgl, dgr)
+                    self.SG.add_edge(l[0], r[0], k = fwd)
+                    self.SG.add_edge(r[0], l[0], k = bwd)
             else:
                 distance = abs(l[1]['dpxdist'] + r[1]['dpxdist'])
                 if distance <= self.sliding_cutoff:
-                    self.SG.add_edge(l[0], r[0])
-                    self.SG.add_edge(r[0], l[0])
+                    dgl = self.SG.nodes[l[0]]['obj'].G
+                    dgr = self.SG.nodes[r[0]]['obj'].G
+                    fwd, bwd = self.kinetics.kawasaki(state, dgl, dgr)
+                    self.SG.add_edge(l[0], r[0], k = fwd)
+                    self.SG.add_edge(r[0], l[0], k = bwd)
         
         #CONNECT NUCLEATIONS TO SIMPLEX
         nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.SG)
         for node in list(nucleations.nodes()):
-            self.SG.nodes[node]['state'] = 'off_nucleation'
-            self.SG.add_edge(self.simplex, node)
-            self.SG.add_edge(node, self.simplex)
+            state = 'off_nucleation'
+            self.SG.nodes[node]['state'] = state
+            dgss = 0 #reference simplex state
+            dgnuc = self.SG.nodes[node]['obj'].G #nucleation free energy
+            # compute forward and backward rates
+            fwd, bwd = self.kinetics.kawasaki(state, dgss, dgnuc) 
+            self.SG.add_edge(self.simplex, node, k = fwd)
+            self.SG.add_edge(node, self.simplex, k = bwd)
+            next = list(self.SG.neighbors(node))
+            next.remove(self.simplex)
+            for e in next:
+                dge = self.SG.nodes[e]['obj'].G
+                # compute forward and backward rates
+                fwd, bwd = self.kinetics.kawasaki(state, dgnuc, dge) 
+                self.SG.add_edge(node, e, k = fwd)
+                self.SG.add_edge(e, node, k = bwd)
         
-        for node in self.SG.nodes():
-            self.SG.nodes[node]['obj'].structureG()
-
+        mbare = list(set(self.SG.nodes()) - set(nucleations.nodes()))
+        for e1, e2 in nx.subgraph_view(self.SG, lambda x: x in mbare).to_undirected().edges(): 
+            dg1 = self.SG.nodes[e1]['obj'].G
+            dg2 = self.SG.nodes[e2]['obj'].G
+            fwd, bwd = self.kinetics.kawasaki(state, dg1, dg2)
+            self.SG[e1][e2]['k'] = fwd
+            self.SG[e2][e1]['k'] = bwd
 
     def filternodes(self, property, function, graph):
         def filternode(node):
@@ -463,13 +519,31 @@ class Kinetics(object):
                           'b_sliding-end':  self.k_back(kf, dg)
                         }
         return correspondence[kind]
+    
+    def unif_scaling(self, nucleations):
+        return 1/nucleations
 
-    def kawasaki(self, rate, dgi, dgj):
-        ratesdict = {'zipping': self.zippingrate,
-                     'sliding': self.slidingrate,
-                     'nucleation': self.georate}
-        ka = ratesdict[rate]
+    def z_scaling(self, nucleations):
+        """
+        Returns:
+        - the nucleation partition function as sum over nodes of e^dg_node/KbT
+        - list of boltzmann weights per node (use a dictionary)
+        Then boltzmann weighting will just be indexing the given node
+        from the dictionary and dividing the value by Z 
+        """
+    
+
+    def kawasaki(self, kind, dgi, dgj):
+        ratesdict = {'zipping':     self.zippingrate,
+                     'backfray':    self.zippingrate,
+                     'duplex':      self.zippingrate,
+                     'sliding':     self.slidingrate,
+                     'on_nucleation':   self.georate,
+                     'off_nucleation':  self.georate}
+        ka = ratesdict[kind]
+        #kf
         kij = ka*np.exp(-(dgj-dgi)/(2*self.phys['R(kcal/molK)']*(self.T)))
+        #kb
         kji = ka*np.exp(-(dgi-dgj)/(2*self.phys['R(kcal/molK)']*(self.T)))
         return kij, kji
     

@@ -58,7 +58,7 @@ class Simulator(object):
         
         self.model = model 
         self.kinet = kinetwork
-        self.Graph = kinetwork.Graph
+        self.Graph = kinetwork.DG
         self.overview = self.kinet.overview
 
         self.kinetics = kinetwork.kinetics
@@ -85,7 +85,7 @@ class Simulator(object):
     def add_reactions(self, verbose=False):
         #NUCLEATIONS:
         for i, (e1, e2, data) in enumerate(self.Graph.edges.data()):
-            name = f"{data['kind']}_{i}"
+            name = f"{i}"
             rate = data['k']
             etl1 = self.tl(e1)
             etl2 = self.tl(e2)
@@ -105,90 +105,6 @@ class Simulator(object):
                 if verbose: print(rule)
                 self.biosim <= jl.Reaction(str(name), float(rate), str(rule))   
                 
-
-    
-    def add_reactions_old(self):
-        i = 0  #for now reaction names will just be sequential numbers
-        """PSEUDOCODE:
-        
-        for node in self.Graph:
-            get neighborhood of node 
-            pairs = node.pairs (how many base pairs the node has)
-            state = node.state (what is it)
-            for node in neighborhood:
-                self.biosim <= jl.Reaction(reaction_name, reaction_rate, reaction_string (use the f"{stuff}" method of Giovanni))
-        """
-        # start from the neighborhood of the singlestranded state to add nucleations 
-        SS = self.kinet.chamber.singlestranded.structure 
-        ss = self.tl(SS)
-        neighbors = list(nx.neighbors(self.Graph, SS))
-        print(neighbors)
-        sliding_factor = 1/(self.kinet.s1.length + self.kinet.s2.length - 1)
-        zipping_factor = 1/(self.kinet.overview['on_nucleation'])
-        for n in neighbors:
-            i += 1
-            """ JULIA PATHOLOGY 
-                Can't use dots as names for reactions because
-                Julia has a pathology with dots and parentheses 
-                the most reliable notation is: 
-                |   . --> o     |
-                |   ( --> b     |
-                |   ) --> d     |
-                |   + --> A     |                   """
-            neigh = self.tl(n)
-            state = self.Graph.nodes[n]['state'] 
-            factor = sliding_factor if state == 'off_register' else zipping_factor
-            # FORWARD BIMOLECULAR NUCLEATION
-            name = f"f_nucleation{i}"; rule = f"{ss} + {ss} --> {neigh}"
-            kf = self.kinetics.georate * factor
-            self.biosim <= jl.Reaction(name, kf, rule)
-            self.Graph.edges[SS,n]['kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
-
-            # BACKWARD UNIMOLECULAR DISSOCIATION            
-            name = f"b_nucleation{i}"; rule = f"{neigh} --> {ss} + {ss}"
-            DG = self.Graph.nodes[n]['obj'].G
-            kb = self.kinetics.k_back(kf, DG)
-            self.biosim <= jl.Reaction(name, kb, rule)
-            self.Graph.edges[SS,n]['kb'] = kb   # Also add the rate as a new property to the graph, it will be useful for visualization
-
-        # now make a graph without the singlestranded state for all subsequent transitions 
-        subgraph = self.Graph.copy()
-        subgraph.remove_node(SS)
-        
-        for n1, n2, data in list(subgraph.edges.data()):
-            i += 1
-            
-            # if data['kind'] in ['sliding', 'sliding-end']:
-            l1 = self.Graph.nodes[n1]['obj'].total_nucleations
-            l2 = self.Graph.nodes[n2]['obj'].total_nucleations
-            if l1 < l2:             # Left slidings
-                n1o = self.tl(n1)
-                n2o = self.tl(n2)
-            else:                   # Right slidings
-                n1o = self.tl(n2)
-                n2o = self.tl(n1)
-            # else:
-            #     n1o = self.tl(n1)
-            #     n2o = self.tl(n2)
-
-            # FORWARD SLIDINGS AND ZIPPINGS
-            name = f"f_{data['kind']}_{i}"; rule = f"{n1o} --> {n2o}"
-            kf = data['k']
-            self.biosim <= jl.Reaction(name, kf, rule)
-            self.Graph.edges[n1,n2][f'kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
-
-            # BACKWARD SLIDINGS AND ZIPPINGS 
-            name = f"b_{data['kind']}_{i}"; rule = f'{n2o} --> {n1o}'
-            DG = self.Graph.nodes[n2]['obj'].G - self.Graph.nodes[n1]['obj'].G
-            if self.Graph.nodes[n1]['obj'].total_nucleations > self.Graph.nodes[n2]['obj'].total_nucleations: DG = - DG
-            kb = data['k']
-            self.biosim <= jl.Reaction(name, kb, rule)
-            self.Graph.edges[n1,n2][f'kb'] = kb   # Also add the rate as a new property to the graph, it will be useful for visualization
-
-            """ Note that for slidings coming from the right like: .......((((+.......)))) <--> ........(((+........))) 
-                the forward rate will always denote the passage from the strand with less basepairs with the one with more.
-                By now the network visualization is kinda broken but who cares, rates are where they should be. 
-                This happens because of how nodes are ordered inside kinetwork's Graph """
 
     def simulation(self):
         """ run the simulation and return the results """
@@ -283,11 +199,11 @@ class Simulator(object):
             return self.trajectory
         else:
             G = self.DiGraph()
-            fe = []
+            FRE = []
             rates = []
             names = []
             for i, step in enumerate(self.trajectory[:-1], start=1):
-                fe.append(G.edges[str(step),str(self.trajectory[i])]['obj'].G)
+                FRE.append(G.nodes[str(step)]['obj'].G)
                 rates.append('{:e}'.format(G.edges[str(step),str(self.trajectory[i])]['rate']))
                 names.append(G.edges[str(step),str(self.trajectory[i])]['name'])
             DF = pd.DataFrame([self.trajectory, rates, names], 
@@ -464,3 +380,87 @@ class TrajectoryError(Exception):
         # print(f"{len(failed)} simulations didn't produce a duplex.")
         # print(f"That's {100*len(failed)/len(data)}% of simulations")
         # return np.mean(fpts)
+
+
+# def add_reactions_old(self):
+    #     i = 0  #for now reaction names will just be sequential numbers
+    #     """PSEUDOCODE:
+        
+    #     for node in self.Graph:
+    #         get neighborhood of node 
+    #         pairs = node.pairs (how many base pairs the node has)
+    #         state = node.state (what is it)
+    #         for node in neighborhood:
+    #             self.biosim <= jl.Reaction(reaction_name, reaction_rate, reaction_string (use the f"{stuff}" method of Giovanni))
+    #     """
+    #     # start from the neighborhood of the singlestranded state to add nucleations 
+    #     SS = self.kinet.chamber.singlestranded.structure 
+    #     ss = self.tl(SS)
+    #     neighbors = list(nx.neighbors(self.Graph, SS))
+    #     print(neighbors)
+    #     sliding_factor = 1/(self.kinet.s1.length + self.kinet.s2.length - 1)
+    #     zipping_factor = 1/(self.kinet.overview['on_nucleation'])
+    #     for n in neighbors:
+    #         i += 1
+    #         """ JULIA PATHOLOGY 
+    #             Can't use dots as names for reactions because
+    #             Julia has a pathology with dots and parentheses 
+    #             the most reliable notation is: 
+    #             |   . --> o     |
+    #             |   ( --> b     |
+    #             |   ) --> d     |
+    #             |   + --> A     |                   """
+    #         neigh = self.tl(n)
+    #         state = self.Graph.nodes[n]['state'] 
+    #         factor = sliding_factor if state == 'off_register' else zipping_factor
+    #         # FORWARD BIMOLECULAR NUCLEATION
+    #         name = f"f_nucleation{i}"; rule = f"{ss} + {ss} --> {neigh}"
+    #         kf = self.kinetics.georate * factor
+    #         self.biosim <= jl.Reaction(name, kf, rule)
+    #         self.Graph.edges[SS,n]['kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
+
+    #         # BACKWARD UNIMOLECULAR DISSOCIATION            
+    #         name = f"b_nucleation{i}"; rule = f"{neigh} --> {ss} + {ss}"
+    #         DG = self.Graph.nodes[n]['obj'].G
+    #         kb = self.kinetics.k_back(kf, DG)
+    #         self.biosim <= jl.Reaction(name, kb, rule)
+    #         self.Graph.edges[SS,n]['kb'] = kb   # Also add the rate as a new property to the graph, it will be useful for visualization
+
+    #     # now make a graph without the singlestranded state for all subsequent transitions 
+    #     subgraph = self.Graph.copy()
+    #     subgraph.remove_node(SS)
+        
+    #     for n1, n2, data in list(subgraph.edges.data()):
+    #         i += 1
+            
+    #         # if data['kind'] in ['sliding', 'sliding-end']:
+    #         l1 = self.Graph.nodes[n1]['obj'].total_nucleations
+    #         l2 = self.Graph.nodes[n2]['obj'].total_nucleations
+    #         if l1 < l2:             # Left slidings
+    #             n1o = self.tl(n1)
+    #             n2o = self.tl(n2)
+    #         else:                   # Right slidings
+    #             n1o = self.tl(n2)
+    #             n2o = self.tl(n1)
+    #         # else:
+    #         #     n1o = self.tl(n1)
+    #         #     n2o = self.tl(n2)
+
+    #         # FORWARD SLIDINGS AND ZIPPINGS
+    #         name = f"f_{data['kind']}_{i}"; rule = f"{n1o} --> {n2o}"
+    #         kf = data['k']
+    #         self.biosim <= jl.Reaction(name, kf, rule)
+    #         self.Graph.edges[n1,n2][f'kf'] = kf   # Also add the rate as a new property to the graph, it will be useful for visualization
+
+    #         # BACKWARD SLIDINGS AND ZIPPINGS 
+    #         name = f"b_{data['kind']}_{i}"; rule = f'{n2o} --> {n1o}'
+    #         DG = self.Graph.nodes[n2]['obj'].G - self.Graph.nodes[n1]['obj'].G
+    #         if self.Graph.nodes[n1]['obj'].total_nucleations > self.Graph.nodes[n2]['obj'].total_nucleations: DG = - DG
+    #         kb = data['k']
+    #         self.biosim <= jl.Reaction(name, kb, rule)
+    #         self.Graph.edges[n1,n2][f'kb'] = kb   # Also add the rate as a new property to the graph, it will be useful for visualization
+
+    #         """ Note that for slidings coming from the right like: .......((((+.......)))) <--> ........(((+........))) 
+    #             the forward rate will always denote the passage from the strand with less basepairs with the one with more.
+    #             By now the network visualization is kinda broken but who cares, rates are where they should be. 
+    #             This happens because of how nodes are ordered inside kinetwork's Graph """
