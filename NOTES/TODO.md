@@ -1,13 +1,15 @@
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#### INVESTIGATION
->>>>
-    Some strands are systematically getting over/under evaluated by almost one order of magnitude. I need to check in detail what's happening in there, if there are any buggy things taking place that need to be fixed. 
-
-# !
-Associate strands with their number so that it shows up in plots, so I can retreive their folders easily
+# !!!
+Create a method to get the most trafficked hybridization paths and append this as a weight on graph edges. 
 
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#### MODELING
+
+# !!!!!! Normalization in the backward nucleation constant
+So far I normalized the forward nucleation constant by counting all possible slidings and nucleotides per sliding. 
+I don't know what to do with the backward rate constant. Should I also normalize it?
+
 
 # !! 
 Implement the secondary structure dependance 
@@ -24,10 +26,7 @@ Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A 
             -   there's clearlys some wrong shit as one can see
                 by the orders of magnitude you get for diffusion
 
-# !!!
-Implement nucleation factors for keeping probability safe
->>>> PROBLEM:
-        - When you have a strand with no slidings for saying, we are not normalizing the on-register nucleation rate by the number of possible slidings. This leads to very high on-register nucleation events leading to fast zipping of say strand #1  
+
 
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>>#### Experimental verification

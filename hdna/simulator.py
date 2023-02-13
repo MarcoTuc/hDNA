@@ -70,6 +70,7 @@ class Simulator(object):
         self.initialamount = self.options.initialamount
         self.add_species()
         self.add_reactions()
+        self.duplexindex = np.where(np.array([self.lt(str(e)) for e in list(self.biosim.species_list)]) == self.kinet.duplex)[0][0]
 
 
     def add_species(self, verbose=False):
@@ -138,7 +139,7 @@ class Simulator(object):
         fpts = []
         failed = []
         for sim in ensemble:
-            index = jl.findfirst(jl.isone, sim[-1,:])
+            index = jl.findfirst(jl.isone, sim[self.duplexindex,:])
             try: fpts.append(sim.t[index-1])
             except TypeError: 
                 fpts.append(self.options.runtime)
@@ -157,7 +158,7 @@ class Simulator(object):
         fpts = []
         failed = []
         for sim in ensemble:
-            index = jl.findfirst(jl.isone, sim[-1,:])
+            index = jl.findfirst(jl.isone, sim[1,:])
             try: fpts.append(sim.t[index-1])
             except TypeError: 
                 fpts.append(self.options.runtime)
@@ -206,8 +207,8 @@ class Simulator(object):
                 FRE.append(G.nodes[str(step)]['obj'].G)
                 rates.append('{:e}'.format(G.edges[str(step),str(self.trajectory[i])]['rate']))
                 names.append(G.edges[str(step),str(self.trajectory[i])]['name'])
-            DF = pd.DataFrame([self.trajectory, rates, names], 
-                                index=['trajectory', 'next step rate', 'step name']).T
+            DF = pd.DataFrame([self.trajectory, FRE, rates, names], 
+                                index=['trajectory', 'DG', 'next step rate', 'step name']).T
             return DF
 
     def DiGraph(self, verbose=False):

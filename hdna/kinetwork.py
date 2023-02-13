@@ -33,10 +33,10 @@ class Kinetwork(object):
         self.kinetics = Kinetics(self.model, self.chamber, geometry)
         self.kinetics.set_slidingrate(self.model.sliding)
         self.kinetics.set_zippingrate(self.model.zipping)
-        self.Graph = nx.DiGraph()
-
         self.simplex = self.chamber.singlestranded.structure
         self.duplex = self.chamber.duplex.structure
+
+        self.kmethod = self.kinetics.metropolis
 
         if not clean: 
             self.zippingraph()
@@ -53,7 +53,7 @@ class Kinetwork(object):
                                 'backfray',
                                 'sliding' ]   
 
-        countslist = [list(dict(self.Graph.nodes.data('state')).values()).count(state) for state in self.possible_states]
+        countslist = [list(dict(self.DG.nodes.data('state')).values()).count(state) for state in self.possible_states]
         self.overview = dict(zip(self.possible_states,countslist))
 
 
@@ -135,7 +135,9 @@ class Kinetwork(object):
             dgss = 0 #reference simplex state
             dgnuc = self.ZG.nodes[node]['obj'].G #nucleation free energy
             # compute forward and backward rates
-            fwd, bwd = self.kinetics.kawasaki(state, dgss, dgnuc) 
+            fwd, bwd = self.kmethod(state, dgss, dgnuc) 
+            nucnorm = (self.s1.length + self.s2.length - 1) * self.chamber.duplex.total_nucleations
+            fwd = fwd/nucnorm
             self.ZG.add_edge(self.simplex, node, k = fwd)
             self.ZG.add_edge(node, self.simplex, k = bwd)
             next = list(self.ZG.neighbors(node))
@@ -143,7 +145,7 @@ class Kinetwork(object):
             for e in next:
                 dge = self.ZG.nodes[e]['obj'].G
                 # compute forward and backward rates
-                fwd, bwd = self.kinetics.kawasaki(state, dgnuc, dge) 
+                fwd, bwd = self.kmethod(state, dgnuc, dge) 
                 self.ZG.add_edge(node, e, k = fwd)
                 self.ZG.add_edge(e, node, k = bwd)
                 
@@ -152,7 +154,7 @@ class Kinetwork(object):
         for e1, e2 in nx.subgraph_view(self.ZG, lambda x: x in mbare).to_undirected().edges(): 
             dg1 = self.ZG.nodes[e1]['obj'].G
             dg2 = self.ZG.nodes[e2]['obj'].G
-            fwd, bwd = self.kinetics.kawasaki(state, dg1, dg2)
+            fwd, bwd = self.kmethod(state, dg1, dg2)
             self.ZG[e1][e2]['k'] = fwd
             self.ZG[e2][e1]['k'] = bwd
 
@@ -299,13 +301,13 @@ class Kinetwork(object):
             if l[1]['dpxdist'] <= self.sliding_cutoff:
                 dgduplex = self.chamber.duplex.G
                 dgsliding = self.SG.nodes[l[0]]['obj'].G
-                fwd, bwd = self.kinetics.kawasaki(state, dgsliding, dgduplex)
+                fwd, bwd = self.kmethod(state, dgsliding, dgduplex)
                 self.SG.add_edge(self.duplex, l[0], k = fwd)
                 self.SG.add_edge(l[0], self.duplex, k = bwd)
             if r[1]['dpxdist'] <= self.sliding_cutoff:
                 dgduplex = self.chamber.duplex.G
                 dgsliding = self.SG.nodes[r[0]]['obj'].G
-                fwd, bwd = self.kinetics.kawasaki(state, dgsliding, dgduplex)
+                fwd, bwd = self.kmethod(state, dgsliding, dgduplex)
                 self.SG.add_edge(self.duplex, r[0], k = fwd)
                 self.SG.add_edge(r[0], self.duplex, k = bwd)
             #CONNECT SLIDINGS BETWEEN THEMSELVES
@@ -314,7 +316,7 @@ class Kinetwork(object):
                 if distance <= self.sliding_cutoff:
                     dgl = self.SG.nodes[l[0]]['obj'].G
                     dgr = self.SG.nodes[r[0]]['obj'].G
-                    fwd, bwd = self.kinetics.kawasaki(state, dgl, dgr)
+                    fwd, bwd = self.kmethod(state, dgl, dgr)
                     self.SG.add_edge(l[0], r[0], k = fwd)
                     self.SG.add_edge(r[0], l[0], k = bwd)
             else:
@@ -322,7 +324,7 @@ class Kinetwork(object):
                 if distance <= self.sliding_cutoff:
                     dgl = self.SG.nodes[l[0]]['obj'].G
                     dgr = self.SG.nodes[r[0]]['obj'].G
-                    fwd, bwd = self.kinetics.kawasaki(state, dgl, dgr)
+                    fwd, bwd = self.kmethod(state, dgl, dgr)
                     self.SG.add_edge(l[0], r[0], k = fwd)
                     self.SG.add_edge(r[0], l[0], k = bwd)
         
@@ -334,7 +336,12 @@ class Kinetwork(object):
             dgss = 0 #reference simplex state
             dgnuc = self.SG.nodes[node]['obj'].G #nucleation free energy
             # compute forward and backward rates
-            fwd, bwd = self.kinetics.kawasaki(state, dgss, dgnuc) 
+            fwd, bwd = self.kmethod(state, dgss, dgnuc)
+            # normalize the forward nucleation rate
+            # osl = self.ownsliding(self.SG.nodes[node], self.SG) 
+            # bpt = self.SG.nodes[osl]['obj'].total_nucleations 
+            nucnorm = (self.s1.length + self.s2.length - 1) * (self.chamber.duplex.total_nucleations - self.SG.nodes[node]['dpxdist'])
+            fwd = fwd / nucnorm
             self.SG.add_edge(self.simplex, node, k = fwd)
             self.SG.add_edge(node, self.simplex, k = bwd)
             next = list(self.SG.neighbors(node))
@@ -342,7 +349,7 @@ class Kinetwork(object):
             for e in next:
                 dge = self.SG.nodes[e]['obj'].G
                 # compute forward and backward rates
-                fwd, bwd = self.kinetics.kawasaki(state, dgnuc, dge) 
+                fwd, bwd = self.kmethod(state, dgnuc, dge) 
                 self.SG.add_edge(node, e, k = fwd)
                 self.SG.add_edge(e, node, k = bwd)
         
@@ -350,7 +357,7 @@ class Kinetwork(object):
         for e1, e2 in nx.subgraph_view(self.SG, lambda x: x in mbare).to_undirected().edges(): 
             dg1 = self.SG.nodes[e1]['obj'].G
             dg2 = self.SG.nodes[e2]['obj'].G
-            fwd, bwd = self.kinetics.kawasaki(state, dg1, dg2)
+            fwd, bwd = self.kmethod(state, dg1, dg2)
             self.SG[e1][e2]['k'] = fwd
             self.SG[e2][e1]['k'] = bwd
 
@@ -367,7 +374,16 @@ class Kinetwork(object):
                 except KeyError: pass
         Rgraph = nx.subgraph_view(graph, filter_node=filternode)
         return Rgraph
-
+    
+    def ownsliding(self, node, graph):
+        """ special filtering method to get the goal sliding associated with an off_nucleation"""
+        dpxdist = node['dpxdist']
+        side    = node['side']
+        def filternode(node):
+            try: return graph.nodes[node]['dpxdist'] == dpxdist and graph.nodes[node]['side'] == side and graph.nodes[node]['state'] == 'sliding'
+            except KeyError: pass     
+        sliding = list(nx.subgraph_view(graph, filter_node=filternode).nodes())[0]
+        return sliding
         
     def slidingcondition(self, slide0, slide1, duplexation = False):
         # if duplexation == True: 
@@ -490,8 +506,21 @@ class Kinetics(object):
         ### Default compute relevant rates
         self.diffusionlimited()
         self.geometric_rate()
-        self.set_slidingrate()
-        self.set_zippingrate()
+
+    
+        """ ------------- SLIDING FORWARD RATES -----------------"""
+
+    def set_slidingrate(self, sliding): #NOTE NEED TO EXPAND THIS TO TRY ALL RANGES
+        self.slidingrate = sliding
+    
+
+    """ ------------- ZIPPING FORWARD RATES -----------------"""
+
+    def set_zippingrate(self, setrate):
+        """ first approximation is to take zipping
+            equal to diffusion limited collision rate """
+        if setrate == 'diffusionlimited': self.zippingrate = self.dlrate
+        elif type(setrate) == float: self.zippingrate = setrate
     
     
     def frates(self, kind):
@@ -531,6 +560,7 @@ class Kinetics(object):
         Then boltzmann weighting will just be indexing the given node
         from the dictionary and dividing the value by Z 
         """
+        pass
     
 
     def kawasaki(self, kind, dgi, dgj):
@@ -548,19 +578,22 @@ class Kinetics(object):
         return kij, kji
     
     def metropolis(self, rate, dgi, dgj):
-        ratesdict = {'zipping': self.zippingrate,
-                'sliding': self.slidingrate,
-                'nucleation': self.georate}
+        ratesdict = {'zipping':     self.zippingrate,
+                     'backfray':    self.zippingrate,
+                     'duplex':      self.zippingrate,
+                     'sliding':     self.slidingrate,
+                     'on_nucleation':   self.georate,
+                     'off_nucleation':  self.georate}
         ka = ratesdict[rate]
         if dgi > dgj:
-            kij = rate
-            kji = rate * np.exp((dgi-dgj)/(self.phys['R(kcal/molK)']*(self.T)))
+            kij = ka
+            kji = ka * np.exp(-(dgi-dgj)/(self.phys['R(kcal/molK)']*(self.T)))
         elif dgi < dgj:
-            kij = rate * np.exp((dgj-dgi)/(self.phys['R(kcal/molK)']*(self.T)))
-            kji = rate 
+            kij = ka * np.exp(-(dgj-dgi)/(self.phys['R(kcal/molK)']*(self.T)))
+            kji = ka 
         else: 
-            kij = rate
-            kji = rate 
+            kij = ka
+            kji = ka 
         return kij, kji
             
 
@@ -644,21 +677,6 @@ class Kinetics(object):
     """ Check dnapolymer.py inside ./oldsequentialcode/polymer 
         for all the other polymer physics related functions """
         
-
-    """ ------------- SLIDING FORWARD RATES -----------------"""
-
-    def set_slidingrate(self, sliding = 2e7): #NOTE NEED TO EXPAND THIS TO TRY ALL RANGES
-        self.slidingrate = sliding
-    
-
-    """ ------------- ZIPPING FORWARD RATES -----------------"""
-
-    def set_zippingrate(self, setrate=None):
-        """ first approximation is to take zipping
-            equal to diffusion limited collision rate """
-        if setrate == None: self.zippingrate = self.dlrate
-        elif type(setrate) == float: self.zippingrate = setrate
-
 
     """ ------------- GENERAL BACKWARD RATES -----------------"""
 
@@ -896,9 +914,9 @@ class FatalError(Exception):
         
     #     df = pd.DataFrame(self.nodata('state'), columns=['structure','state'])
     #     #####USE THIS TO CHANGE METHOD##############
-    #     kzipp = self.kinetics.kawasaki################
-    #     kslid = self.kinetics.kawasaki##################
-    #     knucl = self.kinetics.kawasaki################
+    #     kzipp = self.kmethod################
+    #     kslid = self.kmethod##################
+    #     knucl = self.kmethod################
     #     ############################################        
     #     native = df[df['state'] == 'on_nucleation']
     #     for n in native['structure']:

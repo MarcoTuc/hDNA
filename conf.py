@@ -4,15 +4,15 @@ import numpy as np
 import pandas as pd
 from hdna.logger import Tee 
 
-EXPNAME = 'fullgraph_0'
+EXPNAME = 'metropolis'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
     #model free parameters  
     'minimum_nucleation': 1,
-    'sliding_cutoff':     2,
-    'zipping_rate':       2e8,
-    'sliding_rate':       5e5,
+    'sliding_cutoff':     4,
+    'zipping_rate':       2e7,
+    'sliding_rate':       5e3,
     #temperature
     'temperature':        25,       #### HERTEL EXPERIMENTAL TEMPERATURE 
     #angles
@@ -21,18 +21,15 @@ HP = {
 }
 
 OPT = {
-
     #simulation options
     'runtime': 5e-6,
-    'N_simul': 35,
+    'N_simul': 1000,
     'trajstosave': 35,
-
     #nupack options
     'stacking': 'nostacking'
 }
 
 SOPT = {    
-    
     #datasaving options 
     'G_saving': 'strand_folder'
 }
