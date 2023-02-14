@@ -4,13 +4,14 @@ import numpy as np
 import pandas as pd
 from hdna.logger import Tee 
 
-EXPNAME = 'metropolis'
+EXPNAME = '1402-M3S44-2'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
     #model free parameters  
     'minimum_nucleation': 1,
-    'sliding_cutoff':     4,
+    'sliding_cutoff':     200,
+    'sliding_filter':     4,
     'zipping_rate':       2e7,
     'sliding_rate':       5e3,
     #temperature
@@ -22,7 +23,7 @@ HP = {
 
 OPT = {
     #simulation options
-    'runtime': 5e-6,
+    'runtime': 4e-6,
     'N_simul': 1000,
     'trajstosave': 35,
     #nupack options

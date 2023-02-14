@@ -7,6 +7,7 @@ class Model(object):
                     space_dimensionality,
                     min_nucleation=1, 
                     sliding_cutoff=1, 
+                    sliding_filter=4,
                     stacking='nostacking', 
                     sliding=2e7,
                     zipping=2e9,
@@ -30,6 +31,7 @@ class Model(object):
   
         self.min_nucleation = min_nucleation
         self.sliding_cutoff = sliding_cutoff
+        self.sliding_filter = sliding_filter
         
         self.celsius = celsius
         self.kelvin = celsius + 273.15

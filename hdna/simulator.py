@@ -86,7 +86,8 @@ class Simulator(object):
     def add_reactions(self, verbose=False):
         #NUCLEATIONS:
         for i, (e1, e2, data) in enumerate(self.Graph.edges.data()):
-            name = f"{i}"
+            state = self.Graph[e1][e2]['state']
+            name = f"{state}-{i}"
             rate = data['k']
             etl1 = self.tl(e1)
             etl2 = self.tl(e2)
@@ -199,7 +200,7 @@ class Simulator(object):
         if not self.options.rates_info:
             return self.trajectory
         else:
-            G = self.DiGraph()
+            G = self.BSGraph()
             FRE = []
             rates = []
             names = []
@@ -211,7 +212,7 @@ class Simulator(object):
                                 index=['trajectory', 'DG', 'next step rate', 'step name']).T
             return DF
 
-    def DiGraph(self, verbose=False):
+    def BSGraph(self, verbose=False):
         """ Return a digraph post-biosim to see if it matches with the pre-biosim graph.
             This is useful to see if there are any errors in the kinetwork-biosim translation"""
         R = self.biosim.reaction_list
@@ -223,33 +224,35 @@ class Simulator(object):
             reags.append(self.lt(str(list((R[r].reactants))[0])))
             prods.append(self.lt(str(list((R[r].products))[0])))
         dataframe = pd.DataFrame([names, rates, reags, prods], index=properties).T
-        self.digraph = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', 
+        self.BSG = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', 
                                             edge_attr=['name', 'rate'], create_using=nx.DiGraph())
-        # loop for inheriting node properties from self.Graph to self.digraph
+        # loop for inheriting node properties from self.Graph to self.BSG
         for g in list(self.Graph.nodes):
             if verbose: print(g)
             for key in list(self.Graph.nodes[g].keys()):
-                # print(self.digraph.nodes[g][key])
                 if verbose: print(self.Graph.nodes[g][key])
-                self.digraph.nodes[g][key] = self.Graph.nodes[g][key]
+                self.BSG.nodes[g][key] = self.Graph.nodes[g][key]
+        # loop to remove reaction number and get name as the original reaction state 
+        for edge in self.BSG.edges.data():
+            edge[2]['state'] = edge[2]['name'].split('-')[0]
 
-        return self.digraph
+        return self.BSG
     
     def save_graph(self, PATH):
         #convert node object to string of object type
         try: 
-            for n in self.digraph.nodes.data():
+            for n in self.BSG.nodes.data():
                 n[1]['obj'] = str(type(n[1]['obj']))
             try: os.makedirs(PATH)
             except FileExistsError: pass 
-            nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph.gexf')
+            nx.write_gexf(self.BSG,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
         except:
-            self.DiGraph() 
-            for n in self.digraph.nodes.data():
+            self.BSGraph() 
+            for n in self.BSG.nodes.data():
                 n[1]['obj'] = str(type(n[1]['obj']))
             try: os.makedirs(PATH)
             except FileExistsError: pass 
-            nx.write_gexf(self.digraph,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
+            nx.write_gexf(self.BSG,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
         
 
     ######################

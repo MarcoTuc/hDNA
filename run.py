@@ -59,6 +59,7 @@ sys.stdout = Tee(sys.stdout, f)
 MOD = Model('dna', '3D', 
         min_nucleation=HP['minimum_nucleation'], 
         sliding_cutoff=HP['sliding_cutoff'],
+        sliding_filter=HP['sliding_filter'],
         stacking=OPT['stacking'],
         sliding=HP['sliding_rate'],
         zipping=HP['zipping_rate'],
