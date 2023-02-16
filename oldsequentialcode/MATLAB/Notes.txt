@@ -1,7 +1,0 @@
-Diffusion Map framework for Matlab: https://github.com/gmishne/diffusion_maps
-                                    https://it.mathworks.com/matlabcentral/fileexchange/36141-laplacian-eigenmap-diffusion-map-manifold-learning
-
-See: MANIFOLD LEARNING
-
-Useful tutorial on how to use row reduction echelon form for getting conserved moieties
-http://matlab.cheme.cmu.edu/2011/08/02/determining-linear-independence-of-a-set-of-vectors/

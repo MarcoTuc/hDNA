@@ -39,6 +39,8 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     layout = go.Layout(
         template=THM['template'],
         title = f'Scatterplot for {name}',
+        xaxis_title="empirical rates ",
+        yaxis_title="computed rates",
         showlegend=False,
         autosize = False,
         width = 1000,
@@ -52,7 +54,7 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         ),
         xaxis = dict(
             tickmode = 'array',
-            showgrid = True
+            showgrid = True,
             ),
         yaxis = dict(
             tickmode = 'array',
@@ -61,8 +63,8 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     )
     dados = [trace1, trace2]
     fig = go.Figure(data = dados, layout = layout)
-    fig.update_xaxes(exponentformat="e")
-    fig.update_yaxes(exponentformat="e")
+    fig.update_xaxes(exponentformat="e", titlefont={'size': 22})
+    fig.update_yaxes(exponentformat="e", titlefont={'size': 22})
 
     if writepath == None:
         fig.show()

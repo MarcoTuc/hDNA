@@ -48,10 +48,11 @@ class Model(object):
                                     sodium=self.Na, 
                                     magnesium= self.Mg) 
 
-    def setparams(self, zipping, sliding, sfilter=4):
-        self.zipping = zipping
-        self.sliding = sliding
-        self.sliding_filter = sfilter
+    def setparams(self, **kwargs):
+        for i in kwargs.keys():
+            if i not in ['zipping', 'sliding', 'sliding_filter']:
+                raise ValueError('argument not valid')
+        self.__dict__.update(kwargs)
 
     def setgeometry(self, theta=120, phi=270):
         self.theta = theta
