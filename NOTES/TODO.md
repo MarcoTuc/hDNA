@@ -10,6 +10,8 @@ Create a method to get the most trafficked hybridization paths and append this a
 So far I normalized the forward nucleation constant by counting all possible slidings and nucleotides per sliding. 
 I don't know what to do with the backward rate constant. Should I also normalize it?
 
+# ! 
+Correct the nucnorm in the traps connection of the kinetwork
 
 # !! 
 Implement the secondary structure dependance 

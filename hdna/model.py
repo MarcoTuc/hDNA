@@ -13,8 +13,13 @@ class Model(object):
                     stacking='nostacking', 
                     Na=1.0, 
                     Mg=0.0, 
-                    celsius=26):
+                    celsius=26,
+                    standard=False):
         """ I will use this class for passing experimental conditions """
+
+        if standard:
+            self.setgeometry(120, 270)
+            self.setparams(zipping=4e7, sliding=1e7, sliding_filter=3)
        
         if material not in ['dna', 'rna']:
             raise ValueError("Material must be set to 'dna' or 'rna'")
@@ -31,7 +36,7 @@ class Model(object):
   
         self.min_nucleation = min_nucleation
         self.sliding_cutoff = sliding_cutoff
-        self.sliding_filter = sliding_filter
+
         
         self.celsius = celsius
         self.kelvin = celsius + 273.15
@@ -41,12 +46,17 @@ class Model(object):
 
         self.sliding = sliding
         self.zipping = zipping
+        self.sliding_filter = sliding_filter
 
         self.nupack = nu.Model(material=self.material, 
                                     ensemble=self.stacking, 
                                     celsius=self.celsius, 
                                     sodium=self.Na, 
                                     magnesium= self.Mg) 
+
+        if standard:
+            self.setgeometry(120, 270)
+            self.setparams(zipping=4e7, sliding=1e7, sliding_filter=3)
 
     def setparams(self, **kwargs):
         for i in kwargs.keys():

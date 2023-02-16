@@ -20,11 +20,11 @@ data['index'] = data.index
 data.set_index(data['sequences'], inplace=True)
 
 MOD = Model()
-MOD.setparams(sliding_filter=3)
+MOD.setparams(sliding_filter=1)
 MOD.setgeometry(theta=360)
 
 H = HDNA(data, EXPNAME, model=MOD)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]
 # results = dual_annealing(H.run, bounds, maxiter=5, initial_temp=500)
 
-H.run([2e7, 1e7])
+H.run([4e7, 1e7])

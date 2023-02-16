@@ -63,6 +63,7 @@ class Kinetwork(object):
         self.DG = nx.compose(self.SG, self.ZG)
         for node in self.DG.nodes():
             self.DG.nodes[node]['fre'] = self.DG.nodes[node]['obj'].G
+        
 
     def zippingraph(self):
         self.ZG = nx.DiGraph()
@@ -416,10 +417,37 @@ class Kinetwork(object):
         if slide0.dpxdist - slide1.dpxdist < self.sliding_cutoff: return True 
         else: return False  
 
-
-    def node_filter(self, property, attribute):
-        return self.Graph.subgraph( 
-        [n for n, attrdict in self.Graph.nodes.items() if attrdict [str(property)] == str(attribute)])
+    def get_traps(self):
+        sab='+'.join([self.s1.sequence,self.s2.sequence])
+        def addpar(string, i, char):
+            return string[:i] + char + string[i+1:]
+        wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+        ss = self.chamber.singlestranded.structure.split('+')[0]
+        for i, e1 in enumerate(self.s1.sequence):
+            for j, e2 in enumerate(self.s2.sequence):
+                if e1 == wc[e2]:
+                    if i+j != len(ss)-1:
+                        dpxdist = abs(i+j - len(ss) + 1)
+                        l = addpar(ss, i, '(')
+                        r = addpar(ss, j, ')')
+                        trap = '+'.join([l,r])
+                        obj = Complex(self.model, self.s1, self.s2, state='off_nucleation', structure = trap, dpxdist=dpxdist)
+                        print(sab)
+                        print(trap)
+                        self.DG.add_node(   trap,
+                                            obj = obj, 
+                                            pairs = obj.total_nucleations,
+                                            state = obj.state,
+                                            dpxdist = obj.dpxdist,
+                                            fre = obj.G)
+                        dgss = 0
+                        dgtrap = obj.G
+                        fwd, bwd = self.nmethod('off_nucleation', dgss, dgtrap)
+                        nucnorm = (self.s1.length + self.s2.length - 1) 
+                        fwd = fwd/nucnorm
+                        bwd = bwd/nucnorm
+                        self.DG.add_edge(self.simplex, trap, k = fwd)
+                        self.DG.add_edge(trap, self.simplex, k = bwd)
 
     def get_neighbor_zippings(self, structure, onlyup = False, onlydown = False):
 
@@ -455,11 +483,11 @@ class Kinetwork(object):
     def save_graph(self, PATH):
         import os 
         #convert node object to string of object type
-        for n in self.Graph.nodes.data():
+        for n in self.DG.nodes.data():
             n[1]['obj'] = str(type(n[1]['obj']))
         try: os.makedirs(PATH)
         except FileExistsError: pass 
-        nx.write_gexf(self.Graph,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
+        nx.write_gexf(self.DG,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
 
     @property
     def nodes(self):
