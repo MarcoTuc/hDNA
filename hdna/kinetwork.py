@@ -443,7 +443,7 @@ class Kinetwork(object):
                         dgss = 0
                         dgtrap = obj.G
                         fwd, bwd = self.nmethod('off_nucleation', dgss, dgtrap)
-                        nucnorm = (self.s1.length + self.s2.length - 1) 
+                        nucnorm = (self.s1.length + self.s2.length - 1) * (self.chamber.duplex.total_nucleations - dpxdist)
                         fwd = fwd/nucnorm
                         bwd = bwd/nucnorm
                         self.DG.add_edge(self.simplex, trap, k = fwd)

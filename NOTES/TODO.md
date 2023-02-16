@@ -12,6 +12,7 @@ I don't know what to do with the backward rate constant. Should I also normalize
 
 # ! 
 Correct the nucnorm in the traps connection of the kinetwork
+>>>> JUST IMPLEMENT A GENERAL COMBINATORIAL SHIT 
 
 # !! 
 Implement the secondary structure dependance 

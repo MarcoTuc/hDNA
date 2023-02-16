@@ -22,7 +22,7 @@
     <nodes>
       <node id="..........+.........." label="..........+..........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="0" />
           <attvalue for="2" value="singlestranded" />
           <attvalue for="3" value="20" />
@@ -31,7 +31,7 @@
       </node>
       <node id="((((((((((+))))))))))" label="((((((((((+))))))))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="duplex" />
           <attvalue for="1" value="10" />
           <attvalue for="3" value="0" />
@@ -40,7 +40,7 @@
       </node>
       <node id="(.........+.......).." label="(.........+.......)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -52,7 +52,7 @@
       </node>
       <node id="(...(.....+...)...).." label="(...(.....+...)...)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -64,7 +64,7 @@
       </node>
       <node id="(...((....+..))...).." label="(...((....+..))...)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="3" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -76,7 +76,7 @@
       </node>
       <node id="(...(((...+.)))...).." label="(...(((...+.)))...)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="4" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -88,7 +88,7 @@
       </node>
       <node id="(...((((..+))))...).." label="(...((((..+))))...)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="5" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -100,7 +100,7 @@
       </node>
       <node id="....(.....+...)......" label="....(.....+...)......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -112,7 +112,7 @@
       </node>
       <node id="....((....+..))......" label="....((....+..))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -124,7 +124,7 @@
       </node>
       <node id="....(((...+.)))......" label="....(((...+.)))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="3" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -136,7 +136,7 @@
       </node>
       <node id="....((((..+))))......" label="....((((..+))))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="4" />
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="2" />
@@ -149,7 +149,7 @@
       </node>
       <node id=".....(....+..)......." label=".....(....+..).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -161,7 +161,7 @@
       </node>
       <node id=".....((...+.))......." label=".....((...+.)).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -173,7 +173,7 @@
       </node>
       <node id=".....(((..+)))......." label=".....(((..+))).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="3" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -185,7 +185,7 @@
       </node>
       <node id="......(...+.)........" label="......(...+.)........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -197,7 +197,7 @@
       </node>
       <node id="......((..+))........" label="......((..+))........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -209,7 +209,7 @@
       </node>
       <node id=".......(..+)........." label=".......(..+).........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -221,7 +221,7 @@
       </node>
       <node id="..(.......+.........)" label="..(.......+.........)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -233,7 +233,7 @@
       </node>
       <node id="..(...(...+.....)...)" label="..(...(...+.....)...)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -245,7 +245,7 @@
       </node>
       <node id="..(...((..+....))...)" label="..(...((..+....))...)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="3" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -257,7 +257,7 @@
       </node>
       <node id="..(...(((.+...)))...)" label="..(...(((.+...)))...)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="4" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -269,7 +269,7 @@
       </node>
       <node id="..(...((((+..))))...)" label="..(...((((+..))))...)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="5" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -281,7 +281,7 @@
       </node>
       <node id="......(...+.....)...." label="......(...+.....)....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -293,7 +293,7 @@
       </node>
       <node id="......((..+....))...." label="......((..+....))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -305,7 +305,7 @@
       </node>
       <node id="......(((.+...)))...." label="......(((.+...)))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="3" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -317,7 +317,7 @@
       </node>
       <node id="......((((+..))))...." label="......((((+..))))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="4" />
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="2" />
@@ -330,7 +330,7 @@
       </node>
       <node id=".......(..+....)....." label=".......(..+....).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -342,7 +342,7 @@
       </node>
       <node id=".......((.+...))....." label=".......((.+...)).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -354,7 +354,7 @@
       </node>
       <node id=".......(((+..)))....." label=".......(((+..))).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="3" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -366,7 +366,7 @@
       </node>
       <node id="........(.+...)......" label="........(.+...)......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -378,7 +378,7 @@
       </node>
       <node id="........((+..))......" label="........((+..))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="2" />
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
@@ -390,7 +390,7 @@
       </node>
       <node id=".........(+..)......." label=".........(+..).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
@@ -402,7 +402,7 @@
       </node>
       <node id="(.........+.........)" label="(.........+.........)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.23568040849883176" />
@@ -410,7 +410,7 @@
       </node>
       <node id="((........+........))" label="((........+........))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-1.4804007051294945" />
@@ -418,7 +418,7 @@
       </node>
       <node id="(((.......+.......)))" label="(((.......+.......)))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-2.725121001760157" />
@@ -426,7 +426,7 @@
       </node>
       <node id="((((......+......))))" label="((((......+......))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-4.538222726731945" />
@@ -434,7 +434,7 @@
       </node>
       <node id="(((((.....+.....)))))" label="(((((.....+.....)))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="5" />
           <attvalue for="4" value="-6.59669765821671" />
@@ -442,7 +442,7 @@
       </node>
       <node id="((((((....+....))))))" label="((((((....+....))))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="6" />
           <attvalue for="4" value="-8.170484535534138" />
@@ -450,7 +450,7 @@
       </node>
       <node id="(((((((...+...)))))))" label="(((((((...+...)))))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="7" />
           <attvalue for="4" value="-9.983586260505927" />
@@ -458,7 +458,7 @@
       </node>
       <node id="((((((((..+..))))))))" label="((((((((..+..))))))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="8" />
           <attvalue for="4" value="-11.557373137823355" />
@@ -466,7 +466,7 @@
       </node>
       <node id="(((((((((.+.)))))))))" label="(((((((((.+.)))))))))">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="9" />
           <attvalue for="4" value="-13.370474862795144" />
@@ -474,7 +474,7 @@
       </node>
       <node id=".(........+........)." label=".(........+........).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.23568040849883176" />
@@ -482,7 +482,7 @@
       </node>
       <node id=".((.......+.......))." label=".((.......+.......)).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-1.4804007051294945" />
@@ -490,7 +490,7 @@
       </node>
       <node id=".(((......+......)))." label=".(((......+......))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-3.2935024301012827" />
@@ -498,7 +498,7 @@
       </node>
       <node id=".((((.....+.....))))." label=".((((.....+.....)))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-5.351977361586048" />
@@ -506,7 +506,7 @@
       </node>
       <node id=".(((((....+....)))))." label=".(((((....+....))))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="5" />
           <attvalue for="4" value="-6.925764238903476" />
@@ -514,7 +514,7 @@
       </node>
       <node id=".((((((...+...))))))." label=".((((((...+...)))))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="6" />
           <attvalue for="4" value="-8.738865963875265" />
@@ -522,7 +522,7 @@
       </node>
       <node id=".(((((((..+..)))))))." label=".(((((((..+..))))))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="7" />
           <attvalue for="4" value="-10.312652841192692" />
@@ -530,7 +530,7 @@
       </node>
       <node id=".((((((((.+.))))))))." label=".((((((((.+.)))))))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="8" />
           <attvalue for="4" value="-12.125754566164481" />
@@ -538,7 +538,7 @@
       </node>
       <node id=".(((((((((+)))))))))." label=".(((((((((+))))))))).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="9" />
           <attvalue for="4" value="-13.699541443481909" />
@@ -546,7 +546,7 @@
       </node>
       <node id="..(.......+.......).." label="..(.......+.......)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.23568040849883176" />
@@ -554,7 +554,7 @@
       </node>
       <node id="..((......+......)).." label="..((......+......))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.04878213347062" />
@@ -562,7 +562,7 @@
       </node>
       <node id="..(((.....+.....))).." label="..(((.....+.....)))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-4.107257064955386" />
@@ -570,7 +570,7 @@
       </node>
       <node id="..((((....+....)))).." label="..((((....+....))))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-5.681043942272813" />
@@ -578,7 +578,7 @@
       </node>
       <node id="..(((((...+...))))).." label="..(((((...+...)))))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="5" />
           <attvalue for="4" value="-7.494145667244601" />
@@ -586,7 +586,7 @@
       </node>
       <node id="..((((((..+..)))))).." label="..((((((..+..))))))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="6" />
           <attvalue for="4" value="-9.067932544562028" />
@@ -594,7 +594,7 @@
       </node>
       <node id="..(((((((.+.))))))).." label="..(((((((.+.)))))))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="7" />
           <attvalue for="4" value="-10.881034269533817" />
@@ -602,7 +602,7 @@
       </node>
       <node id="..((((((((+)))))))).." label="..((((((((+))))))))..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="8" />
           <attvalue for="4" value="-12.454821146851245" />
@@ -610,7 +610,7 @@
       </node>
       <node id="...(......+......)..." label="...(......+......)...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.4881872600222883" />
@@ -618,7 +618,7 @@
       </node>
       <node id="...((.....+.....))..." label="...((.....+.....))...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.546662191507054" />
@@ -626,7 +626,7 @@
       </node>
       <node id="...(((....+....)))..." label="...(((....+....)))...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-4.120449068824481" />
@@ -634,7 +634,7 @@
       </node>
       <node id="...((((...+...))))..." label="...((((...+...))))...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-5.933550793796269" />
@@ -642,7 +642,7 @@
       </node>
       <node id="...(((((..+..)))))..." label="...(((((..+..)))))...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="5" />
           <attvalue for="4" value="-7.507337671113696" />
@@ -650,7 +650,7 @@
       </node>
       <node id="...((((((.+.))))))..." label="...((((((.+.))))))...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="6" />
           <attvalue for="4" value="-9.320439396085485" />
@@ -658,7 +658,7 @@
       </node>
       <node id="...(((((((+)))))))..." label="...(((((((+)))))))...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="7" />
           <attvalue for="4" value="-10.894226273402912" />
@@ -666,7 +666,7 @@
       </node>
       <node id="....(.....+.....)...." label="....(.....+.....)....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.4881872600222883" />
@@ -674,7 +674,7 @@
       </node>
       <node id="....((....+....))...." label="....((....+....))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.061974137339716" />
@@ -682,7 +682,7 @@
       </node>
       <node id="....(((...+...)))...." label="....(((...+...)))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-3.875075862311504" />
@@ -690,7 +690,7 @@
       </node>
       <node id="....((((..+..))))...." label="....((((..+..))))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-5.448862739628931" />
@@ -698,7 +698,7 @@
       </node>
       <node id="....(((((.+.)))))...." label="....(((((.+.)))))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="5" />
           <attvalue for="4" value="-7.261964464600719" />
@@ -706,7 +706,7 @@
       </node>
       <node id="....((((((+))))))...." label="....((((((+))))))....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="6" />
           <attvalue for="4" value="-8.835751341918145" />
@@ -714,7 +714,7 @@
       </node>
       <node id=".....(....+....)....." label=".....(....+....).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.23568040849883176" />
@@ -722,7 +722,7 @@
       </node>
       <node id=".....((...+...))....." label=".....((...+...)).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.04878213347062" />
@@ -730,7 +730,7 @@
       </node>
       <node id=".....(((..+..)))....." label=".....(((..+..))).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-3.6225690107880473" />
@@ -738,7 +738,7 @@
       </node>
       <node id=".....((((.+.))))....." label=".....((((.+.)))).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-5.435670735759835" />
@@ -746,7 +746,7 @@
       </node>
       <node id=".....(((((+)))))....." label=".....(((((+))))).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="5" />
           <attvalue for="4" value="-7.009457613077263" />
@@ -754,7 +754,7 @@
       </node>
       <node id="......(...+...)......" label="......(...+...)......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.4881872600222883" />
@@ -762,7 +762,7 @@
       </node>
       <node id="......((..+..))......" label="......((..+..))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.061974137339716" />
@@ -770,7 +770,7 @@
       </node>
       <node id="......(((.+.)))......" label="......(((.+.)))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-3.875075862311504" />
@@ -778,7 +778,7 @@
       </node>
       <node id="......((((+))))......" label="......((((+))))......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="4" />
           <attvalue for="4" value="-5.448862739628931" />
@@ -786,7 +786,7 @@
       </node>
       <node id=".......(..+..)......." label=".......(..+..).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.23568040849883176" />
@@ -794,7 +794,7 @@
       </node>
       <node id=".......((.+.))......." label=".......((.+.)).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.04878213347062" />
@@ -802,7 +802,7 @@
       </node>
       <node id=".......(((+)))......." label=".......(((+))).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="3" />
           <attvalue for="4" value="-3.6225690107880473" />
@@ -810,7 +810,7 @@
       </node>
       <node id="........(.+.)........" label="........(.+.)........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.4881872600222883" />
@@ -818,7 +818,7 @@
       </node>
       <node id="........((+))........" label="........((+))........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="zipping" />
           <attvalue for="1" value="2" />
           <attvalue for="4" value="-2.061974137339716" />
@@ -826,7 +826,7 @@
       </node>
       <node id=".........(+)........." label=".........(+).........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Zippo'&gt;" />
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="1" value="1" />
           <attvalue for="4" value="-0.23568040849883176" />
@@ -834,319 +834,351 @@
       </node>
       <node id="(.........+)........." label="(.........+).........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="9" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="(.........+..)......." label="(.........+..).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="7" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="(.........+....)....." label="(.........+....).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="5" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="(.........+........)." label="(.........+........).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="1" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".(........+)........." label=".(........+).........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="8" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".(........+..)......." label=".(........+..).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".(........+....)....." label=".(........+....).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".(........+.......).." label=".(........+.......)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="1" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".(........+.........)" label=".(........+.........)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="1" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="..(.......+)........." label="..(.......+).........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="7" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="..(.......+..)......." label="..(.......+..).......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="5" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="..(.......+....)....." label="..(.......+....).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="3" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="..(.......+........)." label="..(.......+........).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="1" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="...(......+.)........" label="...(......+.)........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="5" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id="...(......+...)......" label="...(......+...)......">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="3" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id="...(......+.....)...." label="...(......+.....)....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="1" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id="....(.....+.)........" label="....(.....+.)........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id="....(.....+......)..." label="....(.....+......)...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="1" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id=".....(....+)........." label=".....(....+).........">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".....(....+.......).." label=".....(....+.......)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="3" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".....(....+........)." label=".....(....+........).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".....(....+.........)" label=".....(....+.........)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="5" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="......(...+......)..." label="......(...+......)...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="3" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id=".......(..+.......).." label=".......(..+.......)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="5" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".......(..+........)." label=".......(..+........).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".......(..+.........)" label=".......(..+.........)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="7" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id="........(.+.....)...." label="........(.+.....)....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id="........(.+......)..." label="........(.+......)...">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="5" />
+          <attvalue for="4" value="-0.4881872600222883" />
         </attvalues>
       </node>
       <node id=".........(+....)....." label=".........(+....).....">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".........(+.......).." label=".........(+.......)..">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="7" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".........(+........)." label=".........(+........).">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="8" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
       <node id=".........(+.........)" label=".........(+.........)">
         <attvalues>
-          <attvalue for="0" value="&lt;class 'str'&gt;" />
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
           <attvalue for="1" value="1" />
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="9" />
+          <attvalue for="4" value="-0.23568040849883176" />
         </attvalues>
       </node>
     </nodes>
     <edges>
       <edge source="..........+.........." target="(.........+.......).." id="0">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3822246.765986908" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="....(.....+...)......" id="1">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="4726756.703997113" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".....(....+..)......." id="2">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3822246.765986908" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="......(...+.)........" id="3">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="4726756.703997113" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".......(..+)........." id="4">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3822246.765986908" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="..(.......+.........)" id="5">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3822246.765986908" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="......(...+.....)...." id="6">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="4726756.703997113" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".......(..+....)....." id="7">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3822246.765986908" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="........(.+...)......" id="8">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="4726756.703997113" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".........(+..)......." id="9">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3822246.765986908" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1217,152 +1249,152 @@
       </edge>
       <edge source="..........+.........." target="(.........+..)......." id="21">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="10192658.042631757" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="(.........+....)....." id="22">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="6115594.825579054" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="(.........+........)." id="23">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3397552.680877252" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".(........+)........." id="24">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="15288987.063947633" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".(........+..)......." id="25">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="7644493.531973816" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".(........+....)....." id="26">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="5096329.021315878" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".(........+.......).." id="27">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3397552.680877252" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".(........+.........)" id="28">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3397552.680877252" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="..(.......+)........." id="29">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="10192658.042631757" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="..(.......+..)......." id="30">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="6115594.825579054" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="..(.......+....)....." id="31">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="4368282.018270752" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="..(.......+........)." id="32">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="3397552.680877252" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="...(......+.)........" id="33">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="7562810.726395381" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="...(......+...)......" id="34">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="5402007.661710987" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="...(......+.....)...." id="35">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="4201561.5146641005" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="....(.....+.)........" id="36">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="6302342.271996151" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="....(.....+......)..." id="37">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="4201561.5146641005" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".....(....+)........." id="38">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="5096329.021315878" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".....(....+.......).." id="39">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="4368282.018270752" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".....(....+........)." id="40">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="5096329.021315878" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".....(....+.........)" id="41">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="6115594.825579054" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="......(...+......)..." id="42">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="5402007.661710987" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".......(..+.......).." id="43">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="6115594.825579054" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".......(..+........)." id="44">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="7644493.531973816" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".......(..+.........)" id="45">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="10192658.042631757" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="........(.+.....)...." id="46">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="6302342.271996151" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="........(.+......)..." id="47">
         <attvalues>
-          <attvalue for="9" value="37814053.6319769" />
+          <attvalue for="9" value="7562810.726395381" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".........(+....)....." id="48">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="5096329.021315878" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".........(+.......).." id="49">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="10192658.042631757" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".........(+........)." id="50">
         <attvalues>
-          <attvalue for="9" value="30577974.127895266" />
+          <attvalue for="9" value="15288987.063947633" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".........(+.........)" id="51">
@@ -1402,7 +1434,7 @@
       </edge>
       <edge source="(.........+.......).." target="..........+.........." id="57">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2571127.2439234685" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1486,7 +1518,7 @@
       </edge>
       <edge source="....(.....+...)......" target="..........+.........." id="71">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2079117.5447462406" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1582,7 +1614,7 @@
       </edge>
       <edge source=".....(....+..)......." target="..........+.........." id="87">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2571127.2439234685" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1642,7 +1674,7 @@
       </edge>
       <edge source="......(...+.)........" target="..........+.........." id="97">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2079117.5447462406" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1672,7 +1704,7 @@
       </edge>
       <edge source=".......(..+)........." target="..........+.........." id="102">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2571127.2439234685" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1684,7 +1716,7 @@
       </edge>
       <edge source="..(.......+.........)" target="..........+.........." id="104">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2571127.2439234685" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1768,7 +1800,7 @@
       </edge>
       <edge source="......(...+.....)...." target="..........+.........." id="118">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2079117.5447462406" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1864,7 +1896,7 @@
       </edge>
       <edge source=".......(..+....)....." target="..........+.........." id="134">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2571127.2439234685" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1924,7 +1956,7 @@
       </edge>
       <edge source="........(.+...)......" target="..........+.........." id="144">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2079117.5447462406" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -1954,7 +1986,7 @@
       </edge>
       <edge source=".........(+..)......." target="..........+.........." id="149">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2571127.2439234685" />
           <attvalue for="10" value="off_nucleation" />
         </attvalues>
       </edge>
@@ -3093,152 +3125,152 @@
       </edge>
       <edge source="(.........+..)......." target="..........+.........." id="339">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="6856339.317129249" />
         </attvalues>
       </edge>
       <edge source="(.........+....)....." target="..........+.........." id="340">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="4113803.5902775493" />
         </attvalues>
       </edge>
       <edge source="(.........+........)." target="..........+.........." id="341">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2285446.439043083" />
         </attvalues>
       </edge>
       <edge source=".(........+)........." target="..........+.........." id="342">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="10284508.975693874" />
         </attvalues>
       </edge>
       <edge source=".(........+..)......." target="..........+.........." id="343">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="5142254.487846937" />
         </attvalues>
       </edge>
       <edge source=".(........+....)....." target="..........+.........." id="344">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="3428169.6585646244" />
         </attvalues>
       </edge>
       <edge source=".(........+.......).." target="..........+.........." id="345">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2285446.439043083" />
         </attvalues>
       </edge>
       <edge source=".(........+.........)" target="..........+.........." id="346">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2285446.439043083" />
         </attvalues>
       </edge>
       <edge source="..(.......+)........." target="..........+.........." id="347">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="6856339.317129249" />
         </attvalues>
       </edge>
       <edge source="..(.......+..)......." target="..........+.........." id="348">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="4113803.5902775493" />
         </attvalues>
       </edge>
       <edge source="..(.......+....)....." target="..........+.........." id="349">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2938431.1359125352" />
         </attvalues>
       </edge>
       <edge source="..(.......+........)." target="..........+.........." id="350">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2285446.439043083" />
         </attvalues>
       </edge>
       <edge source="...(......+.)........" target="..........+.........." id="351">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="3326588.071593985" />
         </attvalues>
       </edge>
       <edge source="...(......+...)......" target="..........+.........." id="352">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2376134.336852846" />
         </attvalues>
       </edge>
       <edge source="...(......+.....)...." target="..........+.........." id="353">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="1848104.4842188805" />
         </attvalues>
       </edge>
       <edge source="....(.....+.)........" target="..........+.........." id="354">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2772156.726328321" />
         </attvalues>
       </edge>
       <edge source="....(.....+......)..." target="..........+.........." id="355">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="1848104.4842188805" />
         </attvalues>
       </edge>
       <edge source=".....(....+)........." target="..........+.........." id="356">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="3428169.6585646244" />
         </attvalues>
       </edge>
       <edge source=".....(....+.......).." target="..........+.........." id="357">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="2938431.1359125352" />
         </attvalues>
       </edge>
       <edge source=".....(....+........)." target="..........+.........." id="358">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="3428169.6585646244" />
         </attvalues>
       </edge>
       <edge source=".....(....+.........)" target="..........+.........." id="359">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="4113803.5902775493" />
         </attvalues>
       </edge>
       <edge source="......(...+......)..." target="..........+.........." id="360">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2376134.336852846" />
         </attvalues>
       </edge>
       <edge source=".......(..+.......).." target="..........+.........." id="361">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="4113803.5902775493" />
         </attvalues>
       </edge>
       <edge source=".......(..+........)." target="..........+.........." id="362">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="5142254.487846937" />
         </attvalues>
       </edge>
       <edge source=".......(..+.........)" target="..........+.........." id="363">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="6856339.317129249" />
         </attvalues>
       </edge>
       <edge source="........(.+.....)...." target="..........+.........." id="364">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="2772156.726328321" />
         </attvalues>
       </edge>
       <edge source="........(.+......)..." target="..........+.........." id="365">
         <attvalues>
-          <attvalue for="9" value="16632940.357969925" />
+          <attvalue for="9" value="3326588.071593985" />
         </attvalues>
       </edge>
       <edge source=".........(+....)....." target="..........+.........." id="366">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="3428169.6585646244" />
         </attvalues>
       </edge>
       <edge source=".........(+.......).." target="..........+.........." id="367">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="6856339.317129249" />
         </attvalues>
       </edge>
       <edge source=".........(+........)." target="..........+.........." id="368">
         <attvalues>
-          <attvalue for="9" value="20569017.951387748" />
+          <attvalue for="9" value="10284508.975693874" />
         </attvalues>
       </edge>
       <edge source=".........(+.........)" target="..........+.........." id="369">
