@@ -3,14 +3,14 @@ import nupack as nu
 class Model(object):
 
     def __init__(   self, 
-                    material, 
-                    space_dimensionality,
+                    sliding=None,
+                    zipping=None,
+                    sliding_filter=None,
+                    material='dna', 
+                    space_dimensionality='3D',
                     min_nucleation=1, 
-                    sliding_cutoff=1, 
-                    sliding_filter=4,
+                    sliding_cutoff=100, 
                     stacking='nostacking', 
-                    sliding=2e7,
-                    zipping=2e9,
                     Na=1.0, 
                     Mg=0.0, 
                     celsius=26):
@@ -48,13 +48,61 @@ class Model(object):
                                     sodium=self.Na, 
                                     magnesium= self.Mg) 
 
+    def setparams(self, zipping, sliding, sfilter=4):
+        self.zipping = zipping
+        self.sliding = sliding
+        self.sliding_filter = sfilter
 
-class Geometry(object):
+    def setgeometry(self, theta=120, phi=270):
+        self.theta = theta
+        self.phi = phi
 
-    """ Here all the physical values needed for 
-    calculations will be defined and called for
-    other classes to be used """
 
-    def __init__(self, azimutal_angle, longitudinal_angle):
-        self.theta  = azimutal_angle
-        self.phi    = longitudinal_angle
+class Options(object):
+    def __init__(self, 
+
+                method="direct", 
+                runtime=4e-6, 
+                Nsim=1000,
+                make_sim_csv=True,
+                rates_info = True,
+                save_graph_html = True,
+                trajstosave=40,
+                results_dir = './results', #beware if results_dir exists 
+                graphsalone = 'strand_folder', 
+                stranditer = 1
+                ):
+        
+        # JULIA SIMULATION OPTIONS
+        self.initialamount = 2
+        self.runtime = runtime
+        self.Nsim = Nsim
+        methods = ["direct"]
+        if method in methods:
+            self.method = method
+        else: 
+            message = f'method {method} is not yet implemented in the simulator. \n Choose from {methods}'
+            raise NotImplementedError(message)
+
+        # DATASAVING OPTIONS
+        self.make_sim_csv = make_sim_csv
+        self.rates_info = rates_info
+        self.save_graph_html = save_graph_html
+        self.results_dir = results_dir 
+        self.graphsalone = graphsalone
+        self.trajstosave = trajstosave
+        self.stranditer = stranditer
+
+        self.simtqdmdisable = True
+
+
+# DEPRECATED
+# class Geometry(object):
+
+#     """ Here all the physical values needed for 
+#     calculations will be defined and called for
+#     other classes to be used """
+
+#     def __init__(self, azimutal_angle, longitudinal_angle):
+#         self.theta  = azimutal_angle
+#         self.phi    = longitudinal_angle

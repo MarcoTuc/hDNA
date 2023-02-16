@@ -267,12 +267,7 @@ class Sliding(Complex):
                     dpxdist):
         super().__init__(model,s1,s2,state,structure)
         self.dpxdist = dpxdist #distance in terms of basepairs from the sliding to the duplex
-        # self.backfraying_trajectory()
         self.off_nucleations()
-        # self.sbackfray = [b.structure for b in self.backfray]
-        # self.gbackfray = [b.G for b in self.backfray]
-        # try: self.maxstable = self.backfray[np.argmin(self.gbackfray)]
-        # except ValueError: self.maxstable = self 
 
     def off_nucleations(self, verbose=False):
         
@@ -364,134 +359,9 @@ class Sliding(Complex):
         else: self.backfray = []
             
 
-    # def backfraying_trajectory(self):
-    #     from itertools import zip_longest as zipp
-
-    #     def get_ix(string, char):
-    #         indices = []
-    #         for i, e in enumerate(list(string)):
-    #             if e == char:
-    #                 indices.append(i)
-    #         return indices 
-
-    #     def backfray_structure():
-    #         l, r = self.structure.split('+')
-    #         lix = get_ix(l, '('); ll = int(len(lix)/2)
-    #         rix = get_ix(r, ')'); rl = int(len(rix)/2)
-    #         backfray = []
-    #         for li, lil, ri, ril in zipp(
-    #             lix[:ll], lix[ll:][::-1], 
-    #             rix[:rl], rix[rl:][::-1]):
-    #             # print(li, ri, lil, ril )
-    #             try: l = l[:li] + '.' + l[li+1:]
-    #             except TypeError: pass
-    #             try: l = l[:lil] + '.' + l[lil+1:]
-    #             except TypeError: pass
-    #             try: r = r[:ri] + '.' + r[ri+1:]
-    #             except TypeError: pass
-    #             try: r = r[:ril] + '.' + r[ril+1:]
-    #             except TypeError: pass 
-    #             s = '+'.join([l,r])
-    #             backfray.append(
-    #                 Zippo(self.model, self.s1, self.s2, state='backfray', structure=s))
-    #         backfray.pop(-1)
-    #         return backfray
-        
-    #     if self.total_nucleations >= self.model.min_nucleation and self.consecutive_nucleations >= self.model.min_nucleation:
-    #         steps = backfray_structure()
-    #         self.backfray = [self]
-    #         for step in steps:
-    #             self.backfray.append(step)
-    #         self.backfray = self.backfray[::-1]
-    #         self.backfray[0].set_state('off_nucleation')
-    #     else: 
-    #         self.set_state('off_nucleation')
-    #         self.backfray = []
     
-    # @property
-    # def bfempty(self):
-    #     return self.backfray == []
 
 
-        # if False: #part of backfraystructure
-        #     print('mbarestructure',self.structure)
-        #     indices = get_ix(string, char)
-        #     # indices_inv = get_ix(string[::-1], character)
-        #     print('indices dir',indices)
-        #     # print('indices inv',indices_inv)
-        #     updated = string
-        #     for index in [indices[0], indices[-1]]:
-        #         # print(string, index)
-        #         print(f'updated {char}', index, updated)
-        #         updated = updated[:index] + '.' + updated[index+1:]
-        #         print(f'updated {char}', index, updated)
-        #     # updated_inv = updated[::-1]
-        #     # for index in [indices_inv[0], indices_inv[-1]]:
-        #         # print(string, index)
-        #         # updated_inv = updated_inv[:index-1] + '.' + updated_inv[index:]
-        #     return updated
 
-        # if False:
-        #     if self.consecutive_nucleations > 3:
-        #         backfray = []
-        #         l, r = self.structure.split('+')
-        #         while '(' in l and ')' in r: 
-        #             l = backfray_structure(l, '(')
-        #             r = backfray_structure(r, ')')
-        #             step = '+'.join([l,r])
-        #             # print(l)
-        #             # print(r)
-        #             # print(self.structure)
-        #             # print(step)
-        #             backfray.append(Zippo(self.model, self.s1, self.s2, step, self.structureG(step)))
-        #     else: print("i'm a sweet boy:", self.structure)
-
-
-################################################################################################################################
-##########################################################À CEMETERY ###########################################################
-############################################### MAY THESE FUNCTIONS REST IN PEACE ##############################################
-################################################################################################################################ 
   
-    # def gotnucleationhere(self, mincore):
-    #     self.nucleation = None
-    #     if self.l1 != self.l2:
-    #         return ValueError('This method cannot be used for complexes made with different length strands')
-    #     if self.nucleation_size >= mincore:
-    #         self.nucleation == True
-    #     else:
-    #         self.nucleation = False
-
-    # def maxnucleation(self):
-    #     self.nucleation_size = 0
-    #     for n in range(0, len(self.mismatches) + 1):
-    #         if self.checknucleation(n):
-    #             self.nucleation_size = n
-    #     return self.nucleation_size
-
-    # def checknucleation(self, mincore):
-    #     self.nucleation = None
-    #     if self.l1 != self.l2:
-    #         return ValueError('This method cannot be used for complexes made with different length strands')
-    #     for b in range(len(self.mismatches) - (mincore-1)):
-    #         if all(self.mismatches[b:b+mincore]):
-    #             return True 
-    #     return False 
-
-    # def nucleationsize(self):
-    #     """ This method gives back two quantities:
-    #         - Total number of non-mismatched nucleated base pairs
-    #         - Size of the biggest consecutive sequence of nucleated base pairs """
-    #     A, B = self.splitstructure()
-    #     A, B = pd.Series(A), pd.Series(B)
-    #     nA = A.str.count("\(").sum()
-    #     nB = B.str.count("\)").sum()
-    #     if nA != nB: raise ValueError('total number of based pairs should match for each strand')
-    #     else: self.total_nucleations = nA 
-    #     splitsA = A.str.split('[^(]')
-    #     splitsB = B.str.split('[^)]')
-    #     lensA = splitsA.apply(pd.Series).stack().str.len()
-    #     lensB = splitsB.apply(pd.Series).stack().str.len()
-    #     maxA = lensA.max()
-    #     maxB = lensB.max()
-    #     self.consecutive_nucleations = max(maxA, maxB)
-    #     return self.consecutive_nucleations, self.total_nucleations   
+  

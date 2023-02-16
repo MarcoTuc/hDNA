@@ -1,25 +1,19 @@
 import pandas as pd
 import numpy as np 
 import plotly.graph_objects as go
+import plotly.express as px
 
 def valplot(data, name, writepath = None, theme = 'dark'):
     
-    if theme == 'dark':
-        THM = {'template': 'plotly_dark',
-               'colordots': 'tan',
-               'colorline': 'coral'}
-    if theme == 'light':
-        THM = {'template': 'ggplot2',
-               'colordots': 'tomato',
-               'colorline': 'royalblue'}
+    THM = themetemplates(theme, 'scatter')
 
-    sdata = data.sort_values('expvalue')
+    sdata = data.sort_values('experimental')
     # sdata.set_index('seq', inplace=True, drop=False)
     try: sdata.drop('Unnamed: 0', axis=1)
     except KeyError: pass 
-    X = list(sdata['expvalue'].astype(float))
-    Y = list(sdata['computed'].astype(float))
-    S = list(sdata['seq'])
+    X = list(sdata['experimental'].astype(float))
+    Y = list(sdata['computational'].astype(float))
+    S = list(sdata['sequences'])
     I = list(sdata['index'])
 
 
@@ -74,6 +68,104 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         fig.show()
     else:
         PATH = f'{writepath}/{name}'
-        fig.write_image(f"{PATH}.png")
         fig.write_html(f"{PATH}.html")
 
+def histotime(data, fit_gamma, runtime, exp=None, mod=None, seq=None, nbins=150, name='timehist', writepath=None, theme='light'):
+    
+    if theme == 'dark':
+        THM = {'template': 'plotly_dark',
+                    'colorfit': 'coral',
+                    'colorbin': 'white',
+                    'fitwidth': 3}
+    if theme == 'light':
+        THM = {'template': 'ggplot2',
+                    'colorfit': 'royalblue',
+                    'colorbin': 'tomato',
+                    'fitwidth': 2.5}
+    
+    nbins = nbins
+    X = np.linspace(0,runtime,500)
+    data1 = go.Scatter(
+                x=X, 
+                y=fit_gamma.pdf(X),
+                line = dict(
+                    color = THM['colorfit'],
+                    width = THM['fitwidth']))
+    data2 = go.Histogram(
+                x=data, 
+                histnorm='probability density', 
+                nbinsx=nbins,
+                marker = dict(color = THM['colorbin']))
+    
+    layout = go.Layout(
+                title="""seq %-s<br>mod: %-.2e<br>exp: %-.2e""" % (name.split('_')[0], float(mod), float(exp)),
+                xaxis_title="simulation time",
+                yaxis_title="# occurrences",
+                template=THM['template'],
+                xaxis=dict(tickformat=".0e"),
+                yaxis=dict(tickformat=".0e"))
+
+    fig = go.Figure(data=[data1, data2], layout=layout)
+    fig.update_traces(opacity=0.95)
+
+    if writepath == None:
+        fig.show()
+    else:
+        PATH = f'{writepath}/{name}'
+        fig.write_html(f"{PATH}.html")
+    
+
+
+def themetemplates(choice, kind):
+    if kind == 'scatter' or 'percent':
+        if choice == 'dark':
+            return {'template': 'plotly_dark',
+                    'colordots': 'tan',
+                    'colorline': 'coral',
+                    'linewidth': 2}
+        if choice == 'light':
+            return {'template': 'ggplot2',
+                    'colordots': 'tomato',
+                    'colorline': 'royalblue',
+                    'linewidth': 2}
+        
+
+def percomplot(fpts, writepath=None, name=None, theme='dark'):
+
+    THM = themetemplates(theme, 'percent')
+
+    fig = px.ecdf(fpts, ecdfnorm='percent')
+    fig.update_layout(
+        title="percent completion by time",
+        xaxis_title="simulation time",
+        yaxis_title="percent",
+        yaxis_ticksuffix = "%",
+        xaxis=dict(tickformat=".0e"),
+        showlegend=False,
+        template=THM['template']
+        )
+    
+    fig.data[0].line.color = THM['colorline']
+    fig.data[0].line.width = THM['linewidth']
+
+    if writepath == None:
+        fig.show()
+    else:
+        PATH = f'{writepath}/{name}'
+        fig.write_html(f"{PATH}.html")
+
+
+
+class Tee(object):
+    def __init__(self, *files):
+        self.files = files
+    def write(self, obj):
+        for f in self.files:
+            f.write(obj)
+            f.flush() # If you want the output to be visible immediately
+    def flush(self):
+        for f in self.files:
+            f.flush()
+    def close(self):
+        for f in self.files:
+            f.close()

@@ -2,9 +2,8 @@ import os
 import sys 
 import numpy as np 
 import pandas as pd
-from hdna.logger import Tee 
 
-EXPNAME = '1402-M3S44-2'
+EXPNAME = 'goodmorning-5'
 RESULTS_DIR = f"results/{EXPNAME}"
 
 HP = {
@@ -12,8 +11,8 @@ HP = {
     'minimum_nucleation': 1,
     'sliding_cutoff':     200,
     'sliding_filter':     4,
-    'zipping_rate':       2e7,
-    'sliding_rate':       5e3,
+    'zipping_rate':       8e7,
+    'sliding_rate':       2e7,
     #temperature
     'temperature':        25,       #### HERTEL EXPERIMENTAL TEMPERATURE 
     #angles
