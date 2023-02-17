@@ -4,8 +4,7 @@ import pandas as pd
 
 from itertools import pairwise, combinations, tee
 
-from .complex import Zippo, Complex
-from .chamber import Chamber
+from .complex import Complex
 from .model import Model
 from .strand import Strand
  
@@ -30,12 +29,13 @@ class Kinetwork(object):
         self.s2 = s2.invert #35
         self.min_nucleation = self.model.min_nucleation
         self.sliding_cutoff = self.model.sliding_cutoff
-        self.chamber = Chamber(self.model, self.s1, self.s2.invert)
-        self.kinetics = Kinetics(self.model, self.chamber)
+        
+        self.kinetics = Kinetics(self.model, s1, s2)
         self.kinetics.set_slidingrate(self.model.sliding)
         self.kinetics.set_zippingrate(self.model.zipping)
-        self.simplex = self.chamber.singlestranded.structure
-        self.duplex = self.chamber.duplex.structure
+        
+        self.ssobj = Complex(self.model, self.s1, self.s2, state='singlestranded', structure=self.simplex, dpxdist=max([self.s1.length, self.s2.length]))
+        self.dxobj = Complex(self.model, self.s1, self.s2, state='duplex', structure=self.duplex, dpxdist=0)
 
         self.nmethod = self.kinetics.kawasaki
         self.zmethod = self.kinetics.kawasaki
@@ -70,17 +70,17 @@ class Kinetwork(object):
         self.DG = nx.DiGraph()
 
         self.DG.add_node(self.simplex, 
-                         obj = self.chamber.singlestranded,
+                         obj = self.ssobj,
                          pairs = 0, 
                          state = 'singlestranded',
-                         dpxdist = self.chamber.singlestranded.dpxdist,
+                         dpxdist = self.ssobj.dpxdist,
                          fre = 0)
         self.DG.add_node(self.duplex, 
-                         obj = self.chamber.duplex, 
-                         pairs = self.chamber.duplex.total_nucleations, 
+                         obj = self.dxobj, 
+                         pairs = self.dxobj.total_nucleations, 
                          state = 'duplex',
                          dpxdist = 0,
-                         fre = self.chamber.duplex.G)
+                         fre = self.dxobj.G)
         
         self.get_graph()
         self.connect_slidings()
@@ -91,7 +91,7 @@ class Kinetwork(object):
 
     def get_graph(self, verbose=False):
         self.sldbranches = []
-        ss = self.chamber.singlestranded.structure.split('+')[0]
+        ss = self.simplex 
         num = min(self.s1.length, self.s2.length)
         for n in range(num):
             for i, e1 in enumerate(self.nwise(self.s1.sequence, n)):
@@ -193,12 +193,23 @@ class Kinetwork(object):
         except FileExistsError: pass 
         nx.write_gexf(self.DG,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
 
+###################
+############## PROPERTIES
+###################
+    @property
+    def simplex(self):
+        return '+'.join(['.'*self.s1.length, '.'*self.s2.length])
+    
+    @property
+    def duplex(self):
+        return '+'.join(['('*self.s1.length, ')'*self.s2.length])
+
     @property
     def nodes(self):
         return self.Graph.nodes()
     
     @property
-    def sab(self):
+    def displaysab(self):
         return '+'.join([self.s1.sequence,self.s2.sequence])
 
 ###################
@@ -237,13 +248,13 @@ class Kinetwork(object):
 
 
 class Kinetics(object):
-    def __init__(self, model: Model, chamber: Chamber):
+    def __init__(self, model: Model, s1: Strand, s2: Strand):
         
         self.model = model
         self.T = model.kelvin
         self.space = model.space_dimensionality
-        self.s1 = chamber.s1
-        self.s2 = chamber.s2 
+        self.s1 = s1
+        self.s2 = s2 
         
         self.phys = {'R(kcal/molK)': 1.987e-3,
                      'h_planck':     6.62607015e-34,

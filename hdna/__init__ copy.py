@@ -1,5 +1,6 @@
 from .strand import Strand, Structure
 from .complex import Complex, Zippo, Sliding
+from .chamber import Chamber
 from .kinetwork import Kinetwork, Kinetics
 from .simulator import Simulator
 
