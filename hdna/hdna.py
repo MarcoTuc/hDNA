@@ -55,7 +55,7 @@ class HDNA:
             self.options.stranditer = i
             print('Embedding network into biosimulator network model...')
             S = Simulator(self.model, A, B, self.options)
-            for d in S.overview():
+            for d in S.overview.items():
                 print(f'{d[0]} = {d[1]}')
             trajectories = S.ensemble()
             fptimes = S.fpts(trajectories)

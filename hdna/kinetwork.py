@@ -4,7 +4,7 @@ import pandas as pd
 
 from itertools import pairwise, combinations, tee
 
-from .complex import Zippo, Sliding, Complex
+from .complex import Zippo, Complex
 from .chamber import Chamber
 from .model import Model
 from .strand import Strand
@@ -14,19 +14,20 @@ class Kinetwork(object):
     """
     Given a chamber it will generate the corresponding
     Kinetic network to be later passed to the simulator.
-    To do so it composes two graphs: 
-        - Zipping Graph 
-        - Sliding Graph
+
     The Zipping Graph is the composition of single zipping graphs ---> See zippingraph() method
     corresponding to each oncore taken from the chamber.
     The Sliding Graph is the composition of single sliding graphs ---> See slidingraph() method
     """
 
+
+##########################################################################
+
     def __init__(self, model: Model, s1: Strand, s2: Strand, clean=False):
 
         self.model = model 
         self.s1 = s1        #53
-        self.s2 = s2.invert        #35
+        self.s2 = s2.invert #35
         self.min_nucleation = self.model.min_nucleation
         self.sliding_cutoff = self.model.sliding_cutoff
         self.chamber = Chamber(self.model, self.s1, self.s2.invert)
@@ -40,9 +41,11 @@ class Kinetwork(object):
         self.zmethod = self.kinetics.kawasaki
         self.smethod = self.kinetics.metropolis
 
+        self.normalizeback = False
+        self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
+
         if not clean: 
-            self.zippingraph()
-            self.slidingraph()
+
             self.completegraph()
 
             #get an overview of the network 
@@ -59,332 +62,109 @@ class Kinetwork(object):
             self.overview = dict(zip(self.possible_states,countslist))
 
 
+##########################################################################
+##########################################################################
+
     def completegraph(self):
-        self.DG = nx.compose(self.SG, self.ZG)
-        for node in self.DG.nodes():
-            self.DG.nodes[node]['fre'] = self.DG.nodes[node]['obj'].G
-        
 
-    def zippingraph(self):
-        self.ZG = nx.DiGraph()
-        self.ZG.add_node(self.simplex, 
+        self.DG = nx.DiGraph()
+
+        self.DG.add_node(self.simplex, 
                          obj = self.chamber.singlestranded,
                          pairs = 0, 
                          state = 'singlestranded',
-                         dpxdist = self.chamber.singlestranded.dpxdist)
-        self.ZG.add_node(self.duplex, 
+                         dpxdist = self.chamber.singlestranded.dpxdist,
+                         fre = 0)
+        self.DG.add_node(self.duplex, 
                          obj = self.chamber.duplex, 
                          pairs = self.chamber.duplex.total_nucleations, 
                          state = 'duplex',
-                         dpxdist = 0)
-        #general subfunction to compute zippingraphs of each oncore 
-        def subzippingraph(oncore):
-            #utility to get indices of string update
-            def get_i(lst):
-                indices = []
-                for i, (el1, el2) in enumerate(pairwise(lst)):
-                    if el1 == '.' and el2 != '.':
-                        indices.append(i)
-                    if el1 != '.' and el2 == '.':
-                        indices.append(i+1)
-                return indices
-            #updates current the given structure
-            def update_structure(string, side, character: str):
-                updated = string
-                moveslist = []
-                moves = get_i(string)[::side]
-                for m in moves:
-                    up = updated[:m] + character + updated[m+1:]
-                    moveslist.append(up)
-                return moveslist
-            #recursively add nodes and edges to their leafs in a tree like manner until duplexation
-            #duplexation is automatically recognised by the production of an empty moveslist list 
-            def leafs(left, right, graph):
-                lmoves = update_structure(left, 1, '(')
-                rmoves = update_structure(right, -1, ')')
-                inbound = '+'.join([left, right])
-                zobj = Zippo(self.model, self.s1, self.s2, state='zipping', structure=inbound, clean = True)
-                graph.add_node( inbound,
-                                obj = zobj,
-                                state = zobj.state,
-                                pairs = zobj.total_nucleations)
-                for lmove, rmove in zip(lmoves, rmoves):
-                    outbound = '+'.join([lmove,rmove])
-                    zobj = Zippo(self.model, self.s1, self.s2, state='zipping', structure=outbound, clean = True)
-                    graph.add_node(outbound,
-                                   obj = zobj,
-                                   state = zobj.state,
-                                   pairs = zobj.total_nucleations)
-                    graph.add_edge(inbound, outbound)
-                    graph.add_edge(outbound, inbound)
-                    yield list(leafs(lmove,rmove,graph))
-            #takes inputted oncore and splits it to update structure simultaneously on the left and the right
-            left, right = oncore.structure.split('+')
-            subZG = nx.DiGraph()
-            list(leafs(left, right, subZG))
-            return subZG 
-        #add the subzippingraph to the general zipping graph for each oncore
-        for on in self.chamber.oncores:
-            addgraph = subzippingraph(on)
-            self.ZG.update(addgraph)
-
-        for node in self.ZG.nodes():
-            self.ZG.nodes[node]['obj'].structureG()
+                         dpxdist = 0,
+                         fre = self.chamber.duplex.G)
         
-        nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.ZG)
-        for node in list(nucleations.nodes()):
-            state = 'on_nucleation'
-            self.ZG.nodes[node]['state'] = state
-            dgss = 0 #reference simplex state
-            dgnuc = self.ZG.nodes[node]['obj'].G #nucleation free energy
-            # compute forward and backward rates
-            fwd, bwd = self.nmethod(state, dgss, dgnuc) 
-            nucnorm = (self.s1.length + self.s2.length - 1) * self.chamber.duplex.total_nucleations
-            fwd = fwd/nucnorm
-            bwd = bwd/nucnorm
-            self.ZG.add_edge(self.simplex, node, k = fwd, state = state)
-            self.ZG.add_edge(node, self.simplex, k = bwd, state = state)
-            next = list(self.ZG.neighbors(node))
-            next.remove(self.simplex)
-            for e in next:
-                dge = self.ZG.nodes[e]['obj'].G
-                # compute forward and backward rates
-                fwd, bwd = self.zmethod('zipping', dgnuc, dge) 
-                self.ZG.add_edge(node, e, k = fwd, state = 'zipping')
-                self.ZG.add_edge(e, node, k = bwd, state = 'zipping')
-                
-        
-        mbare = list(set(self.ZG.nodes()) - set(nucleations.nodes()))
-        for e1, e2 in nx.subgraph_view(self.ZG, lambda x: x in mbare).to_undirected().edges(): 
-            dg1 = self.ZG.nodes[e1]['obj'].G
-            dg2 = self.ZG.nodes[e2]['obj'].G
-            fwd, bwd = self.zmethod('zipping', dg1, dg2)
-            self.ZG[e1][e2]['k'] = fwd
-            self.ZG[e2][e1]['k'] = bwd
-            self.ZG[e1][e2]['state'] = 'zipping' 
-            self.ZG[e2][e1]['state'] = 'zipping'
+        self.get_graph()
+        self.connect_slidings()
 
-        self.ZG.nodes[self.duplex]['state'] = 'duplex'
 
-##############################################################################################            
-    
-    def slidingraph(self):
-        self.SG = nx.DiGraph()
+##########################################################################
+##########################################################################
 
-        self.SG.add_node(self.simplex, 
-                         obj = self.chamber.singlestranded,
-                         pairs = 0, 
-                         state = 'singlestranded',
-                         dpxdist = self.chamber.singlestranded.dpxdist)
-        self.SG.add_node(self.duplex, 
-                         obj = self.chamber.duplex, 
-                         state = 'duplex',
-                         pairs = self.chamber.duplex.total_nucleations, 
-                         dpxdist = 0)
+    def get_graph(self, verbose=False):
+        self.sldbranches = []
+        ss = self.chamber.singlestranded.structure.split('+')[0]
+        num = min(self.s1.length, self.s2.length)
+        for n in range(num):
+            for i, e1 in enumerate(self.nwise(self.s1.sequence, n)):
+                for j, e2 in enumerate(self.nwise(self.s2.sequence, n)):
+                    e1 = self.u(*e1)
+                    e2 = self.u(*e2)
+                    if e1 == self.wc(e2[::-1]):
+                         # --> Condition for checking that the nucleation is off register 
+                        if verbose: print(self.sab(self.s1.sequence, self.s2.sequence))
+                        spacei = ' '*(i)
+                        spacej = ' '*(j - i + len(ss) - n + 1)
+                        if verbose: print(spacei+spacej.join([e1,e2]))
+                        dpxdist = len(ss) - n - i - j
+                        l = self.addpar(ss, i, n, '(')
+                        r = self.addpar(ss, j, n, ')')
+                        trap = self.sab(l,r)
+                        if i+j != len(ss)-n:
+                            state = 'off_nucleation' if n == 1 else 'backfray' 
+                        else: state = 'on_nucleation' if n == 1 else 'zipping'
+                        obj = Complex(self.model, self.s1, self.s2, state=state, structure = trap, dpxdist=dpxdist)
+                        self.DG.add_node(   trap,
+                                            obj = obj, 
+                                            pairs = obj.total_nucleations,
+                                            state = obj.state,
+                                            dpxdist = obj.dpxdist,
+                                            tdx =(i,j),
+                                            fre = obj.structureG())
+                        dgss = 0
+                        dgtrap = obj.G
+                        fwd, bwd = self.nmethod('off_nucleation', dgss, dgtrap)
+                        fwd = fwd / self.nucnorm
+                        if self.normalizeback: bwd = bwd / self.nucnorm
+                        if n == 1:
+                            self.DG.add_edge(self.simplex, trap, k = fwd, state = 'off_nucleation')
+                            self.DG.add_edge(trap, self.simplex, k = bwd, state = 'off_nucleation')
+                        elif n > 1:
+                            self.sldbranches.append(dpxdist)
+                            f1 = self.filternodes('dpxdist', lambda x: x == obj.dpxdist, self.DG)
+                            f2 = self.filternodes('pairs', lambda x: x == n-1, f1)
+                            f3 = self.filternodes('tdx', lambda x: (i-1 <= x[0] <= i+1) and (j-1 <= x[1] <= j+1), f2)
+                            for node in f3.nodes():
+                                if verbose: print(node, trap)
+                                dgnode = self.DG.nodes[node]['fre']
+                                fwd, bwd = self.zmethod('zipping', dgnode, dgtrap)
+                                self.DG.add_edge(node, trap, k = fwd, state = 'backfray')
+                                self.DG.add_edge(trap, node, k = bwd, state = 'backfray') 
+                            if n == num-1: 
+                                dgduplex = self.DG.nodes[self.duplex]['fre']
+                                fwd, bwd = self.zmethod('zipping', dgtrap, dgduplex)
+                                self.DG.add_edge(trap, self.duplex, k = fwd, state = 'backfray')
+                                self.DG.add_edge(self.duplex, trap, k = bwd, state = 'backfray') 
+                        
+        #get unique ids for all branches except branch 0 corresponding to on register nucleation
+        self.sldbranches = set(self.sldbranches)
+        self.sldbranches.remove(0)
 
-        def backfraygraph(sliding, side):
-            #get indices where the sliding has possible basepairs by parsing its completed structure
-            def getix(string):
-                lix = []
-                rix = []
-                for i, e in enumerate(list(string)):
-                    if e == '(':
-                        lix.append(i)
-                    if e == ')':
-                        rix.append(i)
-                return [(l,r) for l,r in zip(lix, rix[::-1])]
-            #confront currently given structure with target sliding to get adjacent next basepairs to form
-            def adjacent(source, target):
-                adj = []
-                tx = getix(target)
-                sx = getix(source)
-                for i, item in enumerate(tx):
-                    if len(sx) > 1:
-                        check = [sx[0], sx[-1]]
-                        if item in check:
-                            if i == 0:
-                                pass
-                                # adj.append(tx[i+1])
-                            elif i == len(tx)-1:
-                                pass
-                                # adj.append(tx[i-1])
-                            else:
-                                if tx[i-1] not in sx:
-                                    if tx[i-1] not in adj:
-                                        adj.append(tx[i-1])
-                                if tx[i+1] not in sx:
-                                    if tx[i+1] not in adj:
-                                        adj.append(tx[i+1])
-                    else:
-                        check = sx
-                        if item in check:
-                            if i == 0:
+##########################################################################
+##########################################################################
 
-                                adj.append(tx[i+1])
-                            elif i == len(tx)-1:
-                                adj.append(tx[i-1])
-                            else:
-                                adj.append(tx[i-1])
-                                adj.append(tx[i+1])
-                return adj 
-            #update once every new adjacent basepair to form
-            def update_structure(structure, target):
-                updated = structure
-                moveslist = []
-                moves = adjacent(structure, target)
-                for m in moves:
-                    up = updated[:m[0]] + '(' + updated[m[0]+1:m[1]] + ')' + updated[m[1]+1:]
-                    moveslist.append(up)
-                return moveslist
-            #leafing tree recursive function for generating all moves 
-            def leafs(structure, target, graph):
-                moves = update_structure(structure, target)
-                obj = Complex(  self.model,
-                                self.s1,
-                                self.s2, 
-                                state='backfray',
-                                structure = structure,
-                                dpxdist=sliding.dpxdist,
-                                clean = True)
-                obj.dtc = sliding.total_nucleations - obj.total_nucleations
-                obj.side = side
-                graph.add_node( structure,
-                                obj = obj, 
-                                pairs = obj.total_nucleations,
-                                state = obj.state,
-                                dpxdist = obj.dpxdist,
-                                dtc = obj.dtc,
-                                side = obj.side)
-                for move in moves:
-                    obj = Complex(
-                                self.model,
-                                self.s1,
-                                self.s2, 
-                                state='backfray',
-                                structure = move,
-                                dpxdist=sliding.dpxdist,
-                                clean = True)
-                    obj.dtc = sliding.total_nucleations - obj.total_nucleations
-                    obj.side = side 
-                    graph.add_node( move,
-                                    obj = obj, 
-                                    pairs = obj.total_nucleations,
-                                    state = obj.state,
-                                    dpxdist = obj.dpxdist,
-                                    dtc = obj.dtc,
-                                    side = obj.side)
-                    graph.add_edge(structure, move) 
-                    graph.add_edge(move, structure)
-                    yield list(leafs(move, target, graph))
-            #perform leafing for each backfray and connect everything in a unique graph
-            subSG = nx.DiGraph()
-            for bf in sliding.backfray:
-                bfG = nx.DiGraph()
-                list(leafs(bf.structure, sliding.structure, bfG))
-                subSG.update(bfG)
-            return subSG
-                
-        split = self.chamber.split_slidings()
-        for l, r in zip(split[0], split[1]):
-            lsubSG = backfraygraph(l, 'l')
-            rsubSG = backfraygraph(r, 'r')
-            for nl, nr in zip(lsubSG.nodes(), rsubSG.nodes()):
-                lsubSG.nodes[nl]['G'] = lsubSG.nodes[nl]['obj'].structureG()
-                rsubSG.nodes[nr]['G'] = rsubSG.nodes[nr]['obj'].structureG()
-            for graph in [lsubSG, rsubSG]:
-                most = list(self.filternodes('G', min, graph).nodes())[0]
-                graph.nodes[most]['mostable'] = True
-            self.SG.update(lsubSG)
-            self.SG.update(rsubSG)
-        
-        for node in self.SG.nodes():
-            self.SG.nodes[node]['obj'].structureG()
+    def connect_slidings(self):
+        for branch in self.sldbranches:
+            leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
+            mostable = list(self.filternodes('fre', min, leaf).nodes())[0]
+            self.DG.nodes[mostable]['state'] = 'sliding'
+            dgsliding = self.DG.nodes[mostable]['fre']
+            dgduplex = self.DG.nodes[self.duplex]['fre']
+            fwd, bwd = self.smethod('sliding', dgsliding, dgduplex)
+            fwd = fwd / abs(branch)
+            bwd = bwd / abs(branch)
+            self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+            self.DG.add_edge(self.duplex, mostable, k = bwd, state = 'sliding')
 
-########CONNECT NUCLEATIONS TO SIMPLEX
-        nucleations = self.filternodes('pairs', lambda x: x == self.min_nucleation, self.SG)
-        for node in list(nucleations.nodes()):
-            state = 'off_nucleation'
-            self.SG.nodes[node]['state'] = state
-            dgss = 0 #reference simplex state
-            dgnuc = self.SG.nodes[node]['obj'].G #nucleation free energy
-            # compute forward and backward rates
-            fwd, bwd = self.nmethod(state, dgss, dgnuc)
-            # normalize the forward nucleation rate
-            # osl = self.ownsliding(self.SG.nodes[node], self.SG) 
-            # bpt = self.SG.nodes[osl]['obj'].total_nucleations 
-            nucnorm = (self.s1.length + self.s2.length - 1) * (self.chamber.duplex.total_nucleations - self.SG.nodes[node]['dpxdist'])
-            fwd = fwd / nucnorm
-            bwd = bwd / nucnorm
-            self.SG.add_edge(self.simplex, node, k = fwd, state = state)
-            self.SG.add_edge(node, self.simplex, k = bwd, state = state)
-            next = list(self.SG.neighbors(node))
-            next.remove(self.simplex)
-            for e in next:
-                dge = self.SG.nodes[e]['obj'].G
-                # compute forward and backward rates
-                fwd, bwd = self.zmethod('zipping', dgnuc, dge) 
-                self.SG.add_edge(node, e, k = fwd, state = 'zipping')
-                self.SG.add_edge(e, node, k = bwd, state = 'zipping')
-        
-########MAKE BACKFRAY CONNECTIONS
-        mbare = list(set(self.SG.nodes()) - set(nucleations.nodes()))
-        for e1, e2 in nx.subgraph_view(self.SG, lambda x: x in mbare).to_undirected().edges(): 
-            state = 'zipping'
-            dg1 = self.SG.nodes[e1]['obj'].G
-            dg2 = self.SG.nodes[e2]['obj'].G
-            fwd, bwd = self.zmethod(state, dg1, dg2)
-            self.SG[e1][e2]['k'] = fwd
-            self.SG[e2][e1]['k'] = bwd
-            self.SG[e1][e2]['state'] = state
-            self.SG[e2][e1]['state'] = state
-        
-########MAKE SLIDING CONNECTIONS
-        left = self.filternodes('side', lambda x: x == 'l', self.SG)
-        right = self.filternodes('side', lambda x: x == 'r', self.SG)
-        lcompl = self.filternodes('mostable', lambda x: x == True, left)
-        rcompl = self.filternodes('mostable', lambda x: x == True, right)
-        for l, r in combinations([*list(lcompl.nodes.data()), *list(rcompl.nodes.data())], 2):
-            state = 'sliding'
-            self.SG.nodes[l[0]]['state'] = state
-            self.SG.nodes[r[0]]['state'] = state
-            #CONNECT SLIDINGS TO DUPLEX
-            if l[1]['dpxdist'] <= self.sliding_cutoff:
-                dgduplex = self.chamber.duplex.G
-                dgsliding = self.SG.nodes[l[0]]['obj'].G
-                fwd, bwd = self.smethod(state, dgsliding, dgduplex)
-                fwd = fwd/l[1]['dpxdist']
-                bwd = bwd/l[1]['dpxdist']
-                self.SG.add_edge(l[0], self.duplex, k = fwd, state = state)
-                self.SG.add_edge(self.duplex, l[0], k = bwd, state = state)
-            if r[1]['dpxdist'] <= self.sliding_cutoff:
-                dgduplex = self.chamber.duplex.G
-                dgsliding = self.SG.nodes[r[0]]['obj'].G
-                fwd, bwd = self.smethod(state, dgsliding, dgduplex)
-                fwd = fwd/r[1]['dpxdist']
-                bwd = bwd/r[1]['dpxdist']
-                self.SG.add_edge(r[0], self.duplex, k = fwd, state = state)
-                self.SG.add_edge(self.duplex, r[0], k = bwd, state = state)
-            #CONNECT SLIDINGS BETWEEN THEMSELVES
-            if l[1]['side'] == r[1]['side']:
-                distance = abs(l[1]['dpxdist'] - r[1]['dpxdist'])
-                if distance <= self.sliding_cutoff:
-                    dgl = self.SG.nodes[l[0]]['obj'].G
-                    dgr = self.SG.nodes[r[0]]['obj'].G
-                    fwd, bwd = self.smethod(state, dgl, dgr)
-                    fwd/distance
-                    bwd/distance
-                    self.SG.add_edge(l[0], r[0], k = fwd, state = state)
-                    self.SG.add_edge(r[0], l[0], k = bwd, state = state)
-            else:
-                distance = abs(l[1]['dpxdist'] + r[1]['dpxdist'])
-                if distance <= self.sliding_cutoff:
-                    dgl = self.SG.nodes[l[0]]['obj'].G
-                    dgr = self.SG.nodes[r[0]]['obj'].G
-                    fwd, bwd = self.smethod(state, dgl, dgr)
-                    fwd/distance
-                    bwd/distance
-                    self.SG.add_edge(l[0], r[0], k = fwd, state = state)
-                    self.SG.add_edge(r[0], l[0], k = bwd, state = state)
+##########################################################################
 
     def filternodes(self, property, function, graph):
         def filternode(node):
@@ -400,91 +180,15 @@ class Kinetwork(object):
         Rgraph = nx.subgraph_view(graph, filter_node=filternode)
         return Rgraph
     
-    def ownsliding(self, node, graph):
-        """ special filtering method to get the goal sliding associated with an off_nucleation"""
-        dpxdist = node['dpxdist']
-        side    = node['side']
-        def filternode(node):
-            try: return graph.nodes[node]['dpxdist'] == dpxdist and graph.nodes[node]['side'] == side and graph.nodes[node]['state'] == 'sliding'
-            except KeyError: pass     
-        sliding = list(nx.subgraph_view(graph, filter_node=filternode).nodes())[0]
-        return sliding
-        
-    def slidingcondition(self, slide0, slide1, duplexation = False):
-        # if duplexation == True: 
-        #     if slide0.dpxdist <= self.sliding_cutoff: return True 
-        #     else: return False 
-        if slide0.dpxdist - slide1.dpxdist < self.sliding_cutoff: return True 
-        else: return False  
+##########################################################################
 
-    def get_traps(self):
-        sab='+'.join([self.s1.sequence,self.s2.sequence])
-        def addpar(string, i, char):
-            return string[:i] + char + string[i+1:]
-        wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
-        ss = self.chamber.singlestranded.structure.split('+')[0]
-        for i, e1 in enumerate(self.s1.sequence):
-            for j, e2 in enumerate(self.s2.sequence):
-                if e1 == wc[e2]:
-                    if i+j != len(ss)-1:
-                        dpxdist = abs(i+j - len(ss) + 1)
-                        l = addpar(ss, i, '(')
-                        r = addpar(ss, j, ')')
-                        trap = '+'.join([l,r])
-                        obj = Complex(self.model, self.s1, self.s2, state='off_nucleation', structure = trap, dpxdist=dpxdist)
-                        print(sab)
-                        print(trap)
-                        self.DG.add_node(   trap,
-                                            obj = obj, 
-                                            pairs = obj.total_nucleations,
-                                            state = obj.state,
-                                            dpxdist = obj.dpxdist,
-                                            fre = obj.G)
-                        dgss = 0
-                        dgtrap = obj.G
-                        fwd, bwd = self.nmethod('off_nucleation', dgss, dgtrap)
-                        nucnorm = (self.s1.length + self.s2.length - 1) * (self.chamber.duplex.total_nucleations - dpxdist)
-                        fwd = fwd/nucnorm
-                        bwd = bwd/nucnorm
-                        self.DG.add_edge(self.simplex, trap, k = fwd)
-                        self.DG.add_edge(trap, self.simplex, k = bwd)
-
-    def get_neighbor_zippings(self, structure, onlyup = False, onlydown = False):
-
-        left, right = structure.split('+')
-
-        def get_i(lst):
-            indices = []
-            for i, el in enumerate(lst):
-                if i > 0 and el != lst[i-1]:
-                    indices.append(i)
-            return indices
-
-        def update_structure(string, character: str):
-            indices = get_i(string)
-            indices_inv = get_i(string[::-1])
-            updated = string
-            for index in indices:
-                updated = updated[:index-1] + character + updated[index:]
-            updated_inv = updated[::-1]
-            for index in indices_inv:
-                updated_inv = updated_inv[:index-1] + character + updated_inv[index:]
-            return updated_inv[::-1]
-
-        up = '+'.join([update_structure(left,'('),update_structure(right,')')])
-        down = '+'.join([update_structure(left,'.'),update_structure(right,'.')])
-
-        if onlyup == True:
-            return up
-        elif onlydown == True:
-            return down
-        else: return up, down
-    
     def save_graph(self, PATH):
         import os 
         #convert node object to string of object type
         for n in self.DG.nodes.data():
             n[1]['obj'] = str(type(n[1]['obj']))
+            try: n[1]['tdx'] = str(type(n[1]['tdx']))
+            except KeyError: pass
         try: os.makedirs(PATH)
         except FileExistsError: pass 
         nx.write_gexf(self.DG,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
@@ -493,10 +197,37 @@ class Kinetwork(object):
     def nodes(self):
         return self.Graph.nodes()
     
-    def nodata(self, *attributes):
-        if attributes != None: 
-            return list(self.Graph.nodes.data(*attributes))
-        else: return list(self.Graph.nodes.data())
+    @property
+    def sab(self):
+        return '+'.join([self.s1.sequence,self.s2.sequence])
+
+###################
+############## UTILITIES
+###################
+
+########################################################
+    def addpar(self, string, i, n, char):
+        return string[:i] + char*n + string[i+n:]
+########################################################
+    def wc(self,a):
+        wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+        return ''.join([wc[i] for i in a])
+########################################################
+    def ss(self,a):
+        return '.'*len(a)
+########################################################
+    def sab(self,*args):
+        return '+'.join(args)
+########################################################
+    def u(self,*args):
+        return ''.join(args)
+########################################################
+    def nwise(self,iterable,n):
+        iterators = tee(iterable, n)
+        for i, iter in enumerate(iterators):
+            for _ in range(i):
+                next(iter, None)
+        return zip(*iterators)
 
 
 ########################################################################################################################################################################################################

@@ -1184,61 +1184,61 @@
       </edge>
       <edge source="..........+.........." target="(.........+.........)" id="10">
         <attvalues>
-          <attvalue for="9" value="3057797.412789527" />
+          <attvalue for="9" value="1452453.7710750252" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".(........+........)." id="11">
         <attvalues>
-          <attvalue for="9" value="3057797.412789527" />
+          <attvalue for="9" value="1452453.7710750252" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="..(.......+.......).." id="12">
         <attvalues>
-          <attvalue for="9" value="3057797.412789527" />
+          <attvalue for="9" value="1452453.7710750252" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="...(......+......)..." id="13">
         <attvalues>
-          <attvalue for="9" value="3781405.3631976903" />
+          <attvalue for="9" value="1796167.547518903" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="....(.....+.....)...." id="14">
         <attvalues>
-          <attvalue for="9" value="3781405.3631976903" />
+          <attvalue for="9" value="1796167.547518903" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".....(....+....)....." id="15">
         <attvalues>
-          <attvalue for="9" value="3057797.412789527" />
+          <attvalue for="9" value="1452453.7710750252" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="......(...+...)......" id="16">
         <attvalues>
-          <attvalue for="9" value="3781405.3631976903" />
+          <attvalue for="9" value="1796167.547518903" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".......(..+..)......." id="17">
         <attvalues>
-          <attvalue for="9" value="3057797.412789527" />
+          <attvalue for="9" value="1452453.7710750252" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target="........(.+.)........" id="18">
         <attvalues>
-          <attvalue for="9" value="3781405.3631976903" />
+          <attvalue for="9" value="1796167.547518903" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
       <edge source="..........+.........." target=".........(+)........." id="19">
         <attvalues>
-          <attvalue for="9" value="3057797.412789527" />
+          <attvalue for="9" value="1452453.7710750252" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -1998,7 +1998,7 @@
       </edge>
       <edge source="(.........+.........)" target="..........+.........." id="151">
         <attvalues>
-          <attvalue for="9" value="2056901.7951387747" />
+          <attvalue for="9" value="977028.352690918" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -2160,7 +2160,7 @@
       </edge>
       <edge source=".(........+........)." target="..........+.........." id="178">
         <attvalues>
-          <attvalue for="9" value="2056901.7951387747" />
+          <attvalue for="9" value="977028.352690918" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -2364,7 +2364,7 @@
       </edge>
       <edge source="..(.......+.......).." target="..........+.........." id="212">
         <attvalues>
-          <attvalue for="9" value="2056901.7951387747" />
+          <attvalue for="9" value="977028.352690918" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -2544,7 +2544,7 @@
       </edge>
       <edge source="...(......+......)..." target="..........+.........." id="242">
         <attvalues>
-          <attvalue for="9" value="1663294.0357969925" />
+          <attvalue for="9" value="790064.6670035714" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -2700,7 +2700,7 @@
       </edge>
       <edge source="....(.....+.....)...." target="..........+.........." id="268">
         <attvalues>
-          <attvalue for="9" value="1663294.0357969925" />
+          <attvalue for="9" value="790064.6670035714" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -2832,7 +2832,7 @@
       </edge>
       <edge source=".....(....+....)....." target="..........+.........." id="290">
         <attvalues>
-          <attvalue for="9" value="2056901.7951387747" />
+          <attvalue for="9" value="977028.352690918" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -2940,7 +2940,7 @@
       </edge>
       <edge source="......(...+...)......" target="..........+.........." id="308">
         <attvalues>
-          <attvalue for="9" value="1663294.0357969925" />
+          <attvalue for="9" value="790064.6670035714" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -3024,7 +3024,7 @@
       </edge>
       <edge source=".......(..+..)......." target="..........+.........." id="322">
         <attvalues>
-          <attvalue for="9" value="2056901.7951387747" />
+          <attvalue for="9" value="977028.352690918" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -3084,7 +3084,7 @@
       </edge>
       <edge source="........(.+.)........" target="..........+.........." id="332">
         <attvalues>
-          <attvalue for="9" value="1663294.0357969925" />
+          <attvalue for="9" value="790064.6670035714" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
@@ -3114,7 +3114,7 @@
       </edge>
       <edge source=".........(+)........." target="..........+.........." id="337">
         <attvalues>
-          <attvalue for="9" value="2056901.7951387747" />
+          <attvalue for="9" value="977028.352690918" />
           <attvalue for="10" value="on_nucleation" />
         </attvalues>
       </edge>
