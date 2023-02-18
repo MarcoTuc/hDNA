@@ -5,6 +5,7 @@ class Model(object):
     def __init__(   self, 
                     sliding=None,
                     zipping=None,
+                    gamma=6.5,
                     sliding_filter=None,
                     material='dna', 
                     space_dimensionality='3D',
@@ -46,6 +47,12 @@ class Model(object):
 
         self.sliding = sliding
         self.zipping = zipping
+
+        #do not touch 
+        self.alpha = 1
+        self.gamma = 0
+        self.kappa = 1
+
         self.sliding_filter = sliding_filter
 
         self.nupack = nu.Model(material=self.material, 

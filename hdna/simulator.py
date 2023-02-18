@@ -13,6 +13,8 @@ jl = juliacall.newmodule("hDNA")
 jl.seval('using BioSimulator')
 
 from tqdm import tqdm 
+from itertools import pairwise
+
 from .kinetwork import Kinetwork, Kinetics
 from .model import Model, Options
 from .strand import Strand
@@ -20,7 +22,7 @@ from .strand import Strand
 
 class Simulator(object):
     
-    def __init__(self, model: Model, s1: Strand, s2: Strand, options=Options()):
+    def __init__(self, model: Model, s1: Strand, s2: Strand, options=Options(), clean=False):
         
         self.model = model 
         self.options = options 
@@ -33,18 +35,23 @@ class Simulator(object):
         self.kinetics = self.kinet.kinetics
         self.biosim = jl.Network("biosim")
 
-        self.sss = self.kinet.chamber.singlestranded.structure
+        self.sss = self.kinet.simplex #refers to simplex structure
         self.initialamount = self.options.initialamount
-        self.add_species()
-        self.add_reactions()
-        self.duplexindex = np.where(np.array([self.lt(str(e)) for e in list(self.biosim.species_list)]) == self.kinet.duplex)[0][0]
 
-        self.DIR = f'./{self.options.results_dir}/simulations/{self.options.stranditer}_{self.kinet.s1.sequence}'
+        if not clean:
+            self.add_species()
+            self.add_reactions()
+            self.BSGraph()
+        
+            self.duplexindex = np.where(np.array([self.lt(str(e)) for e in list(self.biosim.species_list)]) == self.kinet.duplex)[0][0]
+            self.duplex = self.kinet.duplex 
+
+            self.DIR = f'./{self.options.results_dir}/simulations/{self.options.stranditer}_{self.kinet.s1.sequence}'
 
     def add_species(self, verbose=False):
         """DONE"""
         # self.biosim <= jl.Species(self.tl(str(list(self.Graph.nodes())[0])), self.initialamount)
-        ss = self.tl(self.kinet.chamber.singlestranded.structure) 
+        ss = self.tl(self.sss) 
         self.biosim <= jl.Species(ss, self.initialamount)
         for node in list(self.Graph.nodes())[1:]:
             if verbose: print(f'trying {node}')
@@ -52,16 +59,12 @@ class Simulator(object):
             self.biosim <= jl.Species(self.tl(node))
 
     def add_reactions(self, verbose=False):
-        #NUCLEATIONS:
         for i, (e1, e2, data) in enumerate(self.Graph.edges.data()):
             state = self.Graph[e1][e2]['state']
             name = f"{state}-{i}"
             rate = data['k']
             etl1 = self.tl(e1)
-            etl2 = self.tl(e2)
-            if verbose:
-                print(name)
-                print(rate)               
+            etl2 = self.tl(e2)    
             if e1 == self.sss:
                 rule = f"{etl1} + {etl1} --> {etl2}"
                 if verbose: print(rule)
@@ -81,6 +84,7 @@ class Simulator(object):
         return jl.simulate(self.biosim, self.method, tfinal = self.options.runtime)
         # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t} OLD TRANSLATION TO DICTIONARY 
     
+
     def ensemble(self):
         state, model = jl.parse_model(self.biosim)
         bar = tqdm(range(self.options.Nsim), leave = False)
@@ -92,73 +96,112 @@ class Simulator(object):
             DIR_TRAJ = f'{self.DIR}/trajectories'  
             try: os.makedirs(DIR_TRAJ)
             except FileExistsError: pass 
+            for run in sim:
+                self.get_trajectory(run, weightlift=True, savetraj=False)
             for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
-                traj = self.get_trajectory(s) 
+                traj = self.get_trajectory(s, weightlift=False, savetraj=True,) 
                 traj.to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
             self.options.stranditer += 1
             return sim
-
-
-    def mfpt(self, ensemble):
-        fpts = self.fpts(ensemble)
-        return np.mean(fpts)
-
-    def fpts(self, ensemble):
-        fpts = []
-        failed = []
-        for sim in ensemble:
-            index = jl.findfirst(jl.isone, sim[self.duplexindex,:])
-            try: fpts.append(sim.t[index-1])
-            except TypeError: 
-                fpts.append(self.options.runtime)
-                failed.append(index)
-        print(f"{len(failed)} simulations didn't produce a duplex.")
-        print(f"That's {100*len(failed)/len(ensemble)}% of simulations")
-        self.overview['failed'] = len(failed)
-        self.overview['fail%'] = 100*len(failed)/len(ensemble)
-        return fpts
     
 
-    def get_trajectory(self, simulation): #TODO REDO IT MORE EFFICIENTLY (?)
+    def directsimulation(self):
+
+        DIR_TRAJ = f'{self.DIR}/trajectories'
+        DIR_TRAJ_FAIL = f'{self.DIR}/trajectories/failed'
+        try: 
+            os.makedirs(DIR_TRAJ)
+        except FileExistsError: pass 
+        try:
+            os.makedirs(DIR_TRAJ_FAIL)
+        except FileExistsError: pass 
+        fpts = []
+        failed = 0
+        state, model = jl.parse_model(self.biosim)
+        bar = tqdm(range(self.options.Nsim), leave = False)
+        bar.set_description('Simulating')
+
+        for i in bar:
+            sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
+            traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
+            try: 
+                if i % int(self.options.Nsim/30) == 0:
+                    fpts.append(sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1])
+                    pd.DataFrame(traj).to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
+            except TypeError:
+                fpts.append(self.options.runtime)
+                pd.DataFrame(traj).to_csv(f'{DIR_TRAJ_FAIL}/run{i+1}.csv')
+                failed += 1
+
+        print(f"{failed} simulations didn't produce a duplex.")
+        print(f"That's {100*failed/self.options.Nsim}% of simulations")
+        self.overview['failed'] = failed
+        self.overview['fail%'] = 100*failed/self.options.Nsim
+        self.options.stranditer += 1        
+        return fpts, 1/np.mean(fpts)
+    
+
+    def get_trajectory(self, simulation, weightlift=True, savetraj=False): #TODO REDO IT MORE EFFICIENTLY (?)
         
         """ Create a method for appending a simulation trajectory to each simulation result
             Over than being pretty this is a good way to see inside simulations what's happening
             in order to see if the code is making stuff that makes actual physical sense.
             Checking this kind of stuff on the very big and sparse dataframes is unwise """
 
-        self.trajectory = []
+        if savetraj: self.trajectory = []
         states = list(self.Graph.nodes())
         # substitute 1 instead of 2 into the singlestranded states 
         for i, e in enumerate(simulation[0,:]): 
             if e == 2: simulation[0,:][i] = 1
         # Append the corresponding structure to the trajectory list
-        for step in range(len(simulation)-1):
-            stepvector = simulation[:,step]
-            index = jl.findall(jl.isone, stepvector)
-            # Check for errors
-            if len(index) != 1: 
-                if len(index) == 0: 
-                    # Cannot have void states (strand always exists)
-                    raise TrajectoryError(f'void state detected at step {step}')
-                else:     
-                    # Cannot have more than one state at the same time 
-                    raise TrajectoryError(f'simultaneous states detected in step {step} at indices {[*list(index)]}')
-            index = index[0] - 1
-            self.trajectory.append(states[index])
-        if not self.options.rates_info:
-            return self.trajectory
+        if not weightlift:
+            for step in simulation:
+                index = jl.findall(jl.isone, step)[0] - 1
+                if savetraj: self.trajectory.append(states[index])
         else:
-            G = self.BSGraph()
-            FRE = []
-            rates = []
-            names = []
-            for i, step in enumerate(self.trajectory[:-1], start=1):
-                FRE.append(G.nodes[str(step)]['obj'].G)
-                rates.append('{:e}'.format(G.edges[str(step),str(self.trajectory[i])]['rate']))
-                names.append(G.edges[str(step),str(self.trajectory[i])]['name'])
-            DF = pd.DataFrame([self.trajectory, FRE, rates, names], 
-                                index=['trajectory', 'DG', 'next step rate', 'step name']).T
-            return DF
+            for i, (step, next) in enumerate(pairwise(simulation)):
+                i_step = jl.findall(jl.isone, step)[0] - 1
+                i_next = jl.findall(jl.isone, next)[0] - 1
+                if savetraj: self.trajectory.append(states[i_step])
+                try: self.BSG[states[i_step]][states[i_next]]['weight'] += 1
+                except KeyError: pass
+                if states[i_next] == self.duplex:
+                    if savetraj: self.trajectory.append(states[i_next])
+                    break
+        # else:
+        #     for i, (step, next) in enumerate(pairwise(simulation)):
+        #         if i == 0:
+        #             i_step = jl.findall(jl.isone, step)[0] - 1
+        #             i_next = jl.findall(jl.isone, next)[0] - 1
+        #         else:
+        #             i_step = i_next
+        #             i_next = jl.findall(jl.isone, next)[0] - 1
+        #         if savetraj: self.trajectory.append(states[i_step])
+        #         self.BSG[states[i_step]][states[i_next]]['weight'] += 1
+        #         if states[i_next] == self.duplex:
+        #             if savetraj: self.trajectory.append(states[i_next])
+        #             break
+            # Check for void trajectories - DISABLED 
+            # if len(index) != 1: 
+            #     if len(index) == 0: 
+            #         # Cannot have void states (strand always exists)
+            #         raise TrajectoryError(f'void state detected at step {step}')
+            #     else:     
+            #         # Cannot have more than one state at the same time 
+            #         raise TrajectoryError(f'simultaneous states detected in step {step} at indices {[*list(index)]}')
+            # index = index[0] - 1
+        # if not self.options.rates_info:
+        return self.trajectory
+        # FRE = []
+        # rates = []
+        # names = []
+        # for i, step in enumerate(self.trajectory[:-1], start=1):
+        #     FRE.append(self.BSG.nodes[str(step)]['obj'].G)
+        #     rates.append('{:e}'.format(self.BSG.edges[str(step),str(self.trajectory[i])]['rate']))
+        #     names.append(self.BSG.edges[str(step),str(self.trajectory[i])]['name'])
+        # DF = pd.DataFrame([self.trajectory, FRE, rates, names], 
+        #                     index=['trajectory', 'DG', 'next step rate', 'step name']).T
+        # return DF
 
     def BSGraph(self, verbose=False):
         """ Return a digraph post-biosim to see if it matches with the pre-biosim graph.
@@ -181,31 +224,71 @@ class Simulator(object):
                 if verbose: print(self.Graph.nodes[g][key])
                 self.BSG.nodes[g][key] = self.Graph.nodes[g][key]
         # loop to remove reaction number and get name as the original reaction state 
+        # and add an empty weight 
         for edge in self.BSG.edges.data():
             edge[2]['state'] = edge[2]['name'].split('-')[0]
+            edge[2]['weight'] = 1
 
         return self.BSG
     
-    def save_graph(self):
+    def save_graph(self, path=None, both=False):
         #convert node object to string of object type
-        if self.options.graphsalone == 'own_folder': PATH = f'{self.options.results_dir}/graphs'
-        elif self.options.graphsalone == 'strand_folder': PATH = self.DIR
-        try: 
-            for n in self.BSG.nodes.data():
-                n[1]['obj'] = str(type(n[1]['obj']))
+        BSGsave = self.BSG.copy()
+        if both: DGsave = self.kinet.DG.copy()
+        for n in BSGsave.nodes.data():
+            del n[1]['obj']
+            try: del n[1]['tdx'] 
+            except KeyError: pass
+        if both:
+            for n in DGsave.nodes.data():
+                del n[1]['obj']
+                try: del n[1]['tdx'] 
+                except KeyError: pass
+        if path != None:
+            self.graphsaveformat(BSGsave)
+            nx.write_gexf(BSGsave,f'{path}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
+            if both: 
+                self.graphsaveformat(DGsave)
+                nx.write_gexf(DGsave,f'{path}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_K.gexf')
+        else:
+            if self.options.graphsalone == 'own_folder': PATH = f'{self.options.results_dir}/graphs'
+            elif self.options.graphsalone == 'strand_folder': PATH = self.DIR
             try: os.makedirs(PATH)
             except FileExistsError: pass 
-            self.graphsaveformat(self.BSG)
-            nx.write_gexf(self.BSG,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
-        except:
-            self.BSGraph() 
-            for n in self.BSG.nodes.data():
-                n[1]['obj'] = str(type(n[1]['obj']))
-            try: os.makedirs(PATH)
-            except FileExistsError: pass 
-            self.graphsaveformat(self.BSG)
-            nx.write_gexf(self.BSG,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
+            self.graphsaveformat(BSGsave)
+            nx.write_gexf(BSGsave,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
+            if both: 
+                self.graphsaveformat(DGsave)
+                nx.write_gexf(DGsave,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_K.gexf')
+            # except:
+            #     self.BSGraph() 
+            #     for n in self.BSG.nodes.data():
+            #         n[1]['obj'] = str(type(n[1]['obj']))
+            #     try: os.makedirs(PATH)
+            #     except FileExistsError: pass 
+            #     self.graphsaveformat(self.BSG)
+            #     nx.write_gexf(self.BSG,f'{PATH}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_S.gexf')
+            #     if both: nx.write_gexf(self.kinet.DG,f'{path}/{self.options.stranditer}_{self.kinet.s1.sequence}_graph_K.gexf')
         
+                
+    def mfpt(self, ensemble):
+        fpts = self.fpts(ensemble)
+        return np.mean(fpts)
+
+    def fpts(self, ensemble):
+        fpts = []
+        failed = []
+        for sim in ensemble:
+            index = jl.findfirst(jl.isone, sim[self.duplexindex,:])
+            try: fpts.append(sim.t[index-1])
+            except TypeError: 
+                fpts.append(self.options.runtime)
+                failed.append(index)
+        print(f"{len(failed)} simulations didn't produce a duplex.")
+        print(f"That's {100*len(failed)/len(ensemble)}% of simulations")
+        self.overview['failed'] = len(failed)
+        self.overview['fail%'] = 100*len(failed)/len(ensemble)
+        return fpts
 
     ######################
     ### Helper Methods ###
@@ -249,11 +332,6 @@ class Simulator(object):
     ########################
     ### Property Methods ###
     ########################
-
-    @property
-    def duplex(self):
-        return list(self.Graph.nodes())[-1]
-
 
 
 class TrajectoryError(Exception):

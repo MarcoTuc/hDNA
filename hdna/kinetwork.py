@@ -38,8 +38,8 @@ class Kinetwork(object):
         self.dxobj = Complex(self.model, self.s1, self.s2, state='duplex', structure=self.duplex, dpxdist=0)
 
         self.nmethod = self.kinetics.kawasaki
-        self.zmethod = self.kinetics.kawasaki
-        self.smethod = self.kinetics.metropolis
+        self.zmethod = self.kinetics.metropolis
+        self.smethod = self.kinetics.kawasaki
 
         self.normalizeback = False
         self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
@@ -91,9 +91,9 @@ class Kinetwork(object):
 
     def get_graph(self, verbose=False):
         self.sldbranches = []
-        ss = self.simplex 
+        ss = self.simplex.split('+')[0] 
         num = min(self.s1.length, self.s2.length)
-        for n in range(num):
+        for n in range(self.model.min_nucleation, num):
             for i, e1 in enumerate(self.nwise(self.s1.sequence, n)):
                 for j, e2 in enumerate(self.nwise(self.s2.sequence, n)):
                     e1 = self.u(*e1)
@@ -141,8 +141,8 @@ class Kinetwork(object):
                             if n == num-1: 
                                 dgduplex = self.DG.nodes[self.duplex]['fre']
                                 fwd, bwd = self.zmethod('zipping', dgtrap, dgduplex)
-                                self.DG.add_edge(trap, self.duplex, k = fwd, state = 'backfray')
-                                self.DG.add_edge(self.duplex, trap, k = bwd, state = 'backfray') 
+                                self.DG.add_edge(trap, self.duplex, k = fwd, state = 'zipping')
+                                self.DG.add_edge(self.duplex, trap, k = bwd, state = 'zipping') 
                         
         #get unique ids for all branches except branch 0 corresponding to on register nucleation
         self.sldbranches = set(self.sldbranches)
@@ -151,18 +151,28 @@ class Kinetwork(object):
 ##########################################################################
 ##########################################################################
 
-    def connect_slidings(self):
+    def connect_slidings(self, verbose=True):
         for branch in self.sldbranches:
             leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
-            mostable = list(self.filternodes('fre', min, leaf).nodes())[0]
-            self.DG.nodes[mostable]['state'] = 'sliding'
-            dgsliding = self.DG.nodes[mostable]['fre']
-            dgduplex = self.DG.nodes[self.duplex]['fre']
-            fwd, bwd = self.smethod('sliding', dgsliding, dgduplex)
-            fwd = fwd / abs(branch)
-            bwd = bwd / abs(branch)
-            self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
-            self.DG.add_edge(self.duplex, mostable, k = bwd, state = 'sliding')
+            components = nx.connected_components(leaf.to_undirected())
+            for component in components:
+                if len(component) > 1:
+                    subleaf = nx.subgraph(self.DG, list(component))
+                    mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
+                    self.DG.nodes[mostable]['state'] = 'sliding'
+                    dgsliding = self.DG.nodes[mostable]['fre']
+                    # dgduplex = self.DG.nodes[self.duplex]['fre']
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+                    if verbose: 
+                        dgstring = '{:.3f}'.format(dgsliding)
+                        fwdformat = '{:.3e}'.format(fwd)
+                        bwdformat = '{:.3e}'.format(0)
+                        # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
+                        print(mostable, fwdformat, bwdformat, dgstring)
+                    #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
+                    #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
+                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+                    self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
 
 ##########################################################################
 
@@ -341,7 +351,11 @@ class Kinetics(object):
         from the dictionary and dividing the value by Z 
         """
         pass
-    
+
+    def gammasliding(self, dgs):
+        return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
+        # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #oldgammascaling
+
 
     def kawasaki(self, kind, dgi, dgj):
         ratesdict = {'zipping':     self.zippingrate,
@@ -377,9 +391,9 @@ class Kinetics(object):
         return kij, kji
             
 
-    ##################################################
-    #################### General #####################
-    ##################################################
+    ####################################################################################################
+    #################### General #######################################################################
+    ####################################################################################################
 
     def einsmol_spherical(self, radius):
         """ returns einstein smoluchowski diffusivity for 
@@ -390,8 +404,8 @@ class Kinetics(object):
         """ Smoluchowski 1916 classical formula """
         if kind == 'ppi':  
             self.ppi_diffusivities()
-            dc = 1e-3 #dimensional correction from cubic cm to cubic dm to get 1/(M*s) kinetic rates
-            self.dlrate = self.phys['Na']*4*np.pi*(self.pD1+self.pD2)*(self.gr1+self.gr2) * dc
+            cm2dmcubic = 1e-3 #dimensional correction from cubic cm to cubic dm to get 1/(M*s) kinetic rates
+            self.dlrate = self.phys['Na']*4*np.pi*(self.pD1+self.pD2)*(self.gr1+self.gr2) * cm2dmcubic
             return self.dlrate
         elif kind == 'vanilla':
             self.vanilla_diffusivities()
@@ -404,10 +418,10 @@ class Kinetics(object):
         self.georate = (np.power((self.model.theta/360),2))*(np.power((self.model.phi/360),2)) * self.dlrate
         return self.georate 
 
-    def closedconfscaling(self, p_circular):
+    def closedconfscaling(self, p_circular): 
         """ p_circular => probability of circularization 
-            circularization will impede nucleation because ...
-            (just make a picture of it in your mind for now) """
+            circularization will impede nucleation because ... 
+            (just make a picture of it in your mind for now) """ 
         self.georate = self.georate * (1 - p_circular)
         #TODO implement methods to calculate p_circular from 
         #end-to-end probability distributions from polymer physics 

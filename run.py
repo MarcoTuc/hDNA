@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'STACKING_z6e7s3e7_120180_sf3'
+EXPNAME = 'porschke_aveva_ragione4'
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
@@ -19,12 +19,22 @@ data = expdata.copy().iloc[:limit]
 data['index'] = data.index 
 data.set_index(data['sequences'], inplace=True)
 
-MOD = Model(stacking='stacking')
-MOD.setparams(sliding_filter=3)
-MOD.setgeometry(theta=120, phi = 180)
+MOD = Model(
+    stacking='nostacking',
+    min_nucleation=1)
+MOD.setgeometry(theta=180, phi = 270)
+ 
+MOD.alpha = 1
+MOD.gamma = 0
+MOD.kappa = 1
 
-H = HDNA(data, EXPNAME, model=MOD)
+OPT = Options(Nsim=3000)
+
+H = HDNA(data, EXPNAME, model=MOD, options=OPT)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]
 # results = dual_annealing(H.run, bounds, maxiter=5, initial_temp=500)
 
-H.run([3e7, 2e7])
+zipping = 8e7
+sliding = 2e5
+
+H.run([zipping, sliding])

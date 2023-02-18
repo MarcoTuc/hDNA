@@ -16,6 +16,7 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     S = list(sdata['sequences'])
     I = list(sdata['index'])
 
+    XLINE = np.linspace(1e4, 9e6)
 
     trace1 = go.Scatter(
         x = X, # My list of values for 'x'
@@ -29,8 +30,8 @@ def valplot(data, name, writepath = None, theme = 'dark'):
                      <br>seq:  %{customdata} </b>"""
     )
     trace2 = go.Scatter(
-        x = X,
-        y = X,
+        x = XLINE,
+        y = XLINE,
         mode = 'lines',
         marker = dict(color = THM['colorline']),
         line = dict(dash = 'dash'),

@@ -9,7 +9,7 @@ from itertools import pairwise, tee
 from .strand import Strand
 from .model import Model
 
-nu.config.cache = 8.0
+# nu.config.cache = 8.0
 
 class Complex(object):
     
@@ -244,119 +244,119 @@ class Complex(object):
 
 
 
-class Zippo(Complex):
-    def __init__(self, 
-                    model: Model, 
-                    s1: Strand, 
-                    s2: Strand, 
-                    state,
-                    structure,
-                    dpxdist=None,
-                    clean=False):
-        super().__init__(model,s1,s2,state,structure,clean=clean)
-        self.dpxdist = dpxdist
+# class Zippo(Complex):
+#     def __init__(self, 
+#                     model: Model, 
+#                     s1: Strand, 
+#                     s2: Strand, 
+#                     state,
+#                     structure,
+#                     dpxdist=None,
+#                     clean=False):
+#         super().__init__(model,s1,s2,state,structure,clean=clean)
+#         self.dpxdist = dpxdist
 
 
-class Sliding(Complex):
-    def __init__(self,
-                    model:Model,
-                    s1: Strand,
-                    s2: Strand,
-                    state,
-                    structure,
-                    dpxdist):
-        super().__init__(model,s1,s2,state,structure)
-        self.dpxdist = dpxdist #distance in terms of basepairs from the sliding to the duplex
-        self.off_nucleations()
+# class Sliding(Complex):
+#     def __init__(self,
+#                     model:Model,
+#                     s1: Strand,
+#                     s2: Strand,
+#                     state,
+#                     structure,
+#                     dpxdist):
+#         super().__init__(model,s1,s2,state,structure)
+#         self.dpxdist = dpxdist #distance in terms of basepairs from the sliding to the duplex
+#         self.off_nucleations()
 
-    def off_nucleations(self, verbose=False):
+#     def off_nucleations(self, verbose=False):
         
-        def get_ix(string, char):
-            indices = []
-            for i, e in enumerate(list(string)):
-                if e == char:
-                    indices.append(i)
-            return indices 
+#         def get_ix(string, char):
+#             indices = []
+#             for i, e in enumerate(list(string)):
+#                 if e == char:
+#                     indices.append(i)
+#             return indices 
 
-        def trans(l):
-            trans = str.maketrans({'(': 'b', ')': 'd'})
-            return l.translate(trans)
+#         def trans(l):
+#             trans = str.maketrans({'(': 'b', ')': 'd'})
+#             return l.translate(trans)
 
-        def backtrans(l):
-            trans = str.maketrans({'b': '(', 'd': ')'})
-            return l.translate(trans)
+#         def backtrans(l):
+#             trans = str.maketrans({'b': '(', 'd': ')'})
+#             return l.translate(trans)
         
-        def transparens(l):
-            trans = str.maketrans({'(':'.', ')':'.'})
-            return l.translate(trans)
+#         def transparens(l):
+#             trans = str.maketrans({'(':'.', ')':'.'})
+#             return l.translate(trans)
 
-        def nwise(iterable,n):
-            iterators = tee(iterable, n)
-            for i, iter in enumerate(iterators):
-                for _ in range(i):
-                    next(iter, None)
-            return zip(*iterators)
+#         def nwise(iterable,n):
+#             iterators = tee(iterable, n)
+#             for i, iter in enumerate(iterators):
+#                 for _ in range(i):
+#                     next(iter, None)
+#             return zip(*iterators)
 
-        def replace(index_list,character,string):
-            string=list(string)
-            for index in index_list:
-                string[index]=character
-            return "".join(string)
+#         def replace(index_list,character,string):
+#             string=list(string)
+#             for index in index_list:
+#                 string[index]=character
+#             return "".join(string)
 
-        def update(struct, verbose=False):
-            ixl = get_ix(struct, '(')
-            ixr = get_ix(struct, ')')
-            ixb = get_ix(struct, 'b')
-            ixd = get_ix(struct, 'd')
-            if verbose: print(ixl, ixr, ixb, ixd)
-            try: nldo = min([j for j in ixl if j<ixb[0]],  key=lambda x:abs(x-ixb[0]))
-            except ValueError: nldo = ixb[0]
-            try: nlup = min([j for j in ixl if j>ixb[-1]], key=lambda x:(abs(x-ixb[-1])))
-            except ValueError: nlup = ixb[-1]
-            try: nrdo = min([j for j in ixr if j<ixd[0]],  key=lambda x:abs(x-ixd[0]))
-            except ValueError: nrdo = ixd[0]
-            try: nrup = min([j for j in ixr if j>ixd[-1]], key=lambda x:abs(x-ixd[-1]))
-            except ValueError: nrup = ixd[-1]
-            if verbose: print(ixb);print(ixl);print(nldo, nlup, nrdo, nrup)
-            struct = replace([nldo, nlup], 'b', struct)
-            struct = replace([nrdo, nrup], 'd', struct)
-            return struct 
+#         def update(struct, verbose=False):
+#             ixl = get_ix(struct, '(')
+#             ixr = get_ix(struct, ')')
+#             ixb = get_ix(struct, 'b')
+#             ixd = get_ix(struct, 'd')
+#             if verbose: print(ixl, ixr, ixb, ixd)
+#             try: nldo = min([j for j in ixl if j<ixb[0]],  key=lambda x:abs(x-ixb[0]))
+#             except ValueError: nldo = ixb[0]
+#             try: nlup = min([j for j in ixl if j>ixb[-1]], key=lambda x:(abs(x-ixb[-1])))
+#             except ValueError: nlup = ixb[-1]
+#             try: nrdo = min([j for j in ixr if j<ixd[0]],  key=lambda x:abs(x-ixd[0]))
+#             except ValueError: nrdo = ixd[0]
+#             try: nrup = min([j for j in ixr if j>ixd[-1]], key=lambda x:abs(x-ixd[-1]))
+#             except ValueError: nrup = ixd[-1]
+#             if verbose: print(ixb);print(ixl);print(nldo, nlup, nrdo, nrup)
+#             struct = replace([nldo, nlup], 'b', struct)
+#             struct = replace([nrdo, nrup], 'd', struct)
+#             return struct 
         
-        ixl = get_ix(self.structure, '(')
-        ixr = get_ix(self.structure, ')')
+#         ixl = get_ix(self.structure, '(')
+#         ixr = get_ix(self.structure, ')')
 
-        if self.consecutive_nucleations > self.model.min_nucleation:
-            self.backfray = []
-            for l, r in zip(
-                nwise(ixl, self.model.min_nucleation),
-                nwise(ixr[::-1], self.model.min_nucleation)):
-                new = replace(l, 'b', self.structure)
-                new = replace(r, 'd', new)
-                newtrans = backtrans(transparens(new))
-                offcore = Complex(
-                    self.model, 
-                    self.s1, 
-                    self.s2, 
-                    state='off_nucleation',
-                    structure=newtrans,
-                    dpxdist=self.dpxdist)
-                self.backfray.append(offcore)
-                itszippings = []
-                while new != trans(self.structure):
-                    new = update(new)
-                    newtrans = backtrans(transparens(new))
-                    if verbose: 
-                        print('slidings backfray routine produced','\n',newtrans)
-                        print('from source', self.structure)
-                    itszippings.append(Zippo(
-                        self.model, 
-                        self.s1, 
-                        self.s2, 
-                        state='backfray',
-                        structure=newtrans,
-                        dpxdist=self.dpxdist))
-                offcore.inherit_zipping(itszippings[:-1])
-        else: self.backfray = []
+#         if self.consecutive_nucleations > self.model.min_nucleation:
+#             self.backfray = []
+#             for l, r in zip(
+#                 nwise(ixl, self.model.min_nucleation),
+#                 nwise(ixr[::-1], self.model.min_nucleation)):
+#                 new = replace(l, 'b', self.structure)
+#                 new = replace(r, 'd', new)
+#                 newtrans = backtrans(transparens(new))
+#                 offcore = Complex(
+#                     self.model, 
+#                     self.s1, 
+#                     self.s2, 
+#                     state='off_nucleation',
+#                     structure=newtrans,
+#                     dpxdist=self.dpxdist)
+#                 self.backfray.append(offcore)
+#                 itszippings = []
+#                 while new != trans(self.structure):
+#                     new = update(new)
+#                     newtrans = backtrans(transparens(new))
+#                     if verbose: 
+#                         print('slidings backfray routine produced','\n',newtrans)
+#                         print('from source', self.structure)
+#                     itszippings.append(Zippo(
+#                         self.model, 
+#                         self.s1, 
+#                         self.s2, 
+#                         state='backfray',
+#                         structure=newtrans,
+#                         dpxdist=self.dpxdist))
+#                 offcore.inherit_zipping(itszippings[:-1])
+#         else: self.backfray = []
             
 
     
