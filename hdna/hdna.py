@@ -79,6 +79,57 @@ class HDNA:
 
         return savedata['error'].sum()
 
+    
+    def optimize(self):
+        initial = [2e7, 2e7]
+        optimizer = basinhopping(self.run, initial, niter=5, stepsize=1e7, T=300)
+
+    
+    def save_plots(self, fpts, simulatore, sequence, exp, mod):
+            fitgamma = gammafit(fpts)
+            fitexp = expfit(fpts)
+            histotime(fpts, fitgamma, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}gamma_histo', writepath=simulatore.DIR, theme='dark')
+            histotime(fpts, fitexp, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}_exp_histo', writepath=simulatore.DIR, theme='dark')
+            pd.DataFrame(fpts).to_csv(f"{simulatore.DIR}/fpts.csv")
+            percomplot(fpts, writepath=simulatore.DIR, name=f'{sequence}_percentplot')
+
+    def make_dir(self, RESULTS_DIR):
+         # Directory Check 
+        if os.path.isdir(RESULTS_DIR): 
+            i = 0
+            while True: 
+                i += 1
+                permission = input(f'Folder {RESULTS_DIR} already exists, do you want to overwrite old experiments? [Y,N] ')
+                if permission.lower().startswith('y'):
+                    print('>>>> overwriting old simulations')
+                    break
+                elif permission.lower().startswith('n') or i == 3:
+                    asknew = input(f'Do you want to make a new folder? [Y,N] ')
+                    if asknew.lower().startswith('y'):
+                        control = False
+                        while True: 
+                            NEWEXPNAME = input(f'Write the new experiment name to put inside ./results folder:\n')
+                            RESULTS_DIR = f"results/{NEWEXPNAME}"
+                            if NEWEXPNAME != self.EXPNAME: 
+                                os.makedirs(RESULTS_DIR)
+                                self.EXPNAME = NEWEXPNAME
+                                break
+                            else: print('Bro, put a new name not the old one... \n')
+                        break 
+                    elif permission.lower().startswith('n'): 
+                        print(">>>> stopping the program")
+                        sys.exit()
+                print("yes or not?") 
+        else:
+            os.makedirs(RESULTS_DIR)
+    
+    def check_dir(self):
+        self.make_dir(self.folder)
+
+
+
+
+
     # def run(self, rates):
         
     #     savedata = self.data
@@ -128,49 +179,3 @@ class HDNA:
     #     self.RUN += 1
 
     #     return savedata['error'].sum()
-
-    
-    def optimize(self):
-        initial = [2e7, 2e7]
-        optimizer = basinhopping(self.run, initial, niter=5, stepsize=1e7, T=300)
-
-    
-    def save_plots(self, fpts, simulatore, sequence, exp, mod):
-            fitgamma = gammafit(fpts)
-            fitexp = expfit(fpts)
-            histotime(fpts, fitgamma, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}gamma_histo', writepath=simulatore.DIR, theme='dark')
-            histotime(fpts, fitexp, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}_exp_histo', writepath=simulatore.DIR, theme='dark')
-            percomplot(fpts, writepath=simulatore.DIR, name=f'{sequence}_percentplot')
-
-    def make_dir(self, RESULTS_DIR):
-         # Directory Check 
-        if os.path.isdir(RESULTS_DIR): 
-            i = 0
-            while True: 
-                i += 1
-                permission = input(f'Folder {RESULTS_DIR} already exists, do you want to overwrite old experiments? [Y,N] ')
-                if permission.lower().startswith('y'):
-                    print('>>>> overwriting old simulations')
-                    break
-                elif permission.lower().startswith('n') or i == 3:
-                    asknew = input(f'Do you want to make a new folder? [Y,N] ')
-                    if asknew.lower().startswith('y'):
-                        control = False
-                        while True: 
-                            NEWEXPNAME = input(f'Write the new experiment name to put inside ./results folder:\n')
-                            RESULTS_DIR = f"results/{NEWEXPNAME}"
-                            if NEWEXPNAME != self.EXPNAME: 
-                                os.makedirs(RESULTS_DIR)
-                                self.EXPNAME = NEWEXPNAME
-                                break
-                            else: print('Bro, put a new name not the old one... \n')
-                        break 
-                    elif permission.lower().startswith('n'): 
-                        print(">>>> stopping the program")
-                        sys.exit()
-                print("yes or not?") 
-        else:
-            os.makedirs(RESULTS_DIR)
-    
-    def check_dir(self):
-        self.make_dir(self.folder)

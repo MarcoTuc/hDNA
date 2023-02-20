@@ -1,7 +1,19 @@
+import math
 import pandas as pd
 import numpy as np 
 import plotly.graph_objects as go
 import plotly.express as px
+
+def upperapprox(num):
+    order = math.floor(math.log10(num))
+    return math.ceil(num/(10**order))*10**order
+
+def lowerapprox(num):
+    order = math.floor(math.log10(num))
+    return math.floor(num/(10**order))*10**order
+
+def num_ticks(lower, upper, tick_mag):
+    return math.ceil((upper - lower + 1) / tick_mag)
 
 def valplot(data, name, writepath = None, theme = 'dark'):
     
@@ -16,7 +28,10 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     S = list(sdata['sequences'])
     I = list(sdata['index'])
 
-    XLINE = np.linspace(1e4, 9e6)
+    lowbound = lowerapprox(min(Y))
+    topbound = upperapprox(max(Y))
+
+    XLINE = np.linspace(0, topbound)
 
     trace1 = go.Scatter(
         x = X, # My list of values for 'x'
@@ -44,7 +59,7 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         yaxis_title="computed rates",
         showlegend=False,
         autosize = False,
-        width = 1000,
+        width = 600,
         height = 600,
         margin = dict(
             b = 50,
@@ -55,20 +70,27 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         ),
         xaxis = dict(
             tickmode = 'array',
-            showgrid = True,
+            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, 1e6)),
+            showgrid = True
             ),
         yaxis = dict(
             tickmode = 'array',
+            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, 1e6)),
             showgrid = True
         )
     )
     dados = [trace1, trace2]
     fig = go.Figure(data = dados, layout = layout)
+    
     fig.update_xaxes(exponentformat="e", titlefont={'size': 22})
     fig.update_yaxes(exponentformat="e", titlefont={'size': 22})
+    
+    fig.update_layout(xaxis_range=[0,topbound])
+    fig.update_layout(yaxis_range=[0,topbound])
 
     if writepath == None:
         fig.show()
+        return fig 
     else:
         PATH = f'{writepath}/{name}'
         fig.write_html(f"{PATH}.html")
