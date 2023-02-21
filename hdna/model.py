@@ -5,7 +5,6 @@ class Model(object):
     def __init__(   self, 
                     sliding=None,
                     zipping=None,
-                    gamma=6.5,
                     sliding_filter=None,
                     material='dna', 
                     space_dimensionality='3D',
