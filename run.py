@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'doesitstillwork'
+EXPNAME = 'doesitstillwork2'
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
@@ -34,7 +34,7 @@ H = HDNA(data, EXPNAME, model=MOD, options=OPT)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]
 # results = dual_annealing(H.run, bounds, maxiter=5, initial_temp=500)
 
-zipping = 8e7
-sliding = 2e5
+zipping = 7.5e7
+sliding = 1.5e5
 
 H.run([zipping, sliding])
