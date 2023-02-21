@@ -53,14 +53,15 @@ class HDNA:
             i += 1
             print(f'Strand number {i}: {seq}')
             A = Strand(self.model, seq)
-            B = A.complementary()
             self.options.results_dir = savefolder
             self.options.stranditer = i
             print('Embedding network into biosimulator network model...')
-            S = Simulator(self.model, A, B, self.options)
+            S = Simulator(self.model, A, A.complementary(), self.options)
             for d in S.overview.items():
                 print(f'{d[0]} = {d[1]}')
             fptimes, modrate = S.directsimulation()
+            print(f'{len(fptimes)} fpts have been produced')
+            pd.DataFrame(fptimes).to_csv(f"{S.DIR}/fpts.csv")
             savedata.loc[seq, 'computational'] = modrate
             for col, val in zip(S.overview.keys(), S.overview.values()):
                 savedata.loc[seq, col] = val
@@ -86,11 +87,14 @@ class HDNA:
 
     
     def save_plots(self, fpts, simulatore, sequence, exp, mod):
-            fitgamma = gammafit(fpts)
-            fitexp = expfit(fpts)
-            histotime(fpts, fitgamma, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}gamma_histo', writepath=simulatore.DIR, theme='dark')
-            histotime(fpts, fitexp, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}_exp_histo', writepath=simulatore.DIR, theme='dark')
-            pd.DataFrame(fpts).to_csv(f"{simulatore.DIR}/fpts.csv")
+            try: 
+                fitgamma = gammafit(fpts)
+                histotime(fpts, fitgamma, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}gamma_histo', writepath=simulatore.DIR, theme='dark')
+            except: pass
+            try: 
+                fitexp = expfit(fpts)
+                histotime(fpts, fitexp, simulatore.options.runtime, exp=exp, mod=mod, name=f'{sequence}_exp_histo', writepath=simulatore.DIR, theme='dark') 
+            except: pass
             percomplot(fpts, writepath=simulatore.DIR, name=f'{sequence}_percentplot')
 
     def make_dir(self, RESULTS_DIR):

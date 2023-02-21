@@ -125,8 +125,8 @@ class Simulator(object):
             sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
             traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
             try: 
+                fpts.append(sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1])
                 if i % int(self.options.Nsim/30) == 0:
-                    fpts.append(sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1])
                     pd.DataFrame(traj).to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
             except TypeError:
                 fpts.append(self.options.runtime)
@@ -217,7 +217,7 @@ class Simulator(object):
         dataframe = pd.DataFrame([names, rates, reags, prods], index=properties).T
         self.BSG = nx.from_pandas_edgelist(dataframe, source='reactants', target='products', 
                                             edge_attr=['name', 'rate'], create_using=nx.DiGraph())
-        # loop for inheriting node properties from self.Graph to self.BSG
+        # loop to inherit node properties from self.Graph to self.BSG
         for g in list(self.Graph.nodes):
             if verbose: print(g)
             for key in list(self.Graph.nodes[g].keys()):

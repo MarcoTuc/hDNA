@@ -38,11 +38,15 @@ class Kinetwork(object):
         self.ssobj = Complex(self.model, self.s1, self.s2, state='singlestranded', structure=self.simplex, dpxdist=max([self.s1.length, self.s2.length]))
         self.dxobj = Complex(self.model, self.s1, self.s2, state='duplex', structure=self.duplex, dpxdist=0)
 
-        self.nmethod = self.kinetics.kawasaki
-        self.zmethod = self.kinetics.metropolis
-        self.smethod = self.kinetics.kawasaki
-
-        self.normalizeback = False
+        if self.model.space_dimensionality == '3D':
+            self.nmethod = self.kinetics.kawasaki
+            self.zmethod = self.kinetics.metropolis
+            self.smethod = self.kinetics.kawasaki
+        else: 
+            self.nmethod = self.kinetics.kawasaki
+            self.zmethod = self.kinetics.metropolis
+            self.smethod = self.kinetics.kawasaki
+            
         self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
 
         if not clean: 
@@ -99,8 +103,15 @@ class Kinetwork(object):
                 for j, e2 in enumerate(self.nwise(self.s2.sequence, n)):
                     e1 = self.u(*e1)
                     e2 = self.u(*e2)
-                    if e1 == self.wc(e2[::-1]):
-                         # --> Condition for checking that the nucleation is off register 
+                    if self.model.space_dimensionality == '2D':
+                        if i+j == len(ss)-n:
+                            state = 'on_nucleation' if n == self.model.min_nucleation else 'zipping'
+                        else: continue
+                    else: 
+                        if i+j != len(ss)-n: # --> Condition for checking that the nucleation is off register 
+                            state = 'off_nucleation' if n == self.model.min_nucleation else 'backfray' 
+                        else: state = 'on_nucleation' if n == self.model.min_nucleation else 'zipping'
+                    if e1 == self.wc(e2[::-1]): 
                         if verbose: print(self.sab(self.s1.sequence, self.s2.sequence))
                         spacei = ' '*(i)
                         spacej = ' '*(j - i + len(ss) - n + 1)
@@ -109,9 +120,7 @@ class Kinetwork(object):
                         l = self.addpar(ss, i, n, '(')
                         r = self.addpar(ss, j, n, ')')
                         trap = self.sab(l,r)
-                        if i+j != len(ss)-n:
-                            state = 'off_nucleation' if n == 1 else 'backfray' 
-                        else: state = 'on_nucleation' if n == 1 else 'zipping'
+                        
                         obj = Complex(self.model, self.s1, self.s2, state=state, structure = trap, dpxdist=dpxdist)
                         self.DG.add_node(   trap,
                                             obj = obj, 
@@ -122,13 +131,13 @@ class Kinetwork(object):
                                             fre = obj.structureG())
                         dgss = 0
                         dgtrap = obj.G
-                        fwd, bwd = self.nmethod('off_nucleation', dgss, dgtrap)
+                        fwd, bwd = self.nmethod(state, dgss, dgtrap)
                         fwd = fwd / self.nucnorm
-                        if self.normalizeback: bwd = bwd / self.nucnorm
-                        if n == 1:
-                            self.DG.add_edge(self.simplex, trap, k = fwd, state = 'off_nucleation')
-                            self.DG.add_edge(trap, self.simplex, k = bwd, state = 'off_nucleation')
-                        elif n > 1:
+                        if self.model.normalizeback: bwd = bwd / self.nucnorm
+                        if n == self.model.min_nucleation:
+                            self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
+                            self.DG.add_edge(trap, self.simplex, k = bwd, state = state)
+                        elif n > self.model.min_nucleation:
                             self.sldbranches.append(dpxdist)
                             f1 = self.filternodes('dpxdist', lambda x: x == obj.dpxdist, self.DG)
                             f2 = self.filternodes('pairs', lambda x: x == n-1, f1)
@@ -144,7 +153,6 @@ class Kinetwork(object):
                                 fwd, bwd = self.zmethod('zipping', dgtrap, dgduplex)
                                 self.DG.add_edge(trap, self.duplex, k = fwd, state = 'zipping')
                                 self.DG.add_edge(self.duplex, trap, k = bwd, state = 'zipping') 
-                        
         #get unique ids for all branches except branch 0 corresponding to on register nucleation
         self.sldbranches = set(self.sldbranches)
         self.sldbranches.remove(0)

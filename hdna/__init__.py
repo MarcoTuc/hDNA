@@ -2,7 +2,7 @@ from .strand import Strand
 from .complex import Complex
 from .kinetwork import Kinetwork
 from .kinetics import Kinetics
-from .params import Constants
+from .params import *
 from .simulator import Simulator
 
 from .model import Model, Options

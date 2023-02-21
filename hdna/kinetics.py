@@ -176,8 +176,11 @@ class Kinetics(object):
             return self.dlrate
         else: raise ValueError(f'{kind} not implemented')
 
+    def bulksteric(self):
+        return (np.power((self.model.theta/360),2))*(np.power((self.model.phi/360),2))
+
     def geometric_rate(self):
-        self.georate = (np.power((self.model.theta/360),2))*(np.power((self.model.phi/360),2)) * self.dlrate
+        self.georate = self.bulksteric() * self.dlrate
         return self.georate 
 
     def closedconfscaling(self, p_circular): # --> TODO 
@@ -200,7 +203,7 @@ class Kinetics(object):
         return ((CONST.KB*self.model.kelvin)/(4*np.pi*HYDRO.ETA_MEM)) * (np.log(2/e) - CONST.GAMMA)
     
     def surfacesteric(self):
-        return (np.power((self.model.theta/360),2))
+        return np.power((self.model.theta/360),2)
 
     def surfgeorate(self):
         return self.ksphere_sano() * self.surfacesteric()
