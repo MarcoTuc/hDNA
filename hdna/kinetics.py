@@ -97,6 +97,8 @@ class Kinetics(object):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
+    def slidingcircles(self, dgslide, dghop):
+        return np.exp((dgslide-dghop)/(CONST.R*self.model.kelvin))
 
     """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
     
@@ -134,7 +136,7 @@ class Kinetics(object):
         return kij, kji
     
 
-    """ ------------- THREE-DIMENSIONAL DIFFUSION LIMITED NUCLEATIONS -----------------"""
+    """ ------------- THREE-DIMENSIONAL COLLISIONS RATE -----------------"""
 
     #3333333333333333333333333333333333333333333333333333333333333333333333333333333
     # >>>>>>>>------------------- 3D DIFFUSION -----------------------<<<<<<<<<<<<<<
@@ -164,7 +166,19 @@ class Kinetics(object):
         self.gyradiuses()
         self.pD1 = self.einsmol_spherical(self.gr1)
         self.pD2 = self.einsmol_spherical(self.gr2)
-  
+    
+    def cylinder_volume(self, strand):
+        return (strand.length * SXGEO.MONODIST) * (np.pi*np.power(SXGEO.CY_RADIUS, 2))
+
+    def excluded_volume(self):
+        self.gyradiuses()
+        ev1 = self.cylinder_volume(self.s1) / ((4/3)*np.pi*np.power(self.gr1,3))
+        ev2 = self.cylinder_volume(self.s2) / ((4/3)*np.pi*np.power(self.gr2,3))
+        return ev1*ev2 
+    
+    def bulkcollisionrate(self):
+        return self.dlrate * self.excluded_volume()
+
     #TODO###################################################
     ######## Chain wiggling pdfs to implement later ########
     def px_realchain(x):

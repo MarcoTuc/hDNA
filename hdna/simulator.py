@@ -127,6 +127,7 @@ class Simulator(object):
         for i in bar:
             sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
             traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
+            
             collisiontime = expon(scale=1/self.kinet.kinetics.dlrate).rvs()
             # print(collisiontime)
             try: 
