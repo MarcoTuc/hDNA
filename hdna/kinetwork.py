@@ -32,22 +32,19 @@ class Kinetwork(object):
         self.sliding_cutoff = self.model.sliding_cutoff
         
         self.kinetics = Kinetics(self.model, s1, s2)
-        self.kinetics.set_slidingrate(self.model.sliding)
-        self.kinetics.set_zippingrate(self.model.zipping)
         
         self.ssobj = Complex(self.model, self.s1, self.s2, state='singlestranded', structure=self.simplex, dpxdist=max([self.s1.length, self.s2.length]))
         self.dxobj = Complex(self.model, self.s1, self.s2, state='duplex', structure=self.duplex, dpxdist=0)
 
         if self.model.space_dimensionality == '3D':
             self.nmethod = self.kinetics.kawasaki
-            self.zmethod = self.kinetics.metropolis
+            self.zmethod = self.kinetics.kawasaki
             self.smethod = self.kinetics.kawasaki
         else: 
             self.nmethod = self.kinetics.kawasaki
-            self.zmethod = self.kinetics.metropolis
+            self.zmethod = self.kinetics.kawasaki
             self.smethod = self.kinetics.kawasaki
-            
-        self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
+       
 
         if not clean: 
 
@@ -74,12 +71,15 @@ class Kinetwork(object):
 
         self.DG = nx.DiGraph()
 
+        # ssaway = '_'.join(self.simplex.split('+'))
+        # self.DG.add_node(ssaway)
         self.DG.add_node(self.simplex, 
                          obj = self.ssobj,
                          pairs = 0, 
                          state = 'singlestranded',
                          dpxdist = self.ssobj.dpxdist,
                          fre = 0)
+        # self.DG.add_edge(ssaway, self.simplex, k = self.kinetics.dlrate, state='collision')
         self.DG.add_node(self.duplex, 
                          obj = self.dxobj, 
                          pairs = self.dxobj.total_nucleations, 
@@ -120,7 +120,6 @@ class Kinetwork(object):
                         l = self.addpar(ss, i, n, '(')
                         r = self.addpar(ss, j, n, ')')
                         trap = self.sab(l,r)
-                        
                         obj = Complex(self.model, self.s1, self.s2, state=state, structure = trap, dpxdist=dpxdist)
                         self.DG.add_node(   trap,
                                             obj = obj, 
@@ -132,8 +131,8 @@ class Kinetwork(object):
                         dgss = 0
                         dgtrap = obj.G
                         fwd, bwd = self.nmethod(state, dgss, dgtrap)
-                        fwd = fwd / self.nucnorm
-                        if self.model.normalizeback: bwd = bwd / self.nucnorm
+                        fwd = fwd / self.kinetics.nucnorm
+                        if self.model.normalizeback: bwd = bwd / self.kinetics.nucnorm
                         if n == self.model.min_nucleation:
                             self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
                             self.DG.add_edge(trap, self.simplex, k = bwd, state = state)
@@ -170,14 +169,15 @@ class Kinetwork(object):
                     mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
                     self.DG.nodes[mostable]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable]['fre']
-                    # dgduplex = self.DG.nodes[self.duplex]['fre']
-                    fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+                    dgduplex = self.DG.nodes[self.duplex]['fre']
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)
+                    gsl = self.kinetics.gammasliding(dgsliding)
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
                         fwdformat = '{:.3e}'.format(fwd)
-                        bwdformat = '{:.3e}'.format(0)
+                        gamma = '{:.3e}'.format(gsl)
                         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                        print(mostable, fwdformat, bwdformat, dgstring)
+                        print(mostable, 'fwd:',fwdformat, 'gm:',gamma, 'dg:',dgstring)
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
                     self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')

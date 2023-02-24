@@ -16,6 +16,8 @@ class Kinetics(object):
         self.space = model.space_dimensionality
         self.s1 = s1
         self.s2 = s2 
+
+        self.nucnorm = 1#np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
         
         self.phys = {'R(kcal/molK)': 1.987e-3,
                      'h_planck':     6.62607015e-34,
@@ -44,12 +46,16 @@ class Kinetics(object):
                                     'persistence_length': 2.223e-7,
                                     'cylinder_radius': 1e-7}
 
-        if self.model.space_dimensionality == '3D':
+        self.set_slidingrate(self.model.sliding)
+        self.set_zippingrate(self.model.zipping)
+
+        if self.space == '3D':
             ### Default compute relevant rates
-            self.diffusionlimited()
-            self.geometric_rate()
-        elif self.model.space_dimensionality == '2D':
-            self.georate = self.surfgeorate()
+            self.smoluchowski()
+            self.geozip()
+        elif self.space == '2D':
+            self.ksphere_sano()
+            self.geozip()
 
 
     """ ------------- ZIPPING RELATED -----------------"""
@@ -59,6 +65,14 @@ class Kinetics(object):
             equal to diffusion limited collision rate """
         if setrate == 'diffusionlimited': self.zippingrate = self.dlrate
         else: self.zippingrate = setrate
+
+    def geozip(self):
+        if self.model.space_dimensionality == '3D':
+            self.geozipping = self.zippingrate * self.bulksteric()
+            return self.geozipping
+        elif self.model.space_dimensionality == '2D':
+            self.geozipping = self.zippingrate * self.surfsteric()
+            return self.geozipping
 
     
     """ ------------- SLIDING RELATED -----------------"""
@@ -80,7 +94,7 @@ class Kinetics(object):
         pass
 
     def gammasliding(self, dgs):
-        return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
+        return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
 
@@ -91,8 +105,8 @@ class Kinetics(object):
                      'backfray':    self.zippingrate,
                      'duplex':      self.zippingrate,
                      'sliding':     self.slidingrate,
-                     'on_nucleation':   self.georate,
-                     'off_nucleation':  self.georate}
+                     'on_nucleation':   self.geozipping,
+                     'off_nucleation':  self.geozipping}
         ka = ratesdict[kind]
         #kf
         kij = ka*np.exp(-(dgj-dgi)/(2*self.phys['R(kcal/molK)']*(self.T)))
@@ -105,8 +119,8 @@ class Kinetics(object):
                      'backfray':    self.zippingrate,
                      'duplex':      self.zippingrate,
                      'sliding':     self.slidingrate,
-                     'on_nucleation':   self.georate,
-                     'off_nucleation':  self.georate}
+                     'on_nucleation':   self.geozipping,
+                     'off_nucleation':  self.geozipping}
         ka = ratesdict[rate]
         if dgi > dgj:
             kij = ka
@@ -162,7 +176,7 @@ class Kinetics(object):
     # for all the other polymer physics related functions
 
     # >>>>>>>>------------------- 3D DIFFUSION LIMITED RATES -----------------------<<<<<<<<<<<<<<
-    def diffusionlimited(self, kind='ppi'):
+    def smoluchowski(self, kind='ppi'):
         """ Smoluchowski 1916 classical formula """
         if kind == 'ppi':  
             self.ppi_diffusivities()
@@ -202,11 +216,11 @@ class Kinetics(object):
         e = MMGEO.LIP_RAD/HYDRO.LSD
         return ((CONST.KB*self.model.kelvin)/(4*np.pi*HYDRO.ETA_MEM)) * (np.log(2/e) - CONST.GAMMA)
     
-    def surfacesteric(self):
+    def surfsteric(self):
         return np.power((self.model.theta/360),2)
 
     def surfgeorate(self):
-        return self.ksphere_sano() * self.surfacesteric()
+        return self.ksphere_sano() * self.surfsteric()
 
     # >>>>>>>>------------------- 2D DIFFUSION LIMITED KINETICD -----------------------<<<<<<<<<<<<<<
     
@@ -220,7 +234,8 @@ class Kinetics(object):
         coeff1 = (np.power(a + b, 2)/D)
         coeff2 = 2/(1-(np.power(1/r, 2)))
         coeff3 = np.log(r)
-        return coeff1 * ( coeff2 * coeff3 - 1 ) * surf * CONST.NA
+        self.dlrate = (1/(coeff1 * ( coeff2 * coeff3 - 1 ))) * surf * CONST.NA * 1e-2
+        return self.dlrate
 
     def kc_chew2019(self, time):
         """

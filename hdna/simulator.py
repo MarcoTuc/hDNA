@@ -14,6 +14,7 @@ jl.seval('using BioSimulator')
 
 from tqdm import tqdm 
 from itertools import pairwise
+from scipy.stats import expon
 
 from .kinetwork import Kinetwork, Kinetics
 from .model import Model, Options
@@ -51,6 +52,8 @@ class Simulator(object):
     def add_species(self, verbose=False):
         """DONE"""
         # self.biosim <= jl.Species(self.tl(str(list(self.Graph.nodes())[0])), self.initialamount)
+        # ssaway = self.tl('_'.join(self.kinet.simplex.split('+')))
+        # self.biosim <= jl.Species(ssaway, self.initialamount)
         ss = self.tl(self.sss) 
         self.biosim <= jl.Species(ss, self.initialamount)
         for node in list(self.Graph.nodes())[1:]:
@@ -124,12 +127,15 @@ class Simulator(object):
         for i in bar:
             sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
             traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
+            collisiontime = expon(scale=1/self.kinet.kinetics.dlrate).rvs()
+            # print(collisiontime)
             try: 
-                fpts.append(sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1])
+                duplexationtime = sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1]
+                fpts.append(collisiontime + duplexationtime)
                 if i % int(self.options.Nsim/30) == 0:
                     pd.DataFrame(traj).to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
             except TypeError:
-                fpts.append(self.options.runtime)
+                fpts.append(collisiontime + self.options.runtime)
                 pd.DataFrame(traj).to_csv(f'{DIR_TRAJ_FAIL}/run{i+1}.csv')
                 failed += 1
 
