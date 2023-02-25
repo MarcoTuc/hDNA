@@ -37,8 +37,8 @@ class Kinetwork(object):
         self.dxobj = Complex(self.model, self.s1, self.s2, state='duplex', structure=self.duplex, dpxdist=0)
 
         if self.model.space_dimensionality == '3D':
-            self.nmethod = self.kinetics.kawasaki
-            self.zmethod = self.kinetics.kawasaki
+            self.nmethod = self.kinetics.nucleation
+            self.zmethod = self.kinetics.metropolis
             self.smethod = self.kinetics.kawasaki
         else: 
             self.nmethod = self.kinetics.kawasaki
@@ -130,9 +130,10 @@ class Kinetwork(object):
                                             fre = obj.structureG())
                         dgss = 0
                         dgtrap = obj.G
-                        fwd, bwd = self.nmethod(state, dgss, dgtrap)
-                        if self.model.normalizeforw: fwd = fwd / self.kinetics.nucnorm
-                        if self.model.normalizeback: bwd = bwd / self.kinetics.nucnorm
+                        fwd, bwd = self.nmethod(dgtrap)
+                        # fwd, bwd = self.nmethod(state, dgss, dgtrap)
+                        # if self.model.normalizeforw: fwd = fwd / self.kinetics.nucnorm
+                        # if self.model.normalizeback: bwd = bwd / self.kinetics.nucnorm
                         if n == self.model.min_nucleation:
                             self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
                             self.DG.add_edge(trap, self.simplex, k = bwd, state = state)
@@ -189,7 +190,7 @@ class Kinetwork(object):
                         # print(self.kinetics.slidingcircles(self.DG.nodes[mostable]['obj'], dgsliding, dgduplex))
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = self.model.sliding*GGMM, state = 'sliding')
+                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
         # for m1, m2 in permutations(mostables):
         #     dg1 = self.DG.nodes[m1]['fre']

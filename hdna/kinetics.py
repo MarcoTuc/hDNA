@@ -115,6 +115,11 @@ class Kinetics(object):
 
     """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
     
+    def nucleation(self, dgi):
+        fwd = self.geozipping*np.exp((+dgi)/(2*self.phys['R(kcal/molK)']*(self.T)))
+        bwd = self.zippingrate*np.exp((-dgi)/(2*self.phys['R(kcal/molK)']*(self.T)))
+        return fwd, bwd
+
     def kawasaki(self, kind, dgi, dgj):
         ratesdict = {'zipping':     self.zippingrate,
                      'backfray':    self.zippingrate,
