@@ -180,7 +180,7 @@ class Kinetwork(object):
                         print(mostable, 'fwd:',fwdformat, 'gm:',gamma, 'dg:',dgstring)
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = gsl, state = 'sliding')
+                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
 
 ##########################################################################

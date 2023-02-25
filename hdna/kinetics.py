@@ -115,8 +115,8 @@ class Kinetics(object):
                      'backfray':    self.zippingrate,
                      'duplex':      self.zippingrate,
                      'sliding':     self.slidingrate,
-                     'on_nucleation':   self.geozipping,
-                     'off_nucleation':  self.geozipping}
+                     'on_nucleation':   self.zippingrate,
+                     'off_nucleation':  self.zippingrate}
         ka = ratesdict[kind]
         #kf
         kij = ka*np.exp(-(dgj-dgi)/(2*self.phys['R(kcal/molK)']*(self.T)))
