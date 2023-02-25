@@ -169,18 +169,21 @@ class Kinetwork(object):
                     mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
                     self.DG.nodes[mostable]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable]['fre']
-                    # dgduplex = self.DG.nodes[self.duplex]['fre']
+                    dgduplex = self.DG.nodes[self.duplex]['fre']
+                    # dpxdist = self.DG.nodes[mostable]['dpxdist']
                     fwd, _ = self.smethod('sliding', 0, dgsliding)
-                    gsl = self.kinetics.gammasliding(dgsliding)
+                    gsl = self.kinetics.slidingcircles(self.DG.nodes[mostable]['obj'], dgsliding, dgduplex)
+                    # self.kinetics.gammasliding(dgsliding, dgduplex)*
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
                         fwdformat = '{:.3e}'.format(fwd)
                         gamma = '{:.3e}'.format(gsl)
                         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
                         print(mostable, 'fwd:',fwdformat, 'gm:',gamma, 'dg:',dgstring)
+                        print(self.kinetics.slidingcircles(self.DG.nodes[mostable]['obj'], dgsliding, dgduplex))
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = gsl, state = 'sliding')
+                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
 
 ##########################################################################

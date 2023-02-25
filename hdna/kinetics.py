@@ -101,12 +101,14 @@ class Kinetics(object):
         """
         pass
 
-    def gammasliding(self, dgs):
-        return self.slidingrate * np.exp( self.model.gamma + (self.model.kappa * ((-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
+    def gammasliding(self, dgs, dgd):
+        return self.slidingrate * np.exp( self.model.gamma + (self.model.kappa * (-(dgd-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
-    def slidingcircles(self, dgslide, dghop):
-        return np.exp((dgslide-dghop)/(CONST.R*self.model.kelvin))
+    def slidingcircles(self, complex, dgs, dgd):
+        scaling = (self.slidingrate/complex.total_nucleations*self.zippingrate)
+        expo    = np.exp((dgd+dgs)/(2*CONST.R*self.model.kelvin))
+        return scaling*expo
 
     """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
     
