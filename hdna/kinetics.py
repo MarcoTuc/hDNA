@@ -105,10 +105,13 @@ class Kinetics(object):
         return self.slidingrate * np.exp( self.model.gamma + (self.model.kappa * (-(dgd-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
-    def slidingcircles(self, complex, dgs, dgd):
-        scaling = (self.slidingrate/complex.total_nucleations*self.zippingrate)
-        expo    = np.exp((dgd+dgs)/(2*CONST.R*self.model.kelvin))
-        return scaling*expo
+    def slidingcircles(self, dgs, esliding, dgd=None, complex=None):
+        # scaling = (self.slidingrate/complex.total_nucleations*self.zippingrate)
+        expo = np.exp((dgs-esliding)/(CONST.R*self.model.kelvin))
+        return expo
+    
+    def porsche(self, dgl, dpxdist):
+        return np.exp((dgl*dpxdist)/(CONST.R*self.model.kelvin))
 
     """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
     

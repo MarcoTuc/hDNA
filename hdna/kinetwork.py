@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np 
 import pandas as pd 
 
-from itertools import pairwise, combinations, tee
+from itertools import pairwise, combinations, permutations, tee
 
 from .complex import Complex
 from .model import Model
@@ -163,28 +163,41 @@ class Kinetwork(object):
         for branch in self.sldbranches:
             leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
             components = nx.connected_components(leaf.to_undirected())
+            mostables = []
             for component in components:
                 if len(component) > 1:
                     subleaf = nx.subgraph(self.DG, list(component))
                     mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
+                    mostables.append(mostable)
                     self.DG.nodes[mostable]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable]['fre']
                     dgduplex = self.DG.nodes[self.duplex]['fre']
-                    # dpxdist = self.DG.nodes[mostable]['dpxdist']
+                    dpxdist = self.DG.nodes[mostable]['dpxdist']
                     fwd, _ = self.smethod('sliding', 0, dgsliding)
-                    gsl = self.kinetics.slidingcircles(self.DG.nodes[mostable]['obj'], dgsliding, dgduplex)
-                    # self.kinetics.gammasliding(dgsliding, dgduplex)*
+                    cir = self.kinetics.slidingcircles(dgsliding, 1)
+                    por = self.kinetics.porsche(-1, abs(dpxdist))
+                    gsl = self.kinetics.gammasliding(dgsliding, dgduplex)
+                    GGMM = 1/(1+(cir/por))
                     if verbose: 
-                        dgstring = '{:.3f}'.format(dgsliding)
-                        fwdformat = '{:.3e}'.format(fwd)
-                        gamma = '{:.3e}'.format(gsl)
+                        # dgstring = '{:.3f}'.format(dgsliding)
+                        # fwdformat = '{:.3e}'.format(fwd)
+                        # gamma = '{:.3e}'.format(gsl)
                         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                        print(mostable, 'fwd:',fwdformat, 'gm:',gamma, 'dg:',dgstring)
-                        print(self.kinetics.slidingcircles(self.DG.nodes[mostable]['obj'], dgsliding, dgduplex))
+                        # print(mostable, 'fwd:',fwdformat, 'gm:',gamma, 'dg:',dgstring, 'por:', por)
+                        print(mostable)
+                        print(f'gm: {gsl:.3e} dg: {dgsliding:.3f} por: {por:.3e} cir: {cir:.3e} c/p: {por/cir:.3e} GGMM: {GGMM:e} DPXD: {dpxdist:1f} fwd: {fwd:.3e} rate: {fwd*GGMM:.3e}')
+                        # print(self.kinetics.slidingcircles(self.DG.nodes[mostable]['obj'], dgsliding, dgduplex))
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+                    self.DG.add_edge(mostable, self.duplex, k = self.model.sliding*GGMM, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+        # for m1, m2 in permutations(mostables):
+        #     dg1 = self.DG.nodes[m1]['fre']
+        #     dg2 = self.DG.nodes[m2]['fre']
+            
+
+
+
 
 ##########################################################################
 
