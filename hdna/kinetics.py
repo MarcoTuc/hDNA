@@ -17,8 +17,11 @@ class Kinetics(object):
         self.s1 = s1
         self.s2 = s2 
 
-        self.nucnorm = 1#np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
-        
+        if self.space == '3D':
+            self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2) / self.geonuc()
+        if self.space == '2D':
+            self.nucnorm = (min(self.s1.length + self.s2.length) - self.model.min_nucleation + 1)
+
         self.phys = {'R(kcal/molK)': 1.987e-3,
                      'h_planck':     6.62607015e-34,
                      'k_boltz':      1.380649e-23,
@@ -74,11 +77,16 @@ class Kinetics(object):
             self.geozipping = self.zippingrate * self.surfsteric()
             return self.geozipping
 
+    def geonuc(self):
+        if self.model.space_dimensionality == '3D':
+            return self.bulksteric()
+        elif self.model.space_dimensionality == '2D':
+            return self.surfsteric()
     
     """ ------------- SLIDING RELATED -----------------"""
 
     def set_slidingrate(self, sliding): #NOTE NEED TO EXPAND THIS TO TRY ALL RANGES
-        self.slidingrate = sliding
+        self.slidingrate = sliding/min(self.s1.length, self.s2.length)
     
     def unif_scaling(self, nucleations): # --> TODO
         return 1/nucleations
@@ -94,7 +102,7 @@ class Kinetics(object):
         pass
 
     def gammasliding(self, dgs):
-        return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
+        return self.slidingrate * np.exp( self.model.gamma + (self.model.kappa * ((-dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
     def slidingcircles(self, dgslide, dghop):
