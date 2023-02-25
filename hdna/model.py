@@ -11,6 +11,7 @@ class Model(object):
                     min_nucleation=1, 
                     sliding_cutoff=100, 
                     normalizeback=False,
+                    normalizeforw=False,
                     stacking='nostacking', 
                     Na=1.0, 
                     Mg=0.0, 
@@ -37,7 +38,9 @@ class Model(object):
   
         self.min_nucleation = min_nucleation
         self.sliding_cutoff = sliding_cutoff
+        
         self.normalizeback  = normalizeback
+        self.normalizeforw  = normalizeforw
         
         self.celsius = celsius
         self.kelvin = celsius + 273.15

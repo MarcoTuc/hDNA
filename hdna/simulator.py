@@ -127,8 +127,8 @@ class Simulator(object):
         for i in bar:
             sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
             traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
-            
-            collisiontime = expon(scale=1/self.kinet.kinetics.dlrate).rvs()
+            kcoll = self.kinet.kinetics.dlrate * self.kinet.kinetics.geonuc()
+            collisiontime = expon(scale=1/kcoll).rvs()
             # print(collisiontime)
             try: 
                 duplexationtime = sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1]

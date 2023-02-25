@@ -131,7 +131,7 @@ class Kinetwork(object):
                         dgss = 0
                         dgtrap = obj.G
                         fwd, bwd = self.nmethod(state, dgss, dgtrap)
-                        fwd = fwd / self.kinetics.nucnorm
+                        if self.model.normalizeforw: fwd = fwd / self.kinetics.nucnorm
                         if self.model.normalizeback: bwd = bwd / self.kinetics.nucnorm
                         if n == self.model.min_nucleation:
                             self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
@@ -169,8 +169,8 @@ class Kinetwork(object):
                     mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
                     self.DG.nodes[mostable]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable]['fre']
-                    dgduplex = self.DG.nodes[self.duplex]['fre']
-                    fwd, _ = self.smethod('sliding', dgsliding, 0)
+                    # dgduplex = self.DG.nodes[self.duplex]['fre']
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)
                     gsl = self.kinetics.gammasliding(dgsliding)
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
@@ -180,7 +180,7 @@ class Kinetwork(object):
                         print(mostable, 'fwd:',fwdformat, 'gm:',gamma, 'dg:',dgstring)
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+                    self.DG.add_edge(mostable, self.duplex, k = gsl, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
 
 ##########################################################################
