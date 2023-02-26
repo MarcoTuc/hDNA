@@ -5,7 +5,7 @@ from PhysicalQuantities import q
 
 @dataclass(frozen=True)
 class Constants:
-    KB      = 1.380649e-19 # J/K = N*m/K = m^2*kg/s^2*K = 10^4 cm^2*kg/s^2*K
+    KBCM    = 1.380649e-19 # J/K = N*m/K = m^2*kg/s^2*K = 10^4 cm^2*kg/s^2*K
     NA      = 6.023e23     # mol^-1
     R       = 1.987e-3     # Kcal/mol*K
     GAMMA   = .57722       # 

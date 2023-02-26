@@ -39,7 +39,7 @@ class Kinetwork(object):
         self.dxobj = Complex(self.model, self.s1, self.s2, state='duplex', structure=self.duplex, dpxdist=0)
 
         if self.model.space_dimensionality == '3D':
-            self.nmethod = self.kinetics.kawasaki
+            self.nmethod = self.kinetics.nucleation
             self.zmethod = self.kinetics.metropolis
             self.smethod = self.kinetics.kawasaki
         else: 
@@ -47,8 +47,6 @@ class Kinetwork(object):
             self.zmethod = self.kinetics.metropolis
             self.smethod = self.kinetics.kawasaki
             
-        self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
-
         if not clean: 
 
             self.completegraph()
@@ -129,11 +127,8 @@ class Kinetwork(object):
                                             dpxdist = obj.dpxdist,
                                             tdx =(i,j),
                                             fre = obj.structureG())
-                        dgss = 0
                         dgtrap = obj.G
-                        fwd, bwd = self.nmethod(state, dgss, dgtrap)
-                        fwd = fwd / self.nucnorm
-                        if self.model.normalizeback: bwd = bwd / self.nucnorm
+                        fwd, bwd = self.nmethod(dgtrap)
                         if n == self.model.min_nucleation:
                             self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
                             self.DG.add_edge(trap, self.simplex, k = bwd, state = state)

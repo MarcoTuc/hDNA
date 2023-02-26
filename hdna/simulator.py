@@ -1,8 +1,8 @@
-import csv 
+import csv
 import os
 
 import networkx as nx
-import pandas as pd 
+import pandas as pd
 import numpy as np
 
 import juliacall
@@ -12,20 +12,22 @@ jl = juliacall.newmodule("hDNA")
 
 jl.seval('using BioSimulator')
 
-from tqdm import tqdm 
+from tqdm import tqdm
 from itertools import pairwise
+from scipy.stats import expon
 
 from .kinetwork import Kinetwork, Kinetics
 from .model import Model, Options
 from .strand import Strand
 
 
+
 class Simulator(object):
     
     def __init__(self, model: Model, s1: Strand, s2: Strand, options=Options(), clean=False):
         
-        self.model = model 
-        self.options = options 
+        self.model = model
+        self.options = options
         self.kinet = Kinetwork(self.model, s1, s2)
         self.Graph = self.kinet.DG
         self.overview = self.kinet.overview
@@ -44,18 +46,18 @@ class Simulator(object):
             self.BSGraph()
         
             self.duplexindex = np.where(np.array([self.lt(str(e)) for e in list(self.biosim.species_list)]) == self.kinet.duplex)[0][0]
-            self.duplex = self.kinet.duplex 
+            self.duplex = self.kinet.duplex
 
             self.DIR = f'./{self.options.results_dir}/simulations/{self.options.stranditer}_{self.kinet.s1.sequence}'
 
     def add_species(self, verbose=False):
         """DONE"""
         # self.biosim <= jl.Species(self.tl(str(list(self.Graph.nodes())[0])), self.initialamount)
-        ss = self.tl(self.sss) 
+        ss = self.tl(self.sss)
         self.biosim <= jl.Species(ss, self.initialamount)
         for node in list(self.Graph.nodes())[1:]:
             if verbose: print(f'trying {node}')
-            if verbose: print('TRANSLATION',self.tl(node)) 
+            if verbose: print('TRANSLATION',self.tl(node))
             self.biosim <= jl.Species(self.tl(node))
 
     def add_reactions(self, verbose=False):
@@ -64,7 +66,7 @@ class Simulator(object):
             name = f"{state}-{i}"
             rate = data['k']
             etl1 = self.tl(e1)
-            etl2 = self.tl(e2)    
+            etl2 = self.tl(e2)
             if e1 == self.sss:
                 rule = f"{etl1} + {etl1} --> {etl2}"
                 if verbose: print(rule)
@@ -73,17 +75,17 @@ class Simulator(object):
                 rule = f"{etl1} --> {etl2} + {etl2}"
                 if verbose: print(rule)
                 self.biosim <= jl.Reaction(str(name), float(rate), str(rule))
-            else: 
+            else:
                 rule = f"{etl1} --> {etl2}"
                 if verbose: print(rule)
-                self.biosim <= jl.Reaction(str(name), float(rate), str(rule))   
-                
+                self.biosim <= jl.Reaction(str(name), float(rate), str(rule))
+
 
     def simulation(self):
         """ run the simulation and return the results """
         return jl.simulate(self.biosim, self.method, tfinal = self.options.runtime)
-        # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t} OLD TRANSLATION TO DICTIONARY 
-    
+        # return {'c':jl.hcat(*sim.u).__array__(), 't':sim.t} OLD TRANSLATION TO DICTIONARY
+
 
     def ensemble(self):
         state, model = jl.parse_model(self.biosim)
@@ -93,9 +95,9 @@ class Simulator(object):
         if not self.options.make_sim_csv:
             return sim
         else:
-            DIR_TRAJ = f'{self.DIR}/trajectories'  
+            DIR_TRAJ = f'{self.DIR}/trajectories'
             try: os.makedirs(DIR_TRAJ)
-            except FileExistsError: pass 
+            except FileExistsError: pass
             for run in sim:
                 self.get_trajectory(run, weightlift=True, savetraj=False)
             for i, s in enumerate(sim[::int(len(sim)/self.options.trajstosave)]):
@@ -109,12 +111,12 @@ class Simulator(object):
 
         DIR_TRAJ = f'{self.DIR}/trajectories'
         DIR_TRAJ_FAIL = f'{self.DIR}/trajectories/failed'
-        try: 
+        try:
             os.makedirs(DIR_TRAJ)
-        except FileExistsError: pass 
+        except FileExistsError: pass
         try:
             os.makedirs(DIR_TRAJ_FAIL)
-        except FileExistsError: pass 
+        except FileExistsError: pass
         fpts = []
         failed = 0
         state, model = jl.parse_model(self.biosim)
@@ -124,8 +126,12 @@ class Simulator(object):
         for i in bar:
             sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
             traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
-            try: 
-                fpts.append(sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1])
+            kcoll = self.kinet.kinetics.collisionrate
+            collisiontime = expon(scale=1/kcoll).rvs()
+            try:
+                duplexationtime = sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1]
+                time = duplexationtime+collisiontime
+                fpts.append(time)
                 if i % int(self.options.Nsim/30) == 0:
                     pd.DataFrame(traj).to_csv(f'{DIR_TRAJ}/run{i+1}.csv')
             except TypeError:
