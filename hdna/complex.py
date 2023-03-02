@@ -28,7 +28,7 @@ class Complex(object):
         self.model = model
 
         if type(s1) != Strand:
-            raise TypeError("s1 must be an instance of hdna.Strand")
+            raise TypeError(f"s1 must be an instance of hdna.Strand but is {type(s1)}")
         if type(s2) != Strand:
             raise TypeError("s2 must be an instance of hdna.Strand")
 
@@ -40,9 +40,8 @@ class Complex(object):
 
         # Think of this as self.initialstructure
         # I didn't change it because of laziness 
-        self.structure = structure
-
-        self.dpxdist = dpxdist
+        self.structure  = structure
+        self.dpxdist    = dpxdist
 
         # self.getnupackproperties()
         if not clean:
@@ -77,19 +76,17 @@ class Complex(object):
         else:
             self.total_nucleations = self.totbasepairs(self.structure)
             self.consecutive_nucleations = self.maxconsbp(self.structure)
+        
+        self.sdist = self.sdistance()
 
         """ These variables are used to say if the current
         Coils object is duplexed, is offregister or is onregister
         to be comunicated to classes higher in the hierarchy"""
-
-        # if self.state == 'on_nucleation': self.zipping_trajectory()
     
     def set_state(self, target):
         if target != self.state:
             self.state = target
 
-        
-    
 ######################################
 ##### Self-calculated Properties #####
 ######################################
@@ -212,6 +209,29 @@ class Complex(object):
     def splitstructure(self):
         self.struct_a, self.struct_b = self.structure.split('+')
         return self.struct_a, self.struct_b
+    
+    def get_ix(self, string, char):
+        indices = []
+        for i, e in enumerate(list(string)):
+            if e == char:
+                indices.append(i)
+        return indices 
+
+    def sdistance(self):
+        if self.state == 'on_nucleation':
+            l = self.structure.split('+')[0]
+            r = self.structure.split('+')[1][::-1]
+            ixl = self.get_ix(l,'(')[0]
+            ixr = self.get_ix(r,')')[0]
+            if ixl == ixr:
+                sdl = self.s1.sdist[ixl]
+                sdr = self.s1.sdist[ixr]
+                if sdl == ixl and sdr == ixr:
+                    return ixl 
+            else:
+                raise BrokenPipeError('on_nucleations should match')
+        else:
+            return None
 
 ######################################
 ##### Methods Under Construction #####

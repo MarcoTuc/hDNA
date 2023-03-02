@@ -8,6 +8,7 @@ class Model(object):
                     sliding_filter=None,
                     material='dna', 
                     space_dimensionality='3D',
+                    vescicleradius=0.5e-5, #decimeters (around a bacteria)
                     min_nucleation=1, 
                     sliding_cutoff=100, 
                     normalizeback=False,
@@ -29,6 +30,8 @@ class Model(object):
         if space_dimensionality not in ['3D', '2D']:
             raise ValueError("Supported dimensionalities: 2D and 3D")
         else: self.space_dimensionality = space_dimensionality
+        
+        self.vescicleradius = vescicleradius
 
         allowedstackings = ['stacking', 'dangle-stacking', 'coaxial-stacking', 'nostacking']
         if stacking not in allowedstackings:
@@ -92,7 +95,7 @@ class Options(object):
                 ):
         
         # JULIA SIMULATION OPTIONS
-        self.initialamount = 2
+        self.initialamount = 2 #never change this
         self.runtime = runtime
         self.Nsim = Nsim
         methods = ["direct"]

@@ -126,8 +126,18 @@ class Simulator(object):
         for i in bar:
             sim = jl.simulate(state, model, self.method, tfinal = self.options.runtime)
             traj = self.get_trajectory(sim, weightlift=True, savetraj=True)
-            kcoll = self.kinet.kinetics.collisionrate
-            collisiontime = expon(scale=1/kcoll).rvs()
+            if self.model.space_dimensionality == '3D':
+                kcoll = self.kinetics.collisionrate
+                collisiontime = expon(scale=1/kcoll).rvs()
+            elif self.model.space_dimensionality == '2D':
+                nuc = self.lt(traj[1])
+                pos = self.kinet.DG.nodes[nuc]['obj'].sdist
+                if pos <= self.kinetics.treshold:
+                    kcollbot = self.kinetics.collisionbot
+                    collisiontime  = expon(scale=1/kcollbot).rvs()
+                else:
+                    kcolltop = self.kinetics.collisiontop
+                    collisiontime  = expon(scale=1/kcolltop).rvs()
             try:
                 duplexationtime = sim.t[jl.findfirst(jl.isone, sim[self.duplexindex,:])-1]
                 time = duplexationtime+collisiontime

@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'checkright9'
+EXPNAME = 'kinet?'
 
 notes = """
 ppi smoluchowski, changed phi to 120 and lowered both zipping and sliding just a bit 

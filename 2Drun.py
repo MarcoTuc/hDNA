@@ -23,14 +23,13 @@ MOD = Model(
     space_dimensionality='2D',
     stacking='nostacking',
     min_nucleation=1)
-MOD.setgeometry(theta=180, phi = 270)
+MOD.setgeometry(theta=90, phi = 180)
  
 MOD.alpha = 1
 MOD.gamma = 0
 MOD.kappa = 1
 
-OPT = Options(Nsim=200,
-              runtime=1e-9)
+OPT = Options(Nsim=1000)
 
 H = HDNA(data, EXPNAME, model=MOD, options=OPT)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]

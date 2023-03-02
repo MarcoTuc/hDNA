@@ -95,6 +95,104 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         PATH = f'{writepath}/{name}'
         fig.write_html(f"{PATH}.html")
 
+def valplot23(data, name, writepath = None, theme = 'dark'):
+    
+    THM = themetemplates(theme, 'scatter')
+
+    sdata = data.sort_values('experimental')
+    # sdata.set_index('seq', inplace=True, drop=False)
+    try: sdata.drop('Unnamed: 0', axis=1)
+    except KeyError: pass 
+    X = list(sdata['experimental'].astype(float))
+    Y3 = list(sdata['threedim'].astype(float))
+    Y2 = list(sdata['twodim'].astype(float))
+    S = list(sdata['sequences'])
+    I = list(sdata['index'])
+
+    lowbound = lowerapprox(min(min(Y3), min(Y2)))
+    topbound = upperapprox(max(max(Y3), max(Y2)))
+
+    XLINE = np.linspace(0, topbound)
+
+    trace3 = go.Scatter(
+        x = X, # My list of values for 'x'
+        y = Y3, # My list of values for 'y'
+        marker = dict(color = THM['colordots']),
+        mode = 'markers',
+        name = '',
+        customdata = [f'{i}_{s}' for i, s in zip(I, S)],
+        hovertemplate="""emp = %{x:.3e}
+                     <br>mod = %{y:.3e}
+                     <br>seq:  %{customdata} </b>"""
+    )
+    trace2 = go.Scatter(
+        x = X, # My list of values for 'x'
+        y = Y2, # My list of values for 'y'
+        marker = dict(color = THM['colordots']),
+        mode = 'markers',
+        name = '',
+        customdata = [f'{i}_{s}' for i, s in zip(I, S)],
+        hovertemplate="""emp = %{x:.3e}
+                     <br>mod = %{y:.3e}
+                     <br>seq:  %{customdata} </b>"""
+    )
+    traceline = go.Scatter(
+        x = XLINE,
+        y = XLINE,
+        mode = 'lines',
+        marker = dict(color = THM['colorline']),
+        line = dict(dash = 'dash'),
+        name = 'bisector'
+    )
+    layout = go.Layout(
+        template=THM['template'],
+        title = f'Scatterplot for {name}',
+        xaxis_title="empirical rates ",
+        yaxis_title="computed rates",
+        showlegend=False,
+        autosize = False,
+        width = 600,
+        height = 600,
+        margin = dict(
+            b = 50,
+            t = 50,
+            l = 50,
+            r = 50,
+            pad = 0
+        ),
+        xaxis = dict(
+            tickmode = 'array',
+            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, 1e6)),
+            showgrid = True
+            ),
+        yaxis = dict(
+            tickmode = 'array',
+            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, 1e6)),
+            showgrid = True
+        )
+    )
+    dados = [trace3,traceline]
+    fig = go.Figure(data = dados, layout = layout)
+
+    fig.add_trace(go.Scatter(
+        x = sdata['experimental'],
+        y = sdata['twodim'],
+        mode = 'markers',
+        marker=dict(color=sdata['length'])))
+    
+    fig.update_xaxes(exponentformat="e", titlefont={'size': 22})
+    fig.update_yaxes(exponentformat="e", titlefont={'size': 22})
+    
+    fig.update_layout(xaxis_range=[0,topbound])
+    fig.update_layout(yaxis_range=[0,topbound])
+
+    if writepath == None:
+        fig.show()
+        return fig 
+    else:
+        PATH = f'{writepath}/{name}'
+        fig.write_html(f"{PATH}.html")
+
 def histotime(data, fit_gamma, runtime, exp=None, mod=None, seq=None, nbins=150, name='timehist', writepath=None, theme='light'):
     
     if theme == 'dark':

@@ -43,7 +43,7 @@ class Kinetwork(object):
             self.zmethod = self.kinetics.metropolis
             self.smethod = self.kinetics.kawasaki
         else: 
-            self.nmethod = self.kinetics.kawasaki
+            self.nmethod = self.kinetics.topbotnucleation
             self.zmethod = self.kinetics.metropolis
             self.smethod = self.kinetics.kawasaki
             
@@ -118,7 +118,6 @@ class Kinetwork(object):
                         l = self.addpar(ss, i, n, '(')
                         r = self.addpar(ss, j, n, ')')
                         trap = self.sab(l,r)
-                        
                         obj = Complex(self.model, self.s1, self.s2, state=state, structure = trap, dpxdist=dpxdist)
                         self.DG.add_node(   trap,
                                             obj = obj, 
@@ -128,8 +127,14 @@ class Kinetwork(object):
                                             tdx =(i,j),
                                             fre = obj.structureG())
                         dgtrap = obj.G
-                        fwd, bwd = self.nmethod(dgtrap)
                         if n == self.model.min_nucleation:
+                            if self.model.space_dimensionality == '3D':
+                                fwd, bwd = self.nmethod(dgtrap)
+                            elif self.model.space_dimensionality == '2D':
+                                print('\n')
+                                print(obj.structure)
+                                print(obj.sdist)
+                                fwd, bwd = self.nmethod(dgtrap, obj.sdist) #sdist is a measure of how many base pairs the current nucleation is away from the surface
                             self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
                             self.DG.add_edge(trap, self.simplex, k = bwd, state = state)
                         elif n > self.model.min_nucleation:
@@ -253,8 +258,6 @@ class Kinetwork(object):
             for _ in range(i):
                 next(iter, None)
         return zip(*iterators)
-
-
 
 class FatalError(Exception):
     def __init__(self, message):

@@ -6,13 +6,11 @@ Create a method to get the most trafficked hybridization paths and append this a
 #######################################################
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#### MODELING
 
-# !!!!!! Normalization in the backward nucleation constant
-So far I normalized the forward nucleation constant by counting all possible slidings and nucleotides per sliding. 
-I don't know what to do with the backward rate constant. Should I also normalize it?
 
-# ! 
-Correct the nucnorm in the traps connection of the kinetwork
->>>> JUST IMPLEMENT A GENERAL COMBINATORIAL SHIT
+# !!
+Implement slidings in the top strand 
+(and try to extend the method to 3D?)
+
 
 # !! 
 Implement the secondary structure dependance 
@@ -23,11 +21,6 @@ Implement the secondary structure dependance
         -- Kinetwork 
         -- Simulator
 
-# !!!! 
-Dimensional analysis of constants and formulas inside (DONE A FIRST CHECK, DO A SECOND CHECK IF NEEDED)
-        Kinetics class 
-            -   there's clearlys some wrong shit as one can see
-                by the orders of magnitude you get for diffusion
 
 
 
