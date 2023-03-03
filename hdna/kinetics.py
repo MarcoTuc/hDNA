@@ -69,28 +69,16 @@ class Kinetics(object):
 
     def gammasliding(self, dgs):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (CONST.R * (self.T)))))
-        # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (CONST.R * (self.T))))) #HERTELGAMMASLIDING
 
+    def pseudoknot(self, dgs):
+        pass
+
+    def inchworm(self, dgs):
+        pass 
 
     """ ------------- TWO DIMENSIONAL NUCLEATION -----------------"""
 
-    def nuc2D(self, dgnuc, position):
-        def geospace(start, stop, num):
-            # Generate a geometric sequence
-            seq = np.geomspace(start, stop, num)
-            # Apply the transformation exponentiation
-            seq = seq**1.3
-            # Scale and shift to match the desired start and stop values
-            scale_factor = (stop - start) / (seq[-1] - seq[0])
-            shifted_seq = (seq - seq[0]) * scale_factor + start
-            return shifted_seq
-        nucrates = geospace(self.collisionrate, self.collisionbulk, 12) #say that after three persistences length the system is completely uncorrelated from 2D influence 
-                                                                        #I could construct an argument for a shape of this function by considering how correlation of position 
-                                                                        #in a chain goes to zero with distance from a considered point 
-        kf = nucrates[position] / self.nucnorm
 
-
-    """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
     def topbotdivision(self):
         # Set strand 1 top and bottom normalization
         if self.s1.length > self.treshold: T1 = self.s1.length - self.treshold; B1 = self.treshold
@@ -124,6 +112,8 @@ class Kinetics(object):
             knuc = kf*np.exp(-(dgnuc)/(2*CONST.R*(self.T)))
             kbak = kb*np.exp(+(dgnuc)/(2*CONST.R*(self.T)))
         return knuc, kbak 
+    
+    """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
 
     def nucleation(self, dgnuc, method='kawasaki'):
         kf = self.nucleationrate / (self.nucnorm)
@@ -178,21 +168,6 @@ class Kinetics(object):
     #3333333333333333333333333333333333333333333333333333333333333333333333333333333
     # >>>>>>>>------------------- 3D DIFFUSION -----------------------<<<<<<<<<<<<<<
 
-    # ########################## Vanilla
-    # def ss_strands_size(self):
-    #     self.size1 = self.s1.length*SXGEO.MONODIST
-    #     self.size2 = self.s2.length*SXGEO.MONODIST
-    # def vanilla_diffusivities(self):
-    #     self.ss_strands_size()
-    #     self.vD1 = self.einsmol_spherical(self.size1)
-    #     self.vD2 = self.einsmol_spherical(self.size2)
-    
-    # #################### Polymer Physics
-    # def einsmol_spherical(self, radius):
-    #     """ returns einstein smoluchowski diffusivity for 
-    #         spherical particles in (cm^2)/s units """
-    #     return (CONST.KBCM*self.T)/(6*np.pi*self.viscosity*radius)
-
     def zimm_diffusion(self, strand):
         alpha = 8/(3*np.sqrt(6*np.power(np.pi,3)))
         beta  = CONST.KBCM*self.model.kelvin/(HYDRO.MU_H2O*SXGEO.MONODIST*np.sqrt(strand.length))
@@ -208,11 +183,11 @@ class Kinetics(object):
             return gr
         elif N == None:
             return None 
-    # def gyradiusesWHAT(self): # I DONT KNOW WHERE I TOOK THIS FORMULA FROM 
-    #     lambda_0 = (SXGEO.PERSISTENCE*SXGEO.MONODIST)/3
-    #     self.gr1 = np.sqrt(self.s1.length*lambda_0)
-    #     self.gr2 = np.sqrt(self.s2.length*lambda_0)
-    #     return self.gr1, self.gr2
+    def gyradiusesWHAT(self): # I DONT KNOW WHERE I TOOK THIS FORMULA FROM 
+        lambda_0 = (SXGEO.PERSISTENCE*SXGEO.MONODIST)/3
+        self.gr1 = np.sqrt(self.s1.length*lambda_0)
+        self.gr2 = np.sqrt(self.s2.length*lambda_0)
+        return self.gr1, self.gr2
     def diffusion_coeffs(self):
         self.gyradiuses()
         self.D1 = self.zimm_diffusion(self.s1)
