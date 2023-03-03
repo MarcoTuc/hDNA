@@ -6,7 +6,7 @@ from itertools import pairwise, combinations, tee, permutations
 
 from .complex import Complex
 from .model import Model
-from .strand import Strand
+from .strand import Strand, Structure
 from .kinetics import Kinetics
  
 class Kinetwork(object):
@@ -206,19 +206,19 @@ class Kinetwork(object):
         for brc in combinations(self.sldbranches,2):
             print(brc[0], brc[1])
             #add here a routine to insert missing slidings (due to lack of logic in get graph function)
-            most1 = list(
+            most1 = Structure(list(
                 self.filternodes('fre', min,
                 self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
-                ))[0]
-            most2 = list(
+                ))[0])
+            most2 = Structure(list(
                 self.filternodes('fre', min,
                 self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                ))[0]
+                ))[0])
             if np.sign(brc[0])!=np.sign(brc[1]):
                 if self.kinetics.pkcond(most1, most2):
-                # pseudoknotting routine
-                #TODO add rates
-                    print(most1, most2, 'pseudoknotting')
+                    # pseudoknotting routine
+                    #TODO add rates
+                    print(most1.str, most2.str, 'pseudoknotting')
                     self.DG.add_edge(most1, most2, k = 0, state = 'pseudoknotting')
                     self.DG.add_edge(most2, most1, k = 0, state = 'pseudoknotting')
             else:

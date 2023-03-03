@@ -71,11 +71,11 @@ class Kinetics(object):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (CONST.R * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (CONST.R * (self.T))))) #HERTELGAMMASLIDING
 
-    def pkcond(self, s1, s2):
+    def pkcond(self, str1, str2):
         # s1 and s2 are .(+). structures
-        tot1 = sum([True for i in s1.split('+')[0] if i != '.' else False])
-        tot2 = sum([True for i in s2.split('+')[0] if i != '.' else False])
-
+        sorig, sdest = str1, str2 if str1.totbp < str2.totbp else str2, str1
+        barrier = sorig.totbp * DXGEO.MONODIST
+        gyrorig = sorig.tail 
         
 
     """ ------------- TWO DIMENSIONAL NUCLEATION -----------------"""

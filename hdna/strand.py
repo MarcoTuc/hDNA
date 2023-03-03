@@ -55,6 +55,59 @@ class Strand(object):
 
 
 class Structure(object):
-    """ If I have time I will put here all the structure related Methods
-        that for now are just copy-pasted around all classes """
-    pass 
+    def __init__(self, structure):
+        self.str = structure
+        self.left, self.right = structure.split('+')
+        self.length = len(self.left)
+        self.wal = [False if i != '.' else True for i in self.left]
+        self.war = [False if i != '.' else True for i in self.right]
+        if self.length != len(self.right):
+            raise BrokenPipeError('Left and Right strands should have the same length')
+        self.totbp = sum([True if i != '.' else False for i in self.left])
+        if self.totbp != sum([True if i != '.' else False for i in self.right]):
+            raise BrokenPipeError('Left and Right base pairs should always match')
+        
+        self.lì = ''.join(['ì' if i == '(' else '.' for i in self.left])
+        self.rì = ''.join(['ì' if i == ')' else '.' for i in self.right])
+        self.ì = '+'.join([self.lì, self.rì])
+
+        self.tail = self.length - abs(self.register)
+
+    @property
+    def register(self):
+        def shift(s, d):
+            if d == +1:
+                if s[-1] == 'ì':
+                    return s
+                else:
+                    shf = s[len(s)-1:] + s[:len(s)-1]
+                    return shf
+            if d == -1:
+                if s[0] == 'ì':
+                    return s
+                else:
+                    shf = s[1:] + s[:1] 
+                    return shf
+        il = 0; ir = 0; dl = None; dr = None
+        bb1 = self.rì[::-1]
+        bb2 = self.rì[::-1]
+        while bb1 != self.lì:
+            il += 1
+            nbb1 = shift(bb1, 1)
+            if nbb1 == self.lì: 
+                dl = -il
+                break
+            if bb1 == nbb1: 
+                break
+            else: bb1 = nbb1
+        while bb2 != self.lì:
+            ir += 1
+            nbb2 = shift(bb2, -1)
+            if nbb2 == self.lì:
+                dr = ir 
+                break
+            if bb2 == nbb2: 
+                break
+            else: bb2 = nbb2
+        dist = dl if dl != None else dr 
+        return dist
