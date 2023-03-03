@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np 
 import pandas as pd 
 
-from itertools import pairwise, combinations, tee
+from itertools import pairwise, combinations, tee, permutations
 
 from .complex import Complex
 from .model import Model
@@ -161,27 +161,72 @@ class Kinetwork(object):
 ##########################################################################
 
     def connect_slidings(self, verbose=True):
+        # connect slidings with duplex 
         for branch in self.sldbranches:
-            leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
-            components = nx.connected_components(leaf.to_undirected())
-            for component in components:
-                if len(component) > 1:
-                    subleaf = nx.subgraph(self.DG, list(component))
-                    mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
-                    self.DG.nodes[mostable]['state'] = 'sliding'
-                    dgsliding = self.DG.nodes[mostable]['fre']
-                    # dgduplex = self.DG.nodes[self.duplex]['fre']
-                    fwd, _ = self.smethod('sliding', 0, dgsliding)                    
-                    if verbose: 
-                        dgstring = '{:.3f}'.format(dgsliding)
-                        fwdformat = '{:.3e}'.format(fwd)
-                        bwdformat = '{:.3e}'.format(0)
-                        # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                        print(mostable, fwdformat, bwdformat, dgstring)
-                    #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
-                    #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
-                    self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+            mostable = list(
+                self.filternodes('fre', min,
+                self.filternodes('dpxdist', lambda x: x == branch, self.DG)
+                ))[0]
+            self.DG.nodes[mostable]['state'] = 'sliding'
+            dgsliding = self.DG.nodes[mostable]['fre']
+            # dgduplex = self.DG.nodes[self.duplex]['fre']
+            fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+            if verbose: 
+                dgstring = '{:.3f}'.format(dgsliding)
+                fwdformat = '{:.3e}'.format(fwd)
+                bwdformat = '{:.3e}'.format(0)
+                # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
+                print(mostable, fwdformat, bwdformat, dgstring)
+            #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
+            #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
+            self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+            self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+        # for branch in self.sldbranches:
+        #     leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
+        #     components = nx.connected_components(leaf.to_undirected())
+        #     for component in components:
+        #         if len(component) > 1:
+        #             subleaf = nx.subgraph(self.DG, list(component))
+        #             mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
+        #             self.DG.nodes[mostable]['state'] = 'sliding'
+        #             dgsliding = self.DG.nodes[mostable]['fre']
+        #             # dgduplex = self.DG.nodes[self.duplex]['fre']
+        #             fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+        #             if verbose: 
+        #                 dgstring = '{:.3f}'.format(dgsliding)
+        #                 fwdformat = '{:.3e}'.format(fwd)
+        #                 bwdformat = '{:.3e}'.format(0)
+        #                 # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
+        #                 print(mostable, fwdformat, bwdformat, dgstring)
+        #             #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
+        #             #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
+        #             self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+        #             self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+        # connect slidings with eachother 
+        for brc in combinations(self.sldbranches,2):
+            print(brc[0], brc[1])
+            #add here a routine to insert missing slidings (due to lack of logic in get graph function)
+            most1 = list(
+                self.filternodes('fre', min,
+                self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
+                ))[0]
+            most2 = list(
+                self.filternodes('fre', min,
+                self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                ))[0]
+            if np.sign(brc[0])!=np.sign(brc[1]):
+                # pseudoknotting routine
+                #TODO add rates
+                print(most1, most2, 'pseudoknotting')
+                self.DG.add_edge(most1, most2, k = 0, state = 'pseudoknotting')
+                self.DG.add_edge(most2, most1, k = 0, state = 'pseudoknotting')
+            else:
+                # inchworming routine
+                wormdist = abs(brc[0]-brc[1])
+                #TODO add rates
+                print(most1, most2, 'inchworming', wormdist)
+                self.DG.add_edge(most1, most2, k = 0, state = 'inchworming')
+                self.DG.add_edge(most2, most1, k = 0, state = 'inchworming')    
 
 ##########################################################################
 
