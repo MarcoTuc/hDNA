@@ -215,11 +215,12 @@ class Kinetwork(object):
                 self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
                 ))[0]
             if np.sign(brc[0])!=np.sign(brc[1]):
+                if self.kinetics.pkcond(most1, most2):
                 # pseudoknotting routine
                 #TODO add rates
-                print(most1, most2, 'pseudoknotting')
-                self.DG.add_edge(most1, most2, k = 0, state = 'pseudoknotting')
-                self.DG.add_edge(most2, most1, k = 0, state = 'pseudoknotting')
+                    print(most1, most2, 'pseudoknotting')
+                    self.DG.add_edge(most1, most2, k = 0, state = 'pseudoknotting')
+                    self.DG.add_edge(most2, most1, k = 0, state = 'pseudoknotting')
             else:
                 # inchworming routine
                 wormdist = abs(brc[0]-brc[1])
@@ -249,13 +250,15 @@ class Kinetwork(object):
     def save_graph(self, PATH):
         import os 
         #convert node object to string of object type
-        for n in self.DG.nodes.data():
+        DGsave = self.DG.copy()
+        for n in DGsave.nodes.data():
             n[1]['obj'] = str(type(n[1]['obj']))
+            n[1]['fre'] = f"{n[1]['fre']:.3f}"
             try: n[1]['tdx'] = str(type(n[1]['tdx']))
             except KeyError: pass
         try: os.makedirs(PATH)
         except FileExistsError: pass 
-        nx.write_gexf(self.DG,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
+        nx.write_gexf(DGsave,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
 
 ###################
 ############## PROPERTIES

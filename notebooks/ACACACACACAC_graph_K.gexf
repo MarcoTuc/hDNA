@@ -13,7 +13,7 @@
       <attribute id="1" title="pairs" type="long" />
       <attribute id="2" title="state" type="string" />
       <attribute id="3" title="dpxdist" type="long" />
-      <attribute id="4" title="fre" type="long" />
+      <attribute id="4" title="fre" type="string" />
       <attribute id="5" title="tdx" type="string" />
     </attributes>
     <nodes>
@@ -23,7 +23,7 @@
           <attvalue for="1" value="0" />
           <attvalue for="2" value="singlestranded" />
           <attvalue for="3" value="12" />
-          <attvalue for="4" value="0" />
+          <attvalue for="4" value="0.000" />
         </attvalues>
       </node>
       <node id="((((((((((((+))))))))))))" label="((((((((((((+))))))))))))">
@@ -32,7 +32,7 @@
           <attvalue for="1" value="12" />
           <attvalue for="2" value="duplex" />
           <attvalue for="3" value="0" />
-          <attvalue for="4" value="-18.9832251449167" />
+          <attvalue for="4" value="-18.983" />
         </attvalues>
       </node>
       <node id="(...........+.).........." label="(...........+.)..........">
@@ -42,7 +42,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="10" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="(...........+...)........" label="(...........+...)........">
@@ -52,7 +52,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="(...........+.....)......" label="(...........+.....)......">
@@ -62,7 +62,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="(...........+.......)...." label="(...........+.......)....">
@@ -72,7 +72,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="(...........+.........).." label="(...........+.........)..">
@@ -82,7 +82,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="(...........+...........)" label="(...........+...........)">
@@ -92,7 +92,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id=".(..........+)..........." label=".(..........+)...........">
@@ -102,7 +102,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="10" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".(..........+..)........." label=".(..........+..).........">
@@ -112,7 +112,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".(..........+....)......." label=".(..........+....).......">
@@ -122,7 +122,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".(..........+......)....." label=".(..........+......).....">
@@ -132,7 +132,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".(..........+........)..." label=".(..........+........)...">
@@ -142,7 +142,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".(..........+..........)." label=".(..........+..........).">
@@ -152,7 +152,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="..(.........+.).........." label="..(.........+.)..........">
@@ -162,7 +162,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..(.........+...)........" label="..(.........+...)........">
@@ -172,7 +172,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..(.........+.....)......" label="..(.........+.....)......">
@@ -182,7 +182,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..(.........+.......)...." label="..(.........+.......)....">
@@ -192,7 +192,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..(.........+.........).." label="..(.........+.........)..">
@@ -202,7 +202,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..(.........+...........)" label="..(.........+...........)">
@@ -212,7 +212,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="...(........+)..........." label="...(........+)...........">
@@ -222,7 +222,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...(........+..)........." label="...(........+..).........">
@@ -232,7 +232,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...(........+....)......." label="...(........+....).......">
@@ -242,7 +242,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...(........+......)....." label="...(........+......).....">
@@ -252,7 +252,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...(........+........)..." label="...(........+........)...">
@@ -262,7 +262,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...(........+..........)." label="...(........+..........).">
@@ -272,7 +272,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="....(.......+.).........." label="....(.......+.)..........">
@@ -282,7 +282,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="....(.......+...)........" label="....(.......+...)........">
@@ -292,7 +292,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="....(.......+.....)......" label="....(.......+.....)......">
@@ -302,7 +302,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="....(.......+.......)...." label="....(.......+.......)....">
@@ -312,7 +312,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="....(.......+.........).." label="....(.......+.........)..">
@@ -322,7 +322,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="....(.......+...........)" label="....(.......+...........)">
@@ -332,7 +332,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id=".....(......+)..........." label=".....(......+)...........">
@@ -342,7 +342,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".....(......+..)........." label=".....(......+..).........">
@@ -352,7 +352,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".....(......+....)......." label=".....(......+....).......">
@@ -362,7 +362,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".....(......+......)....." label=".....(......+......).....">
@@ -372,7 +372,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".....(......+........)..." label=".....(......+........)...">
@@ -382,7 +382,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".....(......+..........)." label=".....(......+..........).">
@@ -392,7 +392,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="......(.....+.).........." label="......(.....+.)..........">
@@ -402,7 +402,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="......(.....+...)........" label="......(.....+...)........">
@@ -412,7 +412,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="......(.....+.....)......" label="......(.....+.....)......">
@@ -422,7 +422,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="......(.....+.......)...." label="......(.....+.......)....">
@@ -432,7 +432,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="......(.....+.........).." label="......(.....+.........)..">
@@ -442,7 +442,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="......(.....+...........)" label="......(.....+...........)">
@@ -452,7 +452,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id=".......(....+)..........." label=".......(....+)...........">
@@ -462,7 +462,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".......(....+..)........." label=".......(....+..).........">
@@ -472,7 +472,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".......(....+....)......." label=".......(....+....).......">
@@ -482,7 +482,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".......(....+......)....." label=".......(....+......).....">
@@ -492,7 +492,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".......(....+........)..." label=".......(....+........)...">
@@ -502,7 +502,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".......(....+..........)." label=".......(....+..........).">
@@ -512,7 +512,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="........(...+.).........." label="........(...+.)..........">
@@ -522,7 +522,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="........(...+...)........" label="........(...+...)........">
@@ -532,7 +532,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="........(...+.....)......" label="........(...+.....)......">
@@ -542,7 +542,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="........(...+.......)...." label="........(...+.......)....">
@@ -552,7 +552,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="........(...+.........).." label="........(...+.........)..">
@@ -562,7 +562,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="........(...+...........)" label="........(...+...........)">
@@ -572,7 +572,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id=".........(..+)..........." label=".........(..+)...........">
@@ -582,7 +582,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".........(..+..)........." label=".........(..+..).........">
@@ -592,7 +592,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".........(..+....)......." label=".........(..+....).......">
@@ -602,7 +602,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".........(..+......)....." label=".........(..+......).....">
@@ -612,7 +612,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".........(..+........)..." label=".........(..+........)...">
@@ -622,7 +622,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id=".........(..+..........)." label=".........(..+..........).">
@@ -632,7 +632,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="..........(.+.).........." label="..........(.+.)..........">
@@ -642,7 +642,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..........(.+...)........" label="..........(.+...)........">
@@ -652,7 +652,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..........(.+.....)......" label="..........(.+.....)......">
@@ -662,7 +662,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..........(.+.......)...." label="..........(.+.......)....">
@@ -672,7 +672,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..........(.+.........).." label="..........(.+.........)..">
@@ -682,7 +682,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="..........(.+...........)" label="..........(.+...........)">
@@ -692,7 +692,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-10" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.23568040849883176" />
+          <attvalue for="4" value="-0.236" />
         </attvalues>
       </node>
       <node id="...........(+)..........." label="...........(+)...........">
@@ -702,7 +702,7 @@
           <attvalue for="2" value="on_nucleation" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...........(+..)........." label="...........(+..).........">
@@ -712,7 +712,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...........(+....)......." label="...........(+....).......">
@@ -722,7 +722,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...........(+......)....." label="...........(+......).....">
@@ -732,7 +732,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...........(+........)..." label="...........(+........)...">
@@ -742,7 +742,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="...........(+..........)." label="...........(+..........).">
@@ -752,7 +752,7 @@
           <attvalue for="2" value="off_nucleation" />
           <attvalue for="3" value="-10" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-0.4881872600222883" />
+          <attvalue for="4" value="-0.488" />
         </attvalues>
       </node>
       <node id="((..........+)).........." label="((..........+))..........">
@@ -762,7 +762,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="10" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="((..........+..))........" label="((..........+..))........">
@@ -772,7 +772,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="((..........+....))......" label="((..........+....))......">
@@ -782,7 +782,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="((..........+......))...." label="((..........+......))....">
@@ -792,7 +792,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="((..........+........)).." label="((..........+........))..">
@@ -802,7 +802,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="((..........+..........))" label="((..........+..........))">
@@ -812,7 +812,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id=".((.........+.))........." label=".((.........+.)).........">
@@ -822,7 +822,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".((.........+...))......." label=".((.........+...)).......">
@@ -832,7 +832,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".((.........+.....))....." label=".((.........+.....)).....">
@@ -842,7 +842,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".((.........+.......))..." label=".((.........+.......))...">
@@ -852,7 +852,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".((.........+.........))." label=".((.........+.........)).">
@@ -862,7 +862,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="..((........+)).........." label="..((........+))..........">
@@ -872,7 +872,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..((........+..))........" label="..((........+..))........">
@@ -882,7 +882,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..((........+....))......" label="..((........+....))......">
@@ -892,7 +892,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..((........+......))...." label="..((........+......))....">
@@ -902,7 +902,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..((........+........)).." label="..((........+........))..">
@@ -912,7 +912,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..((........+..........))" label="..((........+..........))">
@@ -922,7 +922,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="...((.......+.))........." label="...((.......+.)).........">
@@ -932,7 +932,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="...((.......+...))......." label="...((.......+...)).......">
@@ -942,7 +942,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="...((.......+.....))....." label="...((.......+.....)).....">
@@ -952,7 +952,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="...((.......+.......))..." label="...((.......+.......))...">
@@ -962,7 +962,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="...((.......+.........))." label="...((.......+.........)).">
@@ -972,7 +972,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="....((......+)).........." label="....((......+))..........">
@@ -982,7 +982,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="....((......+..))........" label="....((......+..))........">
@@ -992,7 +992,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="....((......+....))......" label="....((......+....))......">
@@ -1002,7 +1002,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="....((......+......))...." label="....((......+......))....">
@@ -1012,7 +1012,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="....((......+........)).." label="....((......+........))..">
@@ -1022,7 +1022,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="....((......+..........))" label="....((......+..........))">
@@ -1032,7 +1032,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id=".....((.....+.))........." label=".....((.....+.)).........">
@@ -1042,7 +1042,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".....((.....+...))......." label=".....((.....+...)).......">
@@ -1052,7 +1052,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".....((.....+.....))....." label=".....((.....+.....)).....">
@@ -1062,7 +1062,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".....((.....+.......))..." label=".....((.....+.......))...">
@@ -1072,7 +1072,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".....((.....+.........))." label=".....((.....+.........)).">
@@ -1082,7 +1082,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="......((....+)).........." label="......((....+))..........">
@@ -1092,7 +1092,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="......((....+..))........" label="......((....+..))........">
@@ -1102,7 +1102,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="......((....+....))......" label="......((....+....))......">
@@ -1112,7 +1112,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="......((....+......))...." label="......((....+......))....">
@@ -1122,7 +1122,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="......((....+........)).." label="......((....+........))..">
@@ -1132,7 +1132,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="......((....+..........))" label="......((....+..........))">
@@ -1142,7 +1142,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id=".......((...+.))........." label=".......((...+.)).........">
@@ -1152,7 +1152,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".......((...+...))......." label=".......((...+...)).......">
@@ -1162,7 +1162,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".......((...+.....))....." label=".......((...+.....)).....">
@@ -1172,7 +1172,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".......((...+.......))..." label=".......((...+.......))...">
@@ -1182,7 +1182,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".......((...+.........))." label=".......((...+.........)).">
@@ -1192,7 +1192,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="........((..+)).........." label="........((..+))..........">
@@ -1202,7 +1202,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="........((..+..))........" label="........((..+..))........">
@@ -1212,7 +1212,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="........((..+....))......" label="........((..+....))......">
@@ -1222,7 +1222,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="........((..+......))...." label="........((..+......))....">
@@ -1232,7 +1232,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="........((..+........)).." label="........((..+........))..">
@@ -1242,7 +1242,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="........((..+..........))" label="........((..+..........))">
@@ -1252,7 +1252,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id=".........((.+.))........." label=".........((.+.)).........">
@@ -1262,7 +1262,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".........((.+...))......." label=".........((.+...)).......">
@@ -1272,7 +1272,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".........((.+.....))....." label=".........((.+.....)).....">
@@ -1282,7 +1282,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".........((.+.......))..." label=".........((.+.......))...">
@@ -1292,7 +1292,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id=".........((.+.........))." label=".........((.+.........)).">
@@ -1302,7 +1302,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.061974137339716" />
+          <attvalue for="4" value="-2.062" />
         </attvalues>
       </node>
       <node id="..........((+)).........." label="..........((+))..........">
@@ -1312,7 +1312,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..........((+..))........" label="..........((+..))........">
@@ -1322,7 +1322,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..........((+....))......" label="..........((+....))......">
@@ -1332,7 +1332,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..........((+......))...." label="..........((+......))....">
@@ -1342,7 +1342,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..........((+........)).." label="..........((+........))..">
@@ -1352,7 +1352,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="..........((+..........))" label="..........((+..........))">
@@ -1362,7 +1362,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="-10" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-2.04878213347062" />
+          <attvalue for="4" value="-2.049" />
         </attvalues>
       </node>
       <node id="(((.........+.)))........" label="(((.........+.)))........">
@@ -1372,7 +1372,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="(((.........+...)))......" label="(((.........+...)))......">
@@ -1382,7 +1382,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="(((.........+.....)))...." label="(((.........+.....)))....">
@@ -1392,7 +1392,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="(((.........+.......))).." label="(((.........+.......)))..">
@@ -1402,7 +1402,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="(((.........+.........)))" label="(((.........+.........)))">
@@ -1412,7 +1412,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id=".(((........+)))........." label=".(((........+))).........">
@@ -1422,7 +1422,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".(((........+..)))......." label=".(((........+..))).......">
@@ -1432,7 +1432,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".(((........+....)))....." label=".(((........+....))).....">
@@ -1442,7 +1442,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".(((........+......)))..." label=".(((........+......)))...">
@@ -1452,7 +1452,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".(((........+........)))." label=".(((........+........))).">
@@ -1462,7 +1462,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="..(((.......+.)))........" label="..(((.......+.)))........">
@@ -1472,7 +1472,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="..(((.......+...)))......" label="..(((.......+...)))......">
@@ -1482,7 +1482,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="..(((.......+.....)))...." label="..(((.......+.....)))....">
@@ -1492,7 +1492,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="..(((.......+.......))).." label="..(((.......+.......)))..">
@@ -1502,7 +1502,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="..(((.......+.........)))" label="..(((.......+.........)))">
@@ -1512,7 +1512,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="...(((......+)))........." label="...(((......+))).........">
@@ -1522,7 +1522,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="...(((......+..)))......." label="...(((......+..))).......">
@@ -1532,7 +1532,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="...(((......+....)))....." label="...(((......+....))).....">
@@ -1542,7 +1542,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="...(((......+......)))..." label="...(((......+......)))...">
@@ -1552,7 +1552,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="...(((......+........)))." label="...(((......+........))).">
@@ -1562,7 +1562,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="....(((.....+.)))........" label="....(((.....+.)))........">
@@ -1572,7 +1572,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="....(((.....+...)))......" label="....(((.....+...)))......">
@@ -1582,7 +1582,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="....(((.....+.....)))...." label="....(((.....+.....)))....">
@@ -1592,7 +1592,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="....(((.....+.......))).." label="....(((.....+.......)))..">
@@ -1602,7 +1602,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="....(((.....+.........)))" label="....(((.....+.........)))">
@@ -1612,7 +1612,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id=".....(((....+)))........." label=".....(((....+))).........">
@@ -1622,7 +1622,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".....(((....+..)))......." label=".....(((....+..))).......">
@@ -1632,7 +1632,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".....(((....+....)))....." label=".....(((....+....))).....">
@@ -1642,7 +1642,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".....(((....+......)))..." label=".....(((....+......)))...">
@@ -1652,7 +1652,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".....(((....+........)))." label=".....(((....+........))).">
@@ -1662,7 +1662,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="......(((...+.)))........" label="......(((...+.)))........">
@@ -1672,7 +1672,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="......(((...+...)))......" label="......(((...+...)))......">
@@ -1682,7 +1682,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="......(((...+.....)))...." label="......(((...+.....)))....">
@@ -1692,7 +1692,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="......(((...+.......))).." label="......(((...+.......)))..">
@@ -1702,7 +1702,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="......(((...+.........)))" label="......(((...+.........)))">
@@ -1712,7 +1712,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id=".......(((..+)))........." label=".......(((..+))).........">
@@ -1722,7 +1722,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".......(((..+..)))......." label=".......(((..+..))).......">
@@ -1732,7 +1732,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".......(((..+....)))....." label=".......(((..+....))).....">
@@ -1742,7 +1742,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".......(((..+......)))..." label=".......(((..+......)))...">
@@ -1752,7 +1752,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".......(((..+........)))." label=".......(((..+........))).">
@@ -1762,7 +1762,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="........(((.+.)))........" label="........(((.+.)))........">
@@ -1772,7 +1772,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="........(((.+...)))......" label="........(((.+...)))......">
@@ -1782,7 +1782,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="........(((.+.....)))...." label="........(((.+.....)))....">
@@ -1792,7 +1792,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="........(((.+.......))).." label="........(((.+.......)))..">
@@ -1802,7 +1802,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id="........(((.+.........)))" label="........(((.+.........)))">
@@ -1812,7 +1812,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.6225690107880473" />
+          <attvalue for="4" value="-3.623" />
         </attvalues>
       </node>
       <node id=".........(((+)))........." label=".........(((+))).........">
@@ -1822,7 +1822,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".........(((+..)))......." label=".........(((+..))).......">
@@ -1832,7 +1832,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".........(((+....)))....." label=".........(((+....))).....">
@@ -1842,7 +1842,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".........(((+......)))..." label=".........(((+......)))...">
@@ -1852,7 +1852,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id=".........(((+........)))." label=".........(((+........))).">
@@ -1862,7 +1862,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-3.875075862311504" />
+          <attvalue for="4" value="-3.875" />
         </attvalues>
       </node>
       <node id="((((........+))))........" label="((((........+))))........">
@@ -1872,7 +1872,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="((((........+..))))......" label="((((........+..))))......">
@@ -1882,7 +1882,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="((((........+....))))...." label="((((........+....))))....">
@@ -1892,7 +1892,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="((((........+......)))).." label="((((........+......))))..">
@@ -1902,7 +1902,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="((((........+........))))" label="((((........+........))))">
@@ -1912,7 +1912,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id=".((((.......+.))))......." label=".((((.......+.)))).......">
@@ -1922,7 +1922,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".((((.......+...))))....." label=".((((.......+...)))).....">
@@ -1932,7 +1932,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".((((.......+.....))))..." label=".((((.......+.....))))...">
@@ -1942,7 +1942,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".((((.......+.......))))." label=".((((.......+.......)))).">
@@ -1952,7 +1952,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="..((((......+))))........" label="..((((......+))))........">
@@ -1962,7 +1962,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="..((((......+..))))......" label="..((((......+..))))......">
@@ -1972,7 +1972,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="..((((......+....))))...." label="..((((......+....))))....">
@@ -1982,7 +1982,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="..((((......+......)))).." label="..((((......+......))))..">
@@ -1992,7 +1992,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="..((((......+........))))" label="..((((......+........))))">
@@ -2002,7 +2002,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="...((((.....+.))))......." label="...((((.....+.)))).......">
@@ -2012,7 +2012,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="...((((.....+...))))....." label="...((((.....+...)))).....">
@@ -2022,7 +2022,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="...((((.....+.....))))..." label="...((((.....+.....))))...">
@@ -2032,7 +2032,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="...((((.....+.......))))." label="...((((.....+.......)))).">
@@ -2042,7 +2042,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="....((((....+))))........" label="....((((....+))))........">
@@ -2052,7 +2052,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="....((((....+..))))......" label="....((((....+..))))......">
@@ -2062,7 +2062,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="....((((....+....))))...." label="....((((....+....))))....">
@@ -2072,7 +2072,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="....((((....+......)))).." label="....((((....+......))))..">
@@ -2082,7 +2082,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="....((((....+........))))" label="....((((....+........))))">
@@ -2092,7 +2092,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id=".....((((...+.))))......." label=".....((((...+.)))).......">
@@ -2102,7 +2102,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".....((((...+...))))....." label=".....((((...+...)))).....">
@@ -2112,7 +2112,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".....((((...+.....))))..." label=".....((((...+.....))))...">
@@ -2122,7 +2122,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".....((((...+.......))))." label=".....((((...+.......)))).">
@@ -2132,7 +2132,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="......((((..+))))........" label="......((((..+))))........">
@@ -2142,7 +2142,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="......((((..+..))))......" label="......((((..+..))))......">
@@ -2152,7 +2152,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="......((((..+....))))...." label="......((((..+....))))....">
@@ -2162,7 +2162,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="......((((..+......)))).." label="......((((..+......))))..">
@@ -2172,7 +2172,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="......((((..+........))))" label="......((((..+........))))">
@@ -2182,7 +2182,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id=".......((((.+.))))......." label=".......((((.+.)))).......">
@@ -2192,7 +2192,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".......((((.+...))))....." label=".......((((.+...)))).....">
@@ -2202,7 +2202,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".......((((.+.....))))..." label=".......((((.+.....))))...">
@@ -2212,7 +2212,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id=".......((((.+.......))))." label=".......((((.+.......)))).">
@@ -2222,7 +2222,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.448862739628931" />
+          <attvalue for="4" value="-5.449" />
         </attvalues>
       </node>
       <node id="........((((+))))........" label="........((((+))))........">
@@ -2232,7 +2232,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="........((((+..))))......" label="........((((+..))))......">
@@ -2242,7 +2242,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="........((((+....))))...." label="........((((+....))))....">
@@ -2252,7 +2252,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="........((((+......)))).." label="........((((+......))))..">
@@ -2262,7 +2262,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="........((((+........))))" label="........((((+........))))">
@@ -2272,7 +2272,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="-8" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-5.435670735759835" />
+          <attvalue for="4" value="-5.436" />
         </attvalues>
       </node>
       <node id="(((((.......+.)))))......" label="(((((.......+.)))))......">
@@ -2282,7 +2282,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="(((((.......+...)))))...." label="(((((.......+...)))))....">
@@ -2292,7 +2292,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="(((((.......+.....))))).." label="(((((.......+.....)))))..">
@@ -2302,7 +2302,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="(((((.......+.......)))))" label="(((((.......+.......)))))">
@@ -2312,7 +2312,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id=".(((((......+)))))......." label=".(((((......+))))).......">
@@ -2322,7 +2322,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".(((((......+..)))))....." label=".(((((......+..))))).....">
@@ -2332,7 +2332,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".(((((......+....)))))..." label=".(((((......+....)))))...">
@@ -2342,7 +2342,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".(((((......+......)))))." label=".(((((......+......))))).">
@@ -2352,7 +2352,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="..(((((.....+.)))))......" label="..(((((.....+.)))))......">
@@ -2362,7 +2362,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="..(((((.....+...)))))...." label="..(((((.....+...)))))....">
@@ -2372,7 +2372,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="..(((((.....+.....))))).." label="..(((((.....+.....)))))..">
@@ -2382,7 +2382,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="..(((((.....+.......)))))" label="..(((((.....+.......)))))">
@@ -2392,7 +2392,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="...(((((....+)))))......." label="...(((((....+))))).......">
@@ -2402,7 +2402,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="...(((((....+..)))))....." label="...(((((....+..))))).....">
@@ -2412,7 +2412,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="...(((((....+....)))))..." label="...(((((....+....)))))...">
@@ -2422,7 +2422,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="...(((((....+......)))))." label="...(((((....+......))))).">
@@ -2432,7 +2432,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="....(((((...+.)))))......" label="....(((((...+.)))))......">
@@ -2442,7 +2442,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="....(((((...+...)))))...." label="....(((((...+...)))))....">
@@ -2452,7 +2452,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="....(((((...+.....))))).." label="....(((((...+.....)))))..">
@@ -2462,7 +2462,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="....(((((...+.......)))))" label="....(((((...+.......)))))">
@@ -2472,7 +2472,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id=".....(((((..+)))))......." label=".....(((((..+))))).......">
@@ -2482,7 +2482,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".....(((((..+..)))))....." label=".....(((((..+..))))).....">
@@ -2492,7 +2492,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".....(((((..+....)))))..." label=".....(((((..+....)))))...">
@@ -2502,7 +2502,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".....(((((..+......)))))." label=".....(((((..+......))))).">
@@ -2512,7 +2512,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="......(((((.+.)))))......" label="......(((((.+.)))))......">
@@ -2522,7 +2522,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="......(((((.+...)))))...." label="......(((((.+...)))))....">
@@ -2532,7 +2532,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="......(((((.+.....))))).." label="......(((((.+.....)))))..">
@@ -2542,7 +2542,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id="......(((((.+.......)))))" label="......(((((.+.......)))))">
@@ -2552,7 +2552,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.009457613077263" />
+          <attvalue for="4" value="-7.009" />
         </attvalues>
       </node>
       <node id=".......(((((+)))))......." label=".......(((((+))))).......">
@@ -2562,7 +2562,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".......(((((+..)))))....." label=".......(((((+..))))).....">
@@ -2572,7 +2572,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".......(((((+....)))))..." label=".......(((((+....)))))...">
@@ -2582,7 +2582,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id=".......(((((+......)))))." label=".......(((((+......))))).">
@@ -2592,7 +2592,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-7.261964464600719" />
+          <attvalue for="4" value="-7.262" />
         </attvalues>
       </node>
       <node id="((((((......+))))))......" label="((((((......+))))))......">
@@ -2602,7 +2602,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="((((((......+..))))))...." label="((((((......+..))))))....">
@@ -2612,7 +2612,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="((((((......+....)))))).." label="((((((......+....))))))..">
@@ -2622,7 +2622,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="((((((......+......))))))" label="((((((......+......))))))">
@@ -2632,7 +2632,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id=".((((((.....+.))))))....." label=".((((((.....+.)))))).....">
@@ -2642,7 +2642,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id=".((((((.....+...))))))..." label=".((((((.....+...))))))...">
@@ -2652,7 +2652,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id=".((((((.....+.....))))))." label=".((((((.....+.....)))))).">
@@ -2662,7 +2662,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id="..((((((....+))))))......" label="..((((((....+))))))......">
@@ -2672,7 +2672,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="..((((((....+..))))))...." label="..((((((....+..))))))....">
@@ -2682,7 +2682,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="..((((((....+....)))))).." label="..((((((....+....))))))..">
@@ -2692,7 +2692,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="..((((((....+......))))))" label="..((((((....+......))))))">
@@ -2702,7 +2702,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="...((((((...+.))))))....." label="...((((((...+.)))))).....">
@@ -2712,7 +2712,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id="...((((((...+...))))))..." label="...((((((...+...))))))...">
@@ -2722,7 +2722,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id="...((((((...+.....))))))." label="...((((((...+.....)))))).">
@@ -2732,7 +2732,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id="....((((((..+))))))......" label="....((((((..+))))))......">
@@ -2742,7 +2742,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="....((((((..+..))))))...." label="....((((((..+..))))))....">
@@ -2752,7 +2752,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="....((((((..+....)))))).." label="....((((((..+....))))))..">
@@ -2762,7 +2762,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="....((((((..+......))))))" label="....((((((..+......))))))">
@@ -2772,7 +2772,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id=".....((((((.+.))))))....." label=".....((((((.+.)))))).....">
@@ -2782,7 +2782,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id=".....((((((.+...))))))..." label=".....((((((.+...))))))...">
@@ -2792,7 +2792,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id=".....((((((.+.....))))))." label=".....((((((.+.....)))))).">
@@ -2802,7 +2802,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.835751341918145" />
+          <attvalue for="4" value="-8.836" />
         </attvalues>
       </node>
       <node id="......((((((+))))))......" label="......((((((+))))))......">
@@ -2812,7 +2812,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="......((((((+..))))))...." label="......((((((+..))))))....">
@@ -2822,7 +2822,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="......((((((+....)))))).." label="......((((((+....))))))..">
@@ -2832,7 +2832,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="......((((((+......))))))" label="......((((((+......))))))">
@@ -2842,7 +2842,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="-6" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-8.822559338049052" />
+          <attvalue for="4" value="-8.823" />
         </attvalues>
       </node>
       <node id="(((((((.....+.)))))))...." label="(((((((.....+.)))))))....">
@@ -2852,7 +2852,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="(((((((.....+...))))))).." label="(((((((.....+...)))))))..">
@@ -2862,7 +2862,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="(((((((.....+.....)))))))" label="(((((((.....+.....)))))))">
@@ -2872,7 +2872,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id=".(((((((....+)))))))....." label=".(((((((....+))))))).....">
@@ -2882,7 +2882,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id=".(((((((....+..)))))))..." label=".(((((((....+..)))))))...">
@@ -2892,7 +2892,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id=".(((((((....+....)))))))." label=".(((((((....+....))))))).">
@@ -2902,7 +2902,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id="..(((((((...+.)))))))...." label="..(((((((...+.)))))))....">
@@ -2912,7 +2912,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="..(((((((...+...))))))).." label="..(((((((...+...)))))))..">
@@ -2922,7 +2922,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="..(((((((...+.....)))))))" label="..(((((((...+.....)))))))">
@@ -2932,7 +2932,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="...(((((((..+)))))))....." label="...(((((((..+))))))).....">
@@ -2942,7 +2942,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id="...(((((((..+..)))))))..." label="...(((((((..+..)))))))...">
@@ -2952,7 +2952,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id="...(((((((..+....)))))))." label="...(((((((..+....))))))).">
@@ -2962,7 +2962,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id="....(((((((.+.)))))))...." label="....(((((((.+.)))))))....">
@@ -2972,7 +2972,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="....(((((((.+...))))))).." label="....(((((((.+...)))))))..">
@@ -2982,7 +2982,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id="....(((((((.+.....)))))))" label="....(((((((.+.....)))))))">
@@ -2992,7 +2992,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.39634621536648" />
+          <attvalue for="4" value="-10.396" />
         </attvalues>
       </node>
       <node id=".....(((((((+)))))))....." label=".....(((((((+))))))).....">
@@ -3002,7 +3002,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id=".....(((((((+..)))))))..." label=".....(((((((+..)))))))...">
@@ -3012,7 +3012,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id=".....(((((((+....)))))))." label=".....(((((((+....))))))).">
@@ -3022,7 +3022,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-10.648853066889934" />
+          <attvalue for="4" value="-10.649" />
         </attvalues>
       </node>
       <node id="((((((((....+))))))))...." label="((((((((....+))))))))....">
@@ -3032,7 +3032,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="((((((((....+..)))))))).." label="((((((((....+..))))))))..">
@@ -3042,7 +3042,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="((((((((....+....))))))))" label="((((((((....+....))))))))">
@@ -3052,7 +3052,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id=".((((((((...+.))))))))..." label=".((((((((...+.))))))))...">
@@ -3062,7 +3062,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.222639944207362" />
+          <attvalue for="4" value="-12.223" />
         </attvalues>
       </node>
       <node id=".((((((((...+...))))))))." label=".((((((((...+...)))))))).">
@@ -3072,7 +3072,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.222639944207362" />
+          <attvalue for="4" value="-12.223" />
         </attvalues>
       </node>
       <node id="..((((((((..+))))))))...." label="..((((((((..+))))))))....">
@@ -3082,7 +3082,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="..((((((((..+..)))))))).." label="..((((((((..+..))))))))..">
@@ -3092,7 +3092,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="..((((((((..+....))))))))" label="..((((((((..+....))))))))">
@@ -3102,7 +3102,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="...((((((((.+.))))))))..." label="...((((((((.+.))))))))...">
@@ -3112,7 +3112,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.222639944207362" />
+          <attvalue for="4" value="-12.223" />
         </attvalues>
       </node>
       <node id="...((((((((.+...))))))))." label="...((((((((.+...)))))))).">
@@ -3122,7 +3122,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.222639944207362" />
+          <attvalue for="4" value="-12.223" />
         </attvalues>
       </node>
       <node id="....((((((((+))))))))...." label="....((((((((+))))))))....">
@@ -3132,7 +3132,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="....((((((((+..)))))))).." label="....((((((((+..))))))))..">
@@ -3142,7 +3142,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="....((((((((+....))))))))" label="....((((((((+....))))))))">
@@ -3152,7 +3152,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="-4" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-12.209447940338269" />
+          <attvalue for="4" value="-12.209" />
         </attvalues>
       </node>
       <node id="(((((((((...+.))))))))).." label="(((((((((...+.)))))))))..">
@@ -3162,7 +3162,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-13.783234817655696" />
+          <attvalue for="4" value="-13.783" />
         </attvalues>
       </node>
       <node id="(((((((((...+...)))))))))" label="(((((((((...+...)))))))))">
@@ -3172,7 +3172,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-13.783234817655696" />
+          <attvalue for="4" value="-13.783" />
         </attvalues>
       </node>
       <node id=".(((((((((..+)))))))))..." label=".(((((((((..+)))))))))...">
@@ -3182,7 +3182,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-14.035741669179151" />
+          <attvalue for="4" value="-14.036" />
         </attvalues>
       </node>
       <node id=".(((((((((..+..)))))))))." label=".(((((((((..+..))))))))).">
@@ -3192,7 +3192,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-14.035741669179151" />
+          <attvalue for="4" value="-14.036" />
         </attvalues>
       </node>
       <node id="..(((((((((.+.))))))))).." label="..(((((((((.+.)))))))))..">
@@ -3202,7 +3202,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-13.783234817655696" />
+          <attvalue for="4" value="-13.783" />
         </attvalues>
       </node>
       <node id="..(((((((((.+...)))))))))" label="..(((((((((.+...)))))))))">
@@ -3212,7 +3212,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-13.783234817655696" />
+          <attvalue for="4" value="-13.783" />
         </attvalues>
       </node>
       <node id="...(((((((((+)))))))))..." label="...(((((((((+)))))))))...">
@@ -3222,7 +3222,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-14.035741669179151" />
+          <attvalue for="4" value="-14.036" />
         </attvalues>
       </node>
       <node id="...(((((((((+..)))))))))." label="...(((((((((+..))))))))).">
@@ -3232,7 +3232,7 @@
           <attvalue for="2" value="backfray" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-14.035741669179151" />
+          <attvalue for="4" value="-14.036" />
         </attvalues>
       </node>
       <node id="((((((((((..+)))))))))).." label="((((((((((..+))))))))))..">
@@ -3242,7 +3242,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-15.596336542627485" />
+          <attvalue for="4" value="-15.596" />
         </attvalues>
       </node>
       <node id="((((((((((..+..))))))))))" label="((((((((((..+..))))))))))">
@@ -3252,7 +3252,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-15.596336542627485" />
+          <attvalue for="4" value="-15.596" />
         </attvalues>
       </node>
       <node id=".((((((((((.+.))))))))))." label=".((((((((((.+.)))))))))).">
@@ -3262,7 +3262,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-15.609528546496579" />
+          <attvalue for="4" value="-15.610" />
         </attvalues>
       </node>
       <node id="..((((((((((+)))))))))).." label="..((((((((((+))))))))))..">
@@ -3272,7 +3272,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-15.596336542627485" />
+          <attvalue for="4" value="-15.596" />
         </attvalues>
       </node>
       <node id="..((((((((((+..))))))))))" label="..((((((((((+..))))))))))">
@@ -3282,7 +3282,7 @@
           <attvalue for="2" value="sliding" />
           <attvalue for="3" value="-2" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-15.596336542627485" />
+          <attvalue for="4" value="-15.596" />
         </attvalues>
       </node>
       <node id="(((((((((((.+.)))))))))))" label="(((((((((((.+.)))))))))))">
@@ -3292,7 +3292,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-17.170123419944915" />
+          <attvalue for="4" value="-17.170" />
         </attvalues>
       </node>
       <node id=".(((((((((((+)))))))))))." label=".(((((((((((+))))))))))).">
@@ -3302,7 +3302,7 @@
           <attvalue for="2" value="zipping" />
           <attvalue for="3" value="0" />
           <attvalue for="5" value="&lt;class 'tuple'&gt;" />
-          <attvalue for="4" value="-17.422630271468368" />
+          <attvalue for="4" value="-17.423" />
         </attvalues>
       </node>
     </nodes>
