@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2023-03-03">
+    <creator>NetworkX 3.0</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <attributes mode="static" class="node">
+      <attribute id="0" title="obj" type="string" />
+      <attribute id="1" title="pairs" type="long" />
+      <attribute id="2" title="state" type="string" />
+      <attribute id="3" title="dpxdist" type="long" />
+      <attribute id="4" title="fre" type="string" />
+    </attributes>
+    <nodes>
+      <node id="............+............" label="............+............">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
+          <attvalue for="1" value="0" />
+          <attvalue for="2" value="singlestranded" />
+          <attvalue for="3" value="12" />
+          <attvalue for="4" value="0.000" />
+        </attvalues>
+      </node>
+      <node id="((((((((((((+))))))))))))" label="((((((((((((+))))))))))))">
+        <attvalues>
+          <attvalue for="0" value="&lt;class 'hdna.complex.Complex'&gt;" />
+          <attvalue for="1" value="12" />
+          <attvalue for="2" value="duplex" />
+          <attvalue for="3" value="0" />
+          <attvalue for="4" value="-18.983" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges />
+  </graph>
+</gexf>

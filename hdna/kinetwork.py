@@ -88,7 +88,7 @@ class Kinetwork(object):
         print(type(self.dxobj.G))
         self.f2exit = []
         self.f1exit = []
-        self.get_graphleven()
+        self.get_graphmid()
         # self.connect_slidings()
 
 
@@ -118,7 +118,7 @@ class Kinetwork(object):
                     #     else: state = 'on_nucleation' if n == self.model.min_nucleation else 'zipping'
                     
                     newbps = self.wcwhere(e1, e2[::-1])
-
+                    print(newbps)
 ### IDEA
 # Make all the one base pair long nucleations
 # All possible subsequent backfrays will be compositions of nucleations at the same 
@@ -189,6 +189,29 @@ class Kinetwork(object):
         # self.sldbranches = set(self.sldbranches)
         # self.sldbranches.remove(0)
     
+    def get_graphnew(self, verbose=False):
+
+        self.sldbranches = []
+        ss = self.simplex.split('+')[0] 
+        branches = []
+
+        for i, e1 in enumerate(self.s1.sequence):
+            for j, e2 in enumerate(self.s2.sequence):
+                    e1 = self.u(*e1)
+                    e2 = self.u(*e2)
+                    newbps = self.wcwhere(e1, e2[::-1])
+                    if any(newbps):
+                        dpxdist = len(ss) - 1 - i - j
+                        l = self.addparwhere(ss, i, newbps, '(')
+                        r = self.addparwhere(ss, j, newbps[::-1], ')')
+                        trap = self.sab(l,r)
+                        print(self.sab(self.s1.sequence, self.s2.sequence))
+                        print(trap, dpxdist)
+                        branches.append({trap: dpxdist})
+        return branches
+
+
+
     def get_graphmid(self, verbose=False):
 
         self.sldbranches = []
