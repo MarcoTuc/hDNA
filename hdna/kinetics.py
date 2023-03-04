@@ -79,22 +79,34 @@ class Kinetics(object):
                 if e1 and e2:
                     return True 
 
-        if not overlap(str1, str2):
+        if not overlap(str1, str2) and str2.totbp > str1.totbp:
             # s1 and s2 are .(+). structures
             (sorig, sdest) = (str1, str2) #if str1.totbp < str2.totbp else (str2, str1)
             barrier = sorig.bulk * DXGEO.MONODIST
             gyleft  = np.sqrt(sorig.pktail_l*(SXGEO.MONODIST**2))
             gyright = np.sqrt(sorig.pktail_r*(SXGEO.MONODIST**2))
-            if str1.register != 0 and str2.register != 0:
-                if (gyleft > barrier*self.model.pkf) and (gyright > barrier*self.model.pkf):
-                    return sorig, sdest, True
-                else:
-                    return None, None, False 
-            else: 
-                raise BrokenPipeError('Cannot pseudoknot to the duplex position')
+        # if str1.register != 0 and str2.register != 0:
+            if (gyleft > barrier*self.model.pkf) and (gyright > barrier*self.model.pkf):
+                return sorig, sdest, True
+            else:
+                return None, None, False 
+        # else: 
+        #     raise BrokenPipeError('Cannot pseudoknot to the duplex position')
         else: 
             # print('overlap at', str1.str, str2.str)
             return None, None, False 
+    
+    def pkconduplex(self, sorig):
+        # s1 and s2 are .(+). structures
+        barrier = sorig.bulk * DXGEO.MONODIST
+        gyleft  = np.sqrt(sorig.pktail_l*(SXGEO.MONODIST**2))
+        gyright = np.sqrt(sorig.pktail_r*(SXGEO.MONODIST**2))
+        if (gyleft > barrier*self.model.pkf) and (gyright > barrier*self.model.pkf):
+            return True
+        else:
+            print('NOPE')
+            return False 
+    
     
     def pkrate(self, strnew, strold):
         taudiff = 1/self.collisionrate

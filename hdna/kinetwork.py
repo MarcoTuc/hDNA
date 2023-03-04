@@ -159,7 +159,7 @@ class Kinetwork(object):
 ##########################################################################
 ##########################################################################
 
-    def connect_slidings(self, verbose=False):
+    def connect_slidings(self, verbose=True):
         for brc in combinations(self.sldbranches,2):
             # TODO add here a routine to insert missing slidings (due to lack of logic in get graph function)
             # connect slidings with eachother 
@@ -186,12 +186,12 @@ class Kinetwork(object):
                             if pkcond1:
                                 # pseudoknotting routine
                                 #TODO add rates
-                                if verbose: print(orig1.str,orig1.pktail_l,orig1.pktail_r,'-->',dest1.str,dest1.pktail_l,dest1.pktail_r,'pseudoknotting',wormdist)
+                                if verbose: print(orig1.str,'-->',dest1.str,'pseudoknotting',wormdist)
                                 self.DG.add_edge(orig1.str, dest1.str, k = 0, state = 'pseudoknotting')
                             if pkcond2:
                                 if orig1 == orig2: pass
                                 else:
-                                    if verbose: print(orig2.str,orig2.pktail_l,orig2.pktail_r,'-->',dest2.str,dest2.pktail_l,dest2.pktail_r,'pseudoknotting back',wormdist)
+                                    if verbose: print(orig2.str,'-->',dest2.str,'pseudoknotting back',wormdist)
                                     self.DG.add_edge(orig2.str, dest2.str, k = 0, state = 'pseudoknotting')                  
                             else: pass
                         else: 
@@ -202,6 +202,18 @@ class Kinetwork(object):
                             self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
                             self.DG.add_edge(most2.str, most1.str, k = 0, state = 'inchworming') 
             else:
+                leaf2 = self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                mostables2 = []
+                for comp in nx.strongly_connected_components(leaf2):
+                    if len(comp) > 1:
+                        subleaf = nx.subgraph(self.DG, list(comp))
+                        mostables2.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                for most2 in mostables2:
+                    self.DG.nodes[most2.str]['state'] = 'sliding'
+                    pkcond = self.kinetics.pkconduplex(most2)
+                    if pkcond:
+                        print(most2.str,'-->',self.duplex,'pk duplex')
+                        self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'pseudoknotting')
                 # inchworming towards duplex
                 wormdist = abs(brc[1])
                 most2 = Structure(list(
@@ -209,7 +221,7 @@ class Kinetwork(object):
                     self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
                     ))[0])
                 #TODO add rates
-                # print(most2.str,'-->',self.duplex,'inchworming duplex', wormdist)
+                # if verbose: print(most2.str,'-->',self.duplex,'inchworming duplex', wormdist)
                 self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'inchworming')  
 
 
