@@ -159,43 +159,48 @@ class Kinetwork(object):
 ##########################################################################
 ##########################################################################
 
-    def connect_slidings(self, verbose=True):
+    def connect_slidings(self, verbose=False):
         for brc in combinations(self.sldbranches,2):
             # TODO add here a routine to insert missing slidings (due to lack of logic in get graph function)
             # connect slidings with eachother 
             if brc[0] != 0:
-                most1 = Structure(list(
-                    self.filternodes('fre', min,
-                    self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
-                    ))[0])
-                most2 = Structure(list(
-                    self.filternodes('fre', min,
-                    self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                    ))[0])
-                self.DG.nodes[most1.str]['state'] = 'sliding'
-                self.DG.nodes[most2.str]['state'] = 'sliding'
-                if np.sign(brc[0])!=np.sign(brc[1]):
-                    pseudodist = abs(brc[1]-brc[0])
-                    orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
-                    orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
-                    if pkcond1:
-                        # pseudoknotting routine
-                        #TODO add rates
-                        if verbose: print(orig1.str,orig1.pktail_l,orig1.pktail_r,'-->',dest1.str,dest1.pktail_l,dest1.pktail_r,'pseudoknotting',wormdist)
-                        self.DG.add_edge(orig1.str, dest1.str, k = 0, state = 'pseudoknotting')
-                    if pkcond2:
-                        if orig1 == orig2: pass
-                        else:
-                            if verbose: print(orig2.str,orig2.pktail_l,orig2.pktail_r,'-->',dest2.str,dest2.pktail_l,dest2.pktail_r,'pseudoknotting back',wormdist)
-                            self.DG.add_edge(orig2.str, dest2.str, k = 0, state = 'pseudoknotting')                  
-                    else: pass
-                else: 
-                    # inchworming between slidings routine
-                    wormdist = abs(brc[0]-brc[1])
-                    #TODO add rates
-                    # if verbose: print(most1.str,'-->',most2.str, 'inchworming', wormdist)
-                    self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
-                    self.DG.add_edge(most2.str, most1.str, k = 0, state = 'inchworming') 
+                leaf1 = self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
+                mostables1 = []
+                for comp in nx.strongly_connected_components(leaf1):
+                    if len(comp) > 1:
+                        subleaf = nx.subgraph(self.DG, list(comp))
+                        mostables1.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                leaf2 = self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                mostables2 = []
+                for comp in nx.strongly_connected_components(leaf2):
+                    if len(comp) > 1:
+                        subleaf = nx.subgraph(self.DG, list(comp))
+                        mostables2.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                for most1 in mostables1:
+                    for most2 in mostables2:
+                        self.DG.nodes[most1.str]['state'] = 'sliding'
+                        self.DG.nodes[most2.str]['state'] = 'sliding'
+                        if np.sign(brc[0])!=np.sign(brc[1]):
+                            orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
+                            orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
+                            if pkcond1:
+                                # pseudoknotting routine
+                                #TODO add rates
+                                if verbose: print(orig1.str,orig1.pktail_l,orig1.pktail_r,'-->',dest1.str,dest1.pktail_l,dest1.pktail_r,'pseudoknotting',wormdist)
+                                self.DG.add_edge(orig1.str, dest1.str, k = 0, state = 'pseudoknotting')
+                            if pkcond2:
+                                if orig1 == orig2: pass
+                                else:
+                                    if verbose: print(orig2.str,orig2.pktail_l,orig2.pktail_r,'-->',dest2.str,dest2.pktail_l,dest2.pktail_r,'pseudoknotting back',wormdist)
+                                    self.DG.add_edge(orig2.str, dest2.str, k = 0, state = 'pseudoknotting')                  
+                            else: pass
+                        else: 
+                            # inchworming between slidings routine
+                            wormdist = abs(brc[0]-brc[1])
+                            #TODO add rates
+                            # if verbose: print(most1.str,'-->',most2.str, 'inchworming', wormdist)
+                            self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
+                            self.DG.add_edge(most2.str, most1.str, k = 0, state = 'inchworming') 
             else:
                 # inchworming towards duplex
                 wormdist = abs(brc[1])
@@ -343,3 +348,16 @@ class FatalError(Exception):
         #             #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
         #             self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
         #             self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+
+
+
+
+
+                        # most1 = Structure(list(
+                #     self.filternodes('fre', min,
+                #     self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
+                #     ))[0])
+                # most2 = Structure(list(
+                #     self.filternodes('fre', min,
+                #     self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                #     ))[0])

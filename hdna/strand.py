@@ -1,3 +1,5 @@
+import numpy as np 
+
 from random import choice 
 from .model import Model
 
@@ -55,23 +57,35 @@ class Strand(object):
 
 
 class Structure(object):
-    def __init__(self, structure):
-        self.str = structure
-        self.left, self.right = structure.split('+')
+    def __init__(self, structure, fromtable=False):
+        if fromtable:
+            self.table = structure
+            self.left = ''.join(['(' if e else '.' for e in structure[:len(structure)//2]])
+            self.right = ''.join([')' if e else '.' for e in structure[1+len(structure)//2:]])
+            self.str = '+'.join([self.left, self.right])
+        else:
+            self.str = structure
+            self.left, self.right = structure.split('+')
+            self.table  = [True if i not in ['.','+'] else False for i in self.str]
+        
         self.length = len(self.left)
-        self.table  = [True if i not in ['.','+'] else False for i in self.str]
+
         if self.length != len(self.right):
             raise BrokenPipeError('Left and Right strands should have the same length')
-        self.totbp = sum([True if i != '.' else False for i in self.left])
+        self.totbp = sum(self.table)/2
         if self.totbp != sum([True if i != '.' else False for i in self.right]):
             raise BrokenPipeError('Left and Right base pairs should always match')
         
-        self.lì = ''.join(['ì' if i == '(' else '.' for i in self.left])
-        self.rì = ''.join(['ì' if i == ')' else '.' for i in self.right])
-        self.ì = '+'.join([self.lì, self.rì])
-        self.register = 0 if self.duplex else self.get_register()        
-        self.get_geometry()
-        self.get_pktails()
+        if any(self.table):
+            self.lì = ''.join(['ì' if i == '(' else '.' for i in self.left])
+            self.rì = ''.join(['ì' if i == ')' else '.' for i in self.right])
+            self.ì = '+'.join([self.lì, self.rì])
+            
+            self.register = 0 if self.duplex else self.get_register()        
+            self.get_geometry()
+            self.get_pktails()
+        else:
+            self.ss = True
 
     def get_register(self):
         def shift(s, d):
@@ -167,8 +181,10 @@ class Structure(object):
         else:
             self.pktail_l = 0
             self.pktail_r = 0
-              
-        
+    
+    @staticmethod
+    def empty(length):
+        return Structure('.'*length+'+'+'.'*length)  
 
     @property
     def duplex(self):
@@ -176,3 +192,5 @@ class Structure(object):
         R = [True if i != '.' else False for i in self.right]
         if all(L) and all(R):
             return True 
+        
+    
