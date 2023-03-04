@@ -139,10 +139,10 @@ class Kinetwork(object):
                             self.DG.add_edge(trap, self.simplex, k = bwd, state = state)
                         elif n > self.model.min_nucleation:
                             self.sldbranches.append(dpxdist)
-                            f1 = self.filternodes('dpxdist', lambda x: x == obj.dpxdist, self.DG)
-                            f2 = self.filternodes('pairs', lambda x: x == n-1, f1)
-                            f3 = self.filternodes('tdx', lambda x: (i-1 <= x[0] <= i+1) and (j-1 <= x[1] <= j+1), f2)
-                            for node in f3.nodes():
+                            filter = self.filternodes('tdx', lambda x: (i-1 <= x[0] <= i+1) and (j-1 <= x[1] <= j+1), 
+                                     self.filternodes('pairs', lambda x: x == n-1, 
+                                     self.filternodes('dpxdist', lambda x: x == obj.dpxdist, self.DG)))
+                            for node in filter.nodes():
                                 if verbose: print(node, trap)
                                 dgnode = self.DG.nodes[node]['fre']
                                 fwd, bwd = self.zmethod('zipping', dgnode, dgtrap)
@@ -155,13 +155,153 @@ class Kinetwork(object):
                                 self.DG.add_edge(self.duplex, trap, k = bwd, state = 'zipping') 
         #get unique ids for all branches except branch 0 corresponding to on register nucleation
         self.sldbranches = set(self.sldbranches)
-        # self.sldbranches.remove(0)
 
 ##########################################################################
 ##########################################################################
 
     def connect_slidings(self, verbose=True):
-        # connect slidings with duplex 
+        for brc in combinations(self.sldbranches,2):
+            # TODO add here a routine to insert missing slidings (due to lack of logic in get graph function)
+            # connect slidings with eachother 
+            if brc[0] != 0:
+                most1 = Structure(list(
+                    self.filternodes('fre', min,
+                    self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
+                    ))[0])
+                most2 = Structure(list(
+                    self.filternodes('fre', min,
+                    self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                    ))[0])
+                self.DG.nodes[most1.str]['state'] = 'sliding'
+                self.DG.nodes[most2.str]['state'] = 'sliding'
+                if np.sign(brc[0])!=np.sign(brc[1]):
+                    pseudodist = abs(brc[1]-brc[0])
+                    orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
+                    orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
+                    if pkcond1:
+                        # pseudoknotting routine
+                        #TODO add rates
+                        if verbose: print(orig1.str,orig1.pktail_l,orig1.pktail_r,'-->',dest1.str,dest1.pktail_l,dest1.pktail_r,'pseudoknotting',wormdist)
+                        self.DG.add_edge(orig1.str, dest1.str, k = 0, state = 'pseudoknotting')
+                    if pkcond2:
+                        if orig1 == orig2: pass
+                        else:
+                            if verbose: print(orig2.str,orig2.pktail_l,orig2.pktail_r,'-->',dest2.str,dest2.pktail_l,dest2.pktail_r,'pseudoknotting back',wormdist)
+                            self.DG.add_edge(orig2.str, dest2.str, k = 0, state = 'pseudoknotting')                  
+                    else: pass
+                else: 
+                    # inchworming between slidings routine
+                    wormdist = abs(brc[0]-brc[1])
+                    #TODO add rates
+                    # if verbose: print(most1.str,'-->',most2.str, 'inchworming', wormdist)
+                    self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
+                    self.DG.add_edge(most2.str, most1.str, k = 0, state = 'inchworming') 
+            else:
+                # inchworming towards duplex
+                wormdist = abs(brc[1])
+                most2 = Structure(list(
+                    self.filternodes('fre', min,
+                    self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                    ))[0])
+                #TODO add rates
+                # print(most2.str,'-->',self.duplex,'inchworming duplex', wormdist)
+                self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'inchworming')  
+
+
+##########################################################################
+
+    def filternodes(self, property, function, graph):
+        def filternode(node):
+            try: 
+                try:
+                    return function(graph.nodes[node][property])
+                except KeyError: pass
+            except TypeError: 
+                try: 
+                    value = function([e[1][property] for e in list(graph.nodes.data())])
+                    return graph.nodes[node][property] == value
+                except KeyError: pass
+        Rgraph = nx.subgraph_view(graph, filter_node=filternode)
+        return Rgraph
+    
+    def filteredges(self, property, function, graph):
+        def filteredge(node1, node2):
+            try: 
+                try:
+                    return function(graph[node1][node2][property])
+                except KeyError: pass
+            except TypeError: 
+                try: 
+                    value = function([e[1][property] for e in list(graph.nodes.data())])
+                    return graph[node1][node2][property] == value
+                except KeyError: pass
+        Rgraph = nx.subgraph_view(graph, filter_edge=filteredge)
+        return Rgraph
+    
+##########################################################################
+
+    def save_graph(self, PATH):
+        import os 
+        #convert node object to string of object type
+        DGsave = self.DG.copy()
+        for n in DGsave.nodes.data():
+            n[1]['obj'] = str(type(n[1]['obj']))
+            n[1]['fre'] = f"{n[1]['fre']:.3f}"
+            try: n[1]['tdx'] = str(type(n[1]['tdx']))
+            except KeyError: pass
+        try: os.makedirs(PATH)
+        except FileExistsError: pass 
+        nx.write_gexf(DGsave,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
+
+###################
+############## PROPERTIES
+###################
+    @property
+    def simplex(self):
+        return '+'.join(['.'*self.s1.length, '.'*self.s2.length])
+    @property
+    def duplex(self):
+        return '+'.join(['('*self.s1.length, ')'*self.s2.length])
+    @property
+    def nodes(self):
+        return self.DG.nodes()
+    @property
+    def displaysab(self):
+        return '+'.join([self.s1.sequence,self.s2.sequence])
+
+###################
+############## UTILITIES
+###################
+########################################################
+    def addpar(self, string, i, n, char):
+        return string[:i] + char*n + string[i+n:]
+########################################################
+    def wc(self,a):
+        wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+        return ''.join([wc[i] for i in a])
+########################################################
+    def ss(self,a):
+        return '.'*len(a)
+########################################################
+    def sab(self,*args):
+        return '+'.join(args)
+########################################################
+    def u(self,*args):
+        return ''.join(args)
+########################################################
+    def nwise(self,iterable,n):
+        iterators = tee(iterable, n)
+        for i, iter in enumerate(iterators):
+            for _ in range(i):
+                next(iter, None)
+        return zip(*iterators)
+
+class FatalError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+       # connect slidings with duplex 
         # duplex = Structure(self.duplex)   
         # for branch in self.sldbranches:
         #     mostable = list(
@@ -203,134 +343,3 @@ class Kinetwork(object):
         #             #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
         #             self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
         #             self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
-        # connect slidings with eachother 
-        for brc in combinations(self.sldbranches,2):
-            #add here a routine to insert missing slidings (due to lack of logic in get graph function)
-            
-            if brc[0] != 0:
-                most1 = Structure(list(
-                    self.filternodes('fre', min,
-                    self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
-                    ))[0])
-                most2 = Structure(list(
-                    self.filternodes('fre', min,
-                    self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                    ))[0])
-                self.DG.nodes[most1.str]['state'] = 'sliding'
-                self.DG.nodes[most2.str]['state'] = 'sliding'
-                if np.sign(brc[0])!=np.sign(brc[1]):
-                    pseudodist = abs(brc[1]-brc[0])
-                    orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
-                    orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
-                    if pkcond1:
-                        # pseudoknotting routine
-                        #TODO add rates
-                        print(orig1.str,'-->',dest1.str,'pseudoknotting',wormdist)
-                        self.DG.add_edge(orig1.str, dest1.str, k = 0, state = 'pseudoknotting')
-                    if pkcond2:
-                        if orig1 == orig2: pass
-                        else:
-                            print(orig2.str,'-->',dest2.str,'pseudoknotting back',wormdist)
-                            self.DG.add_edge(orig2.str, dest2.str, k = 0, state = 'pseudoknotting')                  
-                    else: pass
-                else: 
-                    # inchworming between slidings routine
-                    wormdist = abs(brc[0]-brc[1])
-                    #TODO add rates
-                    print(most1.str,'-->',most2.str, 'inchworming', wormdist)
-                    self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
-                    self.DG.add_edge(most2.str, most1.str, k = 0, state = 'inchworming') 
-            else:
-                # inchworming towards duplex
-                wormdist = abs(brc[1])
-                most2 = Structure(list(
-                    self.filternodes('fre', min,
-                    self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                    ))[0])
-                #TODO add rates
-                print(most2.str,'-->',self.duplex,'inchworming duplex', wormdist)
-                self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'inchworming')  
-
-
-##########################################################################
-
-    def filternodes(self, property, function, graph):
-        def filternode(node):
-            try: 
-                try:
-                    return function(graph.nodes[node][property])
-                except KeyError: pass
-            except TypeError: 
-                try: 
-                    value = function([e[1][property] for e in list(graph.nodes.data())])
-                    return graph.nodes[node][property] == value
-                except KeyError: pass
-        Rgraph = nx.subgraph_view(graph, filter_node=filternode)
-        return Rgraph
-    
-##########################################################################
-
-    def save_graph(self, PATH):
-        import os 
-        #convert node object to string of object type
-        DGsave = self.DG.copy()
-        for n in DGsave.nodes.data():
-            n[1]['obj'] = str(type(n[1]['obj']))
-            n[1]['fre'] = f"{n[1]['fre']:.3f}"
-            try: n[1]['tdx'] = str(type(n[1]['tdx']))
-            except KeyError: pass
-        try: os.makedirs(PATH)
-        except FileExistsError: pass 
-        nx.write_gexf(DGsave,f'{PATH}/{self.s1.sequence}_graph_K.gexf')
-
-###################
-############## PROPERTIES
-###################
-    @property
-    def simplex(self):
-        return '+'.join(['.'*self.s1.length, '.'*self.s2.length])
-    
-    @property
-    def duplex(self):
-        return '+'.join(['('*self.s1.length, ')'*self.s2.length])
-
-    @property
-    def nodes(self):
-        return self.Graph.nodes()
-    
-    @property
-    def displaysab(self):
-        return '+'.join([self.s1.sequence,self.s2.sequence])
-
-###################
-############## UTILITIES
-###################
-
-########################################################
-    def addpar(self, string, i, n, char):
-        return string[:i] + char*n + string[i+n:]
-########################################################
-    def wc(self,a):
-        wc = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
-        return ''.join([wc[i] for i in a])
-########################################################
-    def ss(self,a):
-        return '.'*len(a)
-########################################################
-    def sab(self,*args):
-        return '+'.join(args)
-########################################################
-    def u(self,*args):
-        return ''.join(args)
-########################################################
-    def nwise(self,iterable,n):
-        iterators = tee(iterable, n)
-        for i, iter in enumerate(iterators):
-            for _ in range(i):
-                next(iter, None)
-        return zip(*iterators)
-
-class FatalError(Exception):
-    def __init__(self, message):
-        super().__init__(message)
-

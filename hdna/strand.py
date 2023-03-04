@@ -59,6 +59,7 @@ class Structure(object):
         self.str = structure
         self.left, self.right = structure.split('+')
         self.length = len(self.left)
+        self.table  = [True if i not in ['.','+'] else False for i in self.str]
         if self.length != len(self.right):
             raise BrokenPipeError('Left and Right strands should have the same length')
         self.totbp = sum([True if i != '.' else False for i in self.left])
@@ -68,9 +69,10 @@ class Structure(object):
         self.lì = ''.join(['ì' if i == '(' else '.' for i in self.left])
         self.rì = ''.join(['ì' if i == ')' else '.' for i in self.right])
         self.ì = '+'.join([self.lì, self.rì])
-        self.register = 0 if self.duplex else self.get_register()
-        self.tail = self.length - abs(self.register)
-    
+        self.register = 0 if self.duplex else self.get_register()        
+        self.get_geometry()
+        self.get_pktails()
+
     def get_register(self):
         def shift(s, d):
             if d == +1:
@@ -109,6 +111,65 @@ class Structure(object):
         dist = dl if dl != None else dr 
         return dist
     
+    def get_geometry(self):
+        # returns a dictionary of triples in which I have
+        # {'left': (tail ll, block left, tail lr),
+        # 'right': (tail rl, block right, tail rr)}
+        tail_ll = 0
+        tail_lr = 0
+        i = 0
+        ell = self.left[i]
+        while ell == '.':
+            i += 1
+            ell = self.left[i]
+            tail_ll += 1
+        i = 1
+        elr = self.left[-i]
+        while elr == '.':
+            i += 1
+            elr = self.left[-i]
+            tail_lr += 1
+        bulkl = self.length - tail_ll - tail_lr
+
+        tail_rl = 0
+        tail_rr = 0
+        i = 0
+        erl = self.right[i]
+        while erl == '.':
+            i += 1
+            erl = self.right[i]
+            tail_rl += 1
+        i = 1
+        err = self.right[-i]
+        while err == '.':
+            i += 1
+            err = self.right[-i]
+            tail_rr += 1
+        bulkr = self.length - tail_rl - tail_rr
+
+        if bulkl != bulkr:    
+            self.geometry = {'left': (tail_ll, bulkl, tail_lr),
+                            'right':(tail_rl, bulkr, tail_rr)}
+        else: 
+            self.tails_l = {'l':tail_ll, 'r':tail_lr}
+            self.tails_r = {'l':tail_rl, 'r':tail_rr}
+            self.bulk    = bulkl
+
+    def get_pktails(self):
+        if self.register > 0:
+            tls = 'r'
+            self.pktail_l = self.tails_l[tls]
+            self.pktail_r = self.tails_r[tls]
+        elif self.register < 0:
+            tls = 'l'
+            self.pktail_l = self.tails_l[tls]
+            self.pktail_r = self.tails_r[tls]
+        else:
+            self.pktail_l = 0
+            self.pktail_r = 0
+              
+        
+
     @property
     def duplex(self):
         L = [True if i != '.' else False for i in self.left]

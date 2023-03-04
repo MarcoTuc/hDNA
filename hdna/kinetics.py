@@ -71,19 +71,35 @@ class Kinetics(object):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (CONST.R * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (CONST.R * (self.T))))) #HERTELGAMMASLIDING
 
+
     def pkcond(self, str1, str2):
-        # s1 and s2 are .(+). structures
-        (sorig, sdest) = (str1, str2) #if str1.totbp < str2.totbp else (str2, str1)
-        barrier = sorig.totbp * DXGEO.MONODIST
-        gyrorig = np.sqrt(sorig.tail*(SXGEO.MONODIST**2))
-        gyrdest = np.sqrt(sdest.tail*(SXGEO.MONODIST**2))
-        if str1.register != 0 and str2.register != 0:
-            if (gyrorig > barrier*self.model.pkf) and (gyrdest > barrier*self.model.pkf):
-                return sorig, sdest, True
-            else:
-                return None, None, False 
+
+        def overlap(s1, s2):
+            for e1, e2 in zip(s1.table, s2.table):
+                if e1 and e2:
+                    return True 
+
+        if not overlap(str1, str2):
+            # s1 and s2 are .(+). structures
+            (sorig, sdest) = (str1, str2) #if str1.totbp < str2.totbp else (str2, str1)
+            barrier = sorig.bulk * DXGEO.MONODIST
+            gyleft  = np.sqrt(sorig.pktail_l*(SXGEO.MONODIST**2))
+            gyright = np.sqrt(sorig.pktail_r*(SXGEO.MONODIST**2))
+            if str1.register != 0 and str2.register != 0:
+                if (gyleft > barrier*self.model.pkf) and (gyright > barrier*self.model.pkf):
+                    return sorig, sdest, True
+                else:
+                    return None, None, False 
+            else: 
+                raise BrokenPipeError('Cannot pseudoknot to the duplex position')
         else: 
-            raise BrokenPipeError('Cannot pseudoknot to the duplex position')
+            # print('overlap at', str1.str, str2.str)
+            return None, None, False 
+    
+    def pkrate(self, strnew, strold):
+        taudiff = 1/self.collisionrate
+        tauclosenew = self.zippingrate/strnew.totbp 
+        tauopenold  = self.zippingrate
 
             
     """ ------------- TWO DIMENSIONAL NUCLEATION -----------------"""
