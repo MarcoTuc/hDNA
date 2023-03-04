@@ -73,11 +73,16 @@ class Kinetics(object):
 
     def pkcond(self, str1, str2):
         # s1 and s2 are .(+). structures
-        sorig, sdest = str1, str2 if str1.totbp < str2.totbp else str2, str1
+        (sorig, sdest) = (str1, str2) if str1.totbp < str2.totbp else (str2, str1)
         barrier = sorig.totbp * DXGEO.MONODIST
-        gyrorig = sorig.tail 
-        
-
+        gyrorig = np.sqrt(sorig.tail*(SXGEO.MONODIST**2))
+        gyrdest = np.sqrt(sdest.tail*(SXGEO.MONODIST**2))
+        print(barrier)
+        print(gyrorig)
+        print(gyrdest)
+        if (gyrorig > barrier*self.model.pkf) and (gyrdest > barrier*self.model.pkf):
+            return True
+            
     """ ------------- TWO DIMENSIONAL NUCLEATION -----------------"""
 
     def nuc2D(self, dgnuc, position):

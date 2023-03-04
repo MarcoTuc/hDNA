@@ -155,32 +155,33 @@ class Kinetwork(object):
                                 self.DG.add_edge(self.duplex, trap, k = bwd, state = 'zipping') 
         #get unique ids for all branches except branch 0 corresponding to on register nucleation
         self.sldbranches = set(self.sldbranches)
-        self.sldbranches.remove(0)
+        # self.sldbranches.remove(0)
 
 ##########################################################################
 ##########################################################################
 
     def connect_slidings(self, verbose=True):
         # connect slidings with duplex 
-        for branch in self.sldbranches:
-            mostable = list(
-                self.filternodes('fre', min,
-                self.filternodes('dpxdist', lambda x: x == branch, self.DG)
-                ))[0]
-            self.DG.nodes[mostable]['state'] = 'sliding'
-            dgsliding = self.DG.nodes[mostable]['fre']
-            # dgduplex = self.DG.nodes[self.duplex]['fre']
-            fwd, _ = self.smethod('sliding', 0, dgsliding)                    
-            if verbose: 
-                dgstring = '{:.3f}'.format(dgsliding)
-                fwdformat = '{:.3e}'.format(fwd)
-                bwdformat = '{:.3e}'.format(0)
-                # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                print(mostable, fwdformat, bwdformat, dgstring)
-            #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
-            #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-            self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
-            self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+        # duplex = Structure(self.duplex)   
+        # for branch in self.sldbranches:
+        #     mostable = list(
+        #         self.filternodes('fre', min,
+        #         self.filternodes('dpxdist', lambda x: x == branch, self.DG)
+        #         ))[0]
+        #     self.DG.nodes[mostable]['state'] = 'sliding'
+        #     dgsliding = self.DG.nodes[mostable]['fre']
+        #     # dgduplex = self.DG.nodes[self.duplex]['fre']
+        #     fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+        #     if verbose: 
+        #         dgstring = '{:.3f}'.format(dgsliding)
+        #         fwdformat = '{:.3e}'.format(fwd)
+        #         bwdformat = '{:.3e}'.format(0)
+        #         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
+        #         print(mostable, fwdformat, bwdformat, dgstring)
+        #     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
+        #     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
+        #     self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+        #     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
         # for branch in self.sldbranches:
         #     leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
         #     components = nx.connected_components(leaf.to_undirected())
@@ -204,7 +205,7 @@ class Kinetwork(object):
         #             self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
         # connect slidings with eachother 
         for brc in combinations(self.sldbranches,2):
-            print(brc[0], brc[1])
+            # print(brc[0], brc[1])
             #add here a routine to insert missing slidings (due to lack of logic in get graph function)
             most1 = Structure(list(
                 self.filternodes('fre', min,
@@ -214,20 +215,29 @@ class Kinetwork(object):
                 self.filternodes('fre', min,
                 self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
                 ))[0])
+            self.DG.nodes[most1.str]['state'] = 'sliding'
+            self.DG.nodes[most2.str]['state'] = 'sliding'
+            # print(most1.register, most2.register)
             if np.sign(brc[0])!=np.sign(brc[1]):
                 if self.kinetics.pkcond(most1, most2):
                     # pseudoknotting routine
                     #TODO add rates
                     print(most1.str, most2.str, 'pseudoknotting')
-                    self.DG.add_edge(most1, most2, k = 0, state = 'pseudoknotting')
-                    self.DG.add_edge(most2, most1, k = 0, state = 'pseudoknotting')
+                    print()
+                    self.DG.add_edge(most1.str, most2.str, k = 0, state = 'pseudoknotting')
+                    self.DG.add_edge(most2.str, most1.str, k = 0, state = 'pseudoknotting')
+                else: 
+                    print('avoided pseudoknot at')
+                    print(most1.str, most2.str)
+                    print()
             else:
+                #TODO missing inchwormings toward duplex 
                 # inchworming routine
                 wormdist = abs(brc[0]-brc[1])
                 #TODO add rates
-                print(most1, most2, 'inchworming', wormdist)
-                self.DG.add_edge(most1, most2, k = 0, state = 'inchworming')
-                self.DG.add_edge(most2, most1, k = 0, state = 'inchworming')    
+                # print(most1.str, most2.str, 'inchworming', wormdist)
+                self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
+                self.DG.add_edge(most2.str, most1.str, k = 0, state = 'inchworming')    
 
 ##########################################################################
 

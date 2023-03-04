@@ -56,6 +56,8 @@ class Model(object):
         self.gamma = 0
         self.kappa = 1
 
+        self.pkf = 0.9
+
         self.sliding_filter = sliding_filter
 
         self.nupack = nu.Model(material=self.material, 

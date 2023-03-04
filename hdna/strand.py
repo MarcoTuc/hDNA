@@ -59,8 +59,6 @@ class Structure(object):
         self.str = structure
         self.left, self.right = structure.split('+')
         self.length = len(self.left)
-        self.wal = [False if i != '.' else True for i in self.left]
-        self.war = [False if i != '.' else True for i in self.right]
         if self.length != len(self.right):
             raise BrokenPipeError('Left and Right strands should have the same length')
         self.totbp = sum([True if i != '.' else False for i in self.left])
@@ -70,11 +68,10 @@ class Structure(object):
         self.lì = ''.join(['ì' if i == '(' else '.' for i in self.left])
         self.rì = ''.join(['ì' if i == ')' else '.' for i in self.right])
         self.ì = '+'.join([self.lì, self.rì])
-
+        self.register = 0 if self.duplex else self.get_register()
         self.tail = self.length - abs(self.register)
-
-    @property
-    def register(self):
+    
+    def get_register(self):
         def shift(s, d):
             if d == +1:
                 if s[-1] == 'ì':
@@ -111,3 +108,10 @@ class Structure(object):
             else: bb2 = nbb2
         dist = dl if dl != None else dr 
         return dist
+    
+    @property
+    def duplex(self):
+        L = [True if i != '.' else False for i in self.left]
+        R = [True if i != '.' else False for i in self.right]
+        if all(L) and all(R):
+            return True 
