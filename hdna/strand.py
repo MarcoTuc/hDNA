@@ -165,9 +165,20 @@ class Structure(object):
             self.geometry = {'left': (tail_ll, bulkl, tail_lr),
                             'right':(tail_rl, bulkr, tail_rr)}
         else: 
+            
+            self.tail_ll = tail_ll
+            self.tail_lr = tail_lr
+            self.tail_rl = tail_rl
+            self.tail_rr = tail_rr
+
             self.tails_l = {'l':tail_ll, 'r':tail_lr}
             self.tails_r = {'l':tail_rl, 'r':tail_rr}
             self.bulk    = bulkl
+            self.geometry = {'register': self.register,
+                             'left': self.tails_l,
+                             'bulk': self.bulk,
+                             'right': self.tails_r}
+            
 
     def get_pktails(self):
         if self.register > 0:

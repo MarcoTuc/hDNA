@@ -78,8 +78,10 @@ class Kinetics(object):
             for e1, e2 in zip(s1.table, s2.table):
                 if e1 and e2:
                     return True 
+            else:
+                return False 
 
-        if not overlap(str1, str2) and str2.totbp > str1.totbp:
+        if not overlap(str1, str2) and str2.totbp >= str1.totbp:
             # s1 and s2 are .(+). structures
             (sorig, sdest) = (str1, str2) #if str1.totbp < str2.totbp else (str2, str1)
             barrier = sorig.bulk * DXGEO.MONODIST
@@ -93,7 +95,7 @@ class Kinetics(object):
         # else: 
         #     raise BrokenPipeError('Cannot pseudoknot to the duplex position')
         else: 
-            # print('overlap at', str1.str, str2.str)
+            # print(str1.table, str2.table)
             return None, None, False 
     
     def pkconduplex(self, sorig):
@@ -109,10 +111,18 @@ class Kinetics(object):
     
     
     def pkrate(self, strnew, strold):
-        taudiff = 1/self.collisionrate
-        tauclosenew = self.zippingrate/strnew.totbp 
-        tauopenold  = self.zippingrate
-
+        #rate for pseudoknotting transitions
+        taudiff = 1/self.nucleationrate #TO scale down with tails somehow 
+        tauclosenew = self.zippingrate/strnew.totbp # kinda 
+        tauopenold  = self.zippingrate*np.exp((-1.7)/(CONST.R*self.model.kelvin))/strold.totbp #approximated rate for base pairs to open or close 
+        tau = tauopenold + tauclosenew + taudiff
+        return 1/tau
+    
+    def iwrate(self, strold, strnew):
+        kbulge = self.zippingrate*np.exp((-1.7)/(CONST.R*self.model.kelvin))/2
+        gamma  = abs(strold.register - strnew.register)
+        kinchworm = kbulge/(gamma * strold.bulk)
+        return kinchworm 
             
     """ ------------- TWO DIMENSIONAL NUCLEATION -----------------"""
 
@@ -418,3 +428,32 @@ class Kinetics(object):
     #                         'basepairdistance': 0.34e-7, 
     #                         'persistence_length': 100*0.34e-7,
     #                         'radius': 2e-7} #CHECK THE RADIUS 
+
+
+    # if (strold.tail_ll+strold.bulk) <= strnew.tail_ll:
+    #         print('unpaired region in right upper tail could interact with')
+    #         print(strold.tail_ll,strold.bulk, strnew.tail_ll)
+    #         if (strold.tail_rr+strold.bulk) <= strnew.tail_rr:
+    #             print('unpaired right lower tail')
+    #         else:
+    #             print('paired lower region')
+    #     else:
+    #         print('paired region in right upper tail could interact with')
+    #         print(strold.tail_ll,strold.bulk, strnew.tail_ll)
+    #         if (strold.tail_rr+strold.bulk) <= strnew.tail_rr:
+    #             print('unpaired right lower tail ')
+    #         else:
+    #             print('paired lower region ')
+
+    #     if (strold.tail_lr+strold.bulk) <= strnew.tail_lr:
+    #         print('unpaired region in left upper tail could interact with')
+    #         if (strold.tail_rl+strold.bulk) <= strnew.tail_rl:
+    #             print('unpaired region in left lower tail')
+    #         else:
+    #             print('paired lower region')
+    #     else:
+    #         print('paired region in left upper tail could interact with')
+    #         if (strold.tail_rl+strold.bulk) <= strnew.tail_rl:
+    #             print('unpaired region in left lower tail')
+    #         else:
+    #             print('paired lower region')
