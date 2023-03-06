@@ -235,9 +235,9 @@ class Kinetwork(object):
                 for most2 in mostables2:
                     self.DG.nodes[most2.str]['state'] = 'sliding'
                     # pkcond = self.kinetics.pkconduplex(most2)
-                    pkcond = self.kinetics.pkcondsphereduplex(most2)
+                    prob, pkcond = self.kinetics.pkcondsphereduplex(most2)
                     if pkcond: # pseudoknotting towards duplex 
-                        self.psedoknotting_transition(most2, Structure(self.duplex))
+                        self.psedoknotting_transition(most2, Structure(self.duplex), prob)
                         # pkrate = self.kinetics.pkrate(most2, Structure(self.duplex))
                         if verbose: 
                             print(most2.str,'-->',self.duplex,'pk duplex')
@@ -298,11 +298,10 @@ class Kinetwork(object):
             print()
             self.DG.add_edge(bulging, target.str, k = kinchworm, state='inchworming')
 
-    def psedoknotting_transition(self, origin, target):
-        probability = (origin.length-origin.bulk)/target.length #higher for duplex 
-        combinatorics = 1/(2*(origin.tail_ll + origin.tail_lr))
-        print(probability)
-        print(combinatorics)
+    def psedoknotting_transition(self, origin, target, probability): 
+        # combinatorics = 1/(2*(origin.tail_ll + origin.tail_lr))
+        print('pseudoknot probability:',probability)
+        # print(combinatorics)
         pseudoknot = f'PKCOLL_{origin.str}'
         self.DG.add_node(pseudoknot, 
                          obj = '',
@@ -310,7 +309,7 @@ class Kinetwork(object):
                          state = 'pseudoknot',
                          dpxdist = f'{origin.register} - {target.register}',
                          fre = '')
-        pkcollrate = self.kinetics.nucleationrate * probability * combinatorics
+        pkcollrate = self.kinetics.nucleationrate * probability
         self.DG.add_edge(origin.str, pseudoknot, k=pkcollrate, state='pseudoknotting')
         freorigin = self.DG.nodes[origin.str]['fre']
         fretarget = self.DG.nodes[target.str]['fre']
@@ -319,11 +318,11 @@ class Kinetwork(object):
         Ztarget = self.kinetics.genboltz(fretarget-freorigin)/localZ
         pktransratefwd = self.kinetics.pkrate(origin, target) * abs(Ztarget)
         pktransratebwd = self.kinetics.pkrate(target, origin) * abs(Zorigin)
-        pktransratefwd = pktransratefwd*self.kinetics.genboltz(freorigin)
+        # pktransratefwd = pktransratefwd*self.kinetics.genboltz(freorigin)
         print('pseudoknot')
         print(origin.str, target.str)
         print('collision', f'{pkcollrate:.3e}')
-        print(f'{pktransratefwd:.3e}', f'{pktransratebwd:.3e}')
+        print('fwd:',f'{pktransratefwd:.3e}','bwd:', f'{pktransratebwd:.3e}')
         print('fres',freorigin, fretarget)
         print('zeta',Ztarget, Zorigin)
         print()

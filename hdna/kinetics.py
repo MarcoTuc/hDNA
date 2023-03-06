@@ -77,39 +77,51 @@ class Kinetics(object):
     def gammasliding(self, dgs):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (CONST.R * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (CONST.R * (self.T))))) #HERTELGAMMASLIDING
-
+        
     def overlappingspheres(self, d, r1, r2):
-        term1 = (r1+r2-d)**2
-        term2 = (d**2 + 2*d*r1 - 3*(r1**2) + 2*d*r2 + 6*r1*r2 - 3*(r2**2))
-        return np.pi*term1*term2/(12*d)
+        separation = r1+r2-d
+        if separation <= 0:
+            return 0
+        else:
+            term1 = separation**2
+            term2 = (d**2 + 2*d*r1 - 3*(r1**2) + 2*d*r2 + 6*r1*r2 - 3*(r2**2))
+            return np.pi*term1*term2/(12*d)
 
     def pkcondsphereduplex(self, str1):
         distance = str1.bulk * DXGEO.MONODIST
-        print('distance', distance)
+        # print('distance', distance)
         if str1.tail_ll != 0 and str1.tail_rl != 0:
             r1 = np.sqrt(str1.tail_ll*(SXGEO.MONODIST**2))
             r2 = np.sqrt(str1.tail_rl*(SXGEO.MONODIST**2))
-            print('r1', r1)
-            print('r2', r2)
+            # print('r1', r1)
+            # print('r2', r2)
             sphere1  = (4/3)*np.pi*(r1**3)
             sphere2  = (4/3)*np.pi*(r2**3)
-            overlap1 = self.overlappingspheres(distance, r1, r2)
+            overlap1 = self.overlappingspheres(distance, r1, r2)/(sphere1+sphere2)
             print('overlap1', overlap1)
-            if overlap1 > 0:
-                return True
+        else: 
+            overlap1 = 0
 
         if str1.tail_rr != 0 and str1.tail_lr != 0:
             r3 = np.sqrt(str1.tail_rr*(SXGEO.MONODIST**2))
             r4 = np.sqrt(str1.tail_lr*(SXGEO.MONODIST**2)) 
-            print('r3', r3)
-            print('r4', r4)
+            # print('r3', r3)
+            # print('r4', r4)
             sphere3  = (4/3)*np.pi*(r3**3)
             sphere4  = (4/3)*np.pi*(r4**3)
-            overlap2 = self.overlappingspheres(distance, r3, r4)
+            overlap2 = self.overlappingspheres(distance, r3, r4)/(sphere3+sphere4)
             print('overlap2',overlap2)
+        else:
+            overlap2 = 0
         
-            if overlap2 > 0:
-                return True
+        if overlap1 > overlap2:
+            return overlap1, True
+        elif overlap1 < overlap2:
+            return overlap2, True
+        else: 
+            return 0, False 
+        
+
 
 
     def pkcond(self, str1, str2):

@@ -6,13 +6,10 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'inchpseudo7'
+EXPNAME = 'inchpseudo8'
 
 notes = """
-Nope, the wrong trend is still there. Could be because inchworming is not favoured over pseudoknotting.
-Since pseudoknotting is possible for very unstable two bp slidings, and it is also faster than inchworm, 
-then we're having smaller rates for very connected strands and higher rates for not so well connected ones. 
-"""
+let's see"""
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
