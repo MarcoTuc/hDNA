@@ -170,7 +170,9 @@ class Kinetwork(object):
                     self.DG.nodes[mostable]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable]['fre']
                     # dgduplex = self.DG.nodes[self.duplex]['fre']
-                    fwd, _ = self.smethod('sliding', 0, dgsliding)             
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)  
+                    if fwd > self.kinetics.zippingrate:
+                        fwd = self.kinetics.zippingrate           
                     gsl    = self.kinetics.gammasliding(dgsliding)       
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)

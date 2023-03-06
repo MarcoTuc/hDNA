@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = '120theta0.9'
+EXPNAME = 'limited'
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
@@ -26,7 +26,7 @@ MOD.setgeometry(theta=120, phi = 270)
  
 MOD.alpha = 1
 MOD.gamma = 0
-MOD.kappa = 0.9
+MOD.kappa = 1
 
 OPT = Options(Nsim=5000)
 
