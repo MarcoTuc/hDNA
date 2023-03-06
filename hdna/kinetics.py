@@ -80,7 +80,7 @@ class Kinetics(object):
         pass
 
     def gammasliding(self, dgs):
-        return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
+        return self.slidingrate * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (2 * self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
 

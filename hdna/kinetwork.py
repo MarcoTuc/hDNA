@@ -120,7 +120,6 @@ class Kinetwork(object):
                         l = self.addpar(ss, i, n, '(')
                         r = self.addpar(ss, j, n, ')')
                         trap = self.sab(l,r)
-                        
                         obj = Complex(self.model, self.s1, self.s2, state=state, structure = trap, dpxdist=dpxdist)
                         self.DG.add_node(   trap,
                                             obj = obj, 
@@ -171,16 +170,17 @@ class Kinetwork(object):
                     self.DG.nodes[mostable]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable]['fre']
                     # dgduplex = self.DG.nodes[self.duplex]['fre']
-                    fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)             
+                    gsl    = self.kinetics.gammasliding(dgsliding)       
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
-                        fwdformat = '{:.3e}'.format(fwd)
+                        fwdformat = '{:.3e}'.format(gsl)
                         bwdformat = '{:.3e}'.format(0)
                         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
                         print(mostable, fwdformat, bwdformat, dgstring)
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+                    self.DG.add_edge(mostable, self.duplex, k = gsl, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
 
 ##########################################################################
