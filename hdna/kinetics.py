@@ -71,16 +71,13 @@ class Kinetics(object):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (CONST.R * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (CONST.R * (self.T))))) #HERTELGAMMASLIDING
 
-
     def pkcond(self, str1, str2):
-
         def overlap(s1, s2):
             for e1, e2 in zip(s1.table, s2.table):
                 if e1 and e2:
                     return True 
             else:
                 return False 
-
         if not overlap(str1, str2) and str2.totbp >= str1.totbp:
             # s1 and s2 are .(+). structures
             (sorig, sdest) = (str1, str2) #if str1.totbp < str2.totbp else (str2, str1)
@@ -106,24 +103,32 @@ class Kinetics(object):
         if (gyleft > barrier*self.model.pkf) and (gyright > barrier*self.model.pkf):
             return True
         else:
-            print('NOPE')
             return False 
     
-    
-    def pkrate(self, strnew, strold):
+    def pkrate(self, strold, strnew):
         #rate for pseudoknotting transitions
         taudiff = 1/self.nucleationrate #TO scale down with tails somehow 
-        tauclosenew = self.zippingrate/strnew.totbp # kinda 
-        tauopenold  = self.zippingrate*np.exp((-1.7)/(CONST.R*self.model.kelvin))/strold.totbp #approximated rate for base pairs to open or close 
+        tauclosenew = 1/(self.zippingrate/strnew.totbp) # kinda 
+        tauopenold  = 1/(self.avgunzip()/strold.totbp) #approximated rate for base pairs to open or close 
         tau = tauopenold + tauclosenew + taudiff
         return 1/tau
     
     def iwrate(self, strold, strnew):
-        kbulge = self.zippingrate*np.exp((-1.7)/(CONST.R*self.model.kelvin))/2
-        gamma  = abs(strold.register - strnew.register)
-        kinchworm = kbulge/(gamma * strold.bulk)
+        kbulge = self.avgunzip()/2
+        norm = strold.bulk-2
+        if norm != 0:
+            kinchworm = kbulge/(strold.bulk-2) #-2 because as things are modeled now two base pairs are already in the new register 
+        else:
+            kinchworm = self.zippingrate/(strnew.bulk-2)
         return kinchworm 
+
+    def bulging(self, strold, strnew):
+        kbulging = self.zippingrate/abs(strold.register - strnew.register)        
+        return kbulging
             
+    def avgunzip(self):
+        return self.zippingrate*np.exp((-1.65)/(CONST.R*self.model.kelvin))
+
     """ ------------- TWO DIMENSIONAL NUCLEATION -----------------"""
 
     def nuc2D(self, dgnuc, position):

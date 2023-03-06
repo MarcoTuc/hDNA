@@ -69,7 +69,7 @@ class Structure(object):
             self.table  = [True if i not in ['.','+'] else False for i in self.str]
         
         self.length = len(self.left)
-
+        # print(self.str)
         if self.length != len(self.right):
             raise BrokenPipeError('Left and Right strands should have the same length')
         self.totbp = sum(self.table)/2
@@ -84,6 +84,7 @@ class Structure(object):
             self.register = 0 if self.duplex else self.get_register()        
             self.get_geometry()
             self.get_pktails()
+            self.maxtails()
         else:
             self.ss = True
 
@@ -170,9 +171,13 @@ class Structure(object):
             self.tail_lr = tail_lr
             self.tail_rl = tail_rl
             self.tail_rr = tail_rr
+            
+            self.tails   = {'ll': self.tail_ll, 'lr': self.tail_lr,
+                            'rl': self.tail_rl, 'rr': self.tail_rr}
+            
+            self.tails_l = {'l': self.tail_ll, 'r': self.tail_lr}
+            self.tails_r = {'l': self.tail_rl, 'r': self.tail_rr}
 
-            self.tails_l = {'l':tail_ll, 'r':tail_lr}
-            self.tails_r = {'l':tail_rl, 'r':tail_rr}
             self.bulk    = bulkl
             self.geometry = {'register': self.register,
                              'left': self.tails_l,
@@ -192,6 +197,55 @@ class Structure(object):
         else:
             self.pktail_l = 0
             self.pktail_r = 0
+
+    def maxtails(self):
+        # for tail in [self.tail_ll, self.tail_lr, self.tail_rl, self.tail_rr]:
+        if self.tail_ll > self.tail_lr:
+            self.maxtail_l = 'll'
+        elif self.tail_ll < self.tail_lr:
+            self.maxtail_l = 'lr'
+        else: 
+            self.maxtail_l = 'both'
+        
+        if self.tail_rl > self.tail_rr:
+            self.maxtail_r = 'rl'
+        elif self.tail_rl < self.tail_rr:
+            self.maxtail_r = 'rr'
+        else: 
+            self.maxtail_r = 'both'
+
+    # def maxtail(self, pointer=None):
+    #     # for tail in [self.tail_ll, self.tail_lr, self.tail_rl, self.tail_rr]:
+    #     if pointer == None:
+    #         if self.tail_ll > self.tail_lr:
+    #             self.maxtail_l = self.tail_ll
+    #         elif self.tail_ll < self.tail_lr:
+    #             self.maxtail_l = self.tail_rl
+    #         else: 
+    #             self.maxtail_l = self.tail_ll
+            
+    #         if self.tail_rl > self.tail_rr:
+    #             self.maxtail_r = self.tail_rr
+    #         elif self.tail_rl < self.tail_rr:
+    #             self.maxtail_r = self.tail_rl
+    #         else: 
+    #             self.maxtail_r = self.tail_rl
+    #     else: 
+    #         if self.tail_ll > self.tail_lr:
+    #             left = pointer.tail_ll
+    #         elif self.tail_ll < self.tail_lr:
+    #             left = pointer.tail_rl
+    #         else: 
+    #             left = pointer.tail_ll
+            
+    #         if self.tail_rl > self.tail_rr:
+    #             right = pointer.tail_rr
+    #         elif self.tail_rl < self.tail_rr:
+    #             right = pointer.tail_rl
+    #         else: 
+    #             right = pointer.tail_rl
+    #         return left, right 
+             
     
     @staticmethod
     def empty(length):

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
-  <meta lastmodifieddate="2023-03-05">
+  <meta lastmodifieddate="2023-03-06">
     <creator>NetworkX 3.0</creator>
   </meta>
   <graph defaultedgetype="directed" mode="static" name="">
@@ -3101,25 +3101,25 @@
       </edge>
       <edge source="((........+))........" target="........((+........))" id="187">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="1080694.0371718842" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="((........+))........" target="......((((+......))))" id="188">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="1025292.654280055" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="((........+))........" target="....((((((+....))))))" id="189">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="975294.538001438" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="((........+))........" target="..((((((((+..))))))))" id="190">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="929945.9764290545" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
@@ -3995,43 +3995,43 @@
       </edge>
       <edge source="........((+........))" target="((((((((..+)))))))).." id="336">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="929945.9764290545" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="........((+........))" target="((((((....+))))))...." id="337">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="975294.538001438" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="........((+........))" target="((((......+))))......" id="338">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="1025292.654280055" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="........((+........))" target="((........+))........" id="339">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="1080694.0371718842" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="........((+........))" target="......((((+......))))" id="340">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="400889.9460901544" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
       <edge source="........((+........))" target="....((((((+....))))))" id="341">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="200444.9730450772" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
       <edge source="........((+........))" target="..((((((((+..))))))))" id="342">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="133629.98203005147" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
@@ -4739,19 +4739,19 @@
       </edge>
       <edge source="((((......+))))......" target="......((((+......))))" id="460">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="541012.9143126574" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="((((......+))))......" target="....((((((+....))))))" id="461">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="526763.6182981882" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="((((......+))))......" target="..((((((((+..))))))))" id="462">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="50111.2432612693" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
@@ -5267,25 +5267,25 @@
       </edge>
       <edge source="......((((+......))))" target="((((((....+))))))...." id="548">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="526763.6182981882" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="......((((+......))))" target="((((......+))))......" id="549">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="541012.9143126574" />
           <attvalue for="7" value="pseudoknotting" />
         </attvalues>
       </edge>
       <edge source="......((((+......))))" target="....((((((+....))))))" id="550">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="200444.9730450772" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
       <edge source="......((((+......))))" target="..((((((((+..))))))))" id="551">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="100222.4865225386" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
@@ -5681,7 +5681,7 @@
       </edge>
       <edge source="((((((....+))))))...." target="..((((((((+..))))))))" id="617">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="44543.32734335049" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>
@@ -5933,7 +5933,7 @@
       </edge>
       <edge source="....((((((+....))))))" target="..((((((((+..))))))))" id="659">
         <attvalues>
-          <attvalue for="6" value="0" />
+          <attvalue for="6" value="133629.98203005147" />
           <attvalue for="7" value="inchworming" />
         </attvalues>
       </edge>

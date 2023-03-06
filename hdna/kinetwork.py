@@ -159,73 +159,130 @@ class Kinetwork(object):
 ##########################################################################
 ##########################################################################
 
-    def connect_slidings(self, verbose=True):
+    def connect_slidings(self, verbose=False):
         for brc in combinations(self.sldbranches,2):
+            
             # TODO add here a routine to insert missing slidings (due to lack of logic in get graph function)
+            
             # connect slidings with eachother 
             if brc[0] != 0:
+                # pick slidings in first branch
                 leaf1 = self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
                 mostables1 = []
                 for comp in nx.strongly_connected_components(leaf1):
                     if len(comp) > 1:
                         subleaf = nx.subgraph(self.DG, list(comp))
                         mostables1.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                # pick slidings in second branch 
                 leaf2 = self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
                 mostables2 = []
                 for comp in nx.strongly_connected_components(leaf2):
                     if len(comp) > 1:
                         subleaf = nx.subgraph(self.DG, list(comp))
                         mostables2.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                # iterate over all combinations 
                 for most1 in mostables1:
                     for most2 in mostables2:
+                        # assign sliding state
                         self.DG.nodes[most1.str]['state'] = 'sliding'
                         self.DG.nodes[most2.str]['state'] = 'sliding'
-                    # if np.sign(brc[0])!=np.sign(brc[1]):
+                        # check pseudoknotting conditions
                         orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
                         orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
-                        print(pkcond1)
-                        print(pkcond2)
+                        # assume pseudoknotting dominates over inchworming. 
+                        # e.g. if pseudo -> pseudo and only if not -> inchworm 
+                        
+                        # TODO add a two-base pair formation routine like I did with the inchworming
+                        # and also weight the pseudoknotting transition tendency by using the relative
+                        # free energy difference since there is base pairing competition going on between
+                        # different registers in a pseudoknot 
+                        
                         if pkcond1:
-                            # pseudoknotting routine
-                            #TODO add rates
-                            if verbose: print(orig1.str,'-->',dest1.str,'pseudoknotting')
-                            self.DG.add_edge(orig1.str, dest1.str, k = 0, state = 'pseudoknotting')
+                            # pseudoknotting routine                     
+                            pkrate = self.kinetics.pkrate(orig1, dest1)
+                            if verbose: 
+                                print(orig1.str,'-->',dest1.str,'pseudoknotting')
+                                print(f'{pkrate:.3e}')
+                            self.DG.add_edge(orig1.str, dest1.str, k = pkrate, state = 'pseudoknotting')
                         if pkcond2:
-                            if orig1 == orig2: pass
+                            if pkcond1:
+                                if orig1.str == orig2.str: continue # don't duplicate 
                             else:
-                                if verbose: print(orig2.str,'-->',dest2.str,'pseudoknotting back')
-                                self.DG.add_edge(orig2.str, dest2.str, k = 0, state = 'pseudoknotting')                  
-                        if not pkcond1 and not pkcond2: 
+                                pkrate = self.kinetics.pkrate(orig2, dest2)
+                                if verbose: 
+                                    print(orig2.str,'-->',dest2.str,'pseudoknotting back')
+                                    print(f'{pkrate:.3e}')
+                                self.DG.add_edge(orig2.str, dest2.str, k = pkrate, state = 'pseudoknotting')                  
+                        if (not pkcond1) and (not pkcond2): 
                             # inchworming between slidings routine
                             if most2.totbp > most1.totbp:
-                                wormdist = abs(brc[0]-brc[1])
-                                #TODO add rates
-                                self.kinetics.iwrate(most1, most2)
-                                if verbose: print(most1.str,'-->',most2.str, 'inchworming')
-                                self.DG.add_edge(most1.str, most2.str, k = 0, state = 'inchworming')
+                                if most1.totbp > 2:
+                                    self.bulge_transition(most1, most2)
+                                    if verbose: print(most1.str,'-->',most2.str, 'inchworming')       
+            # Connect slidings with duplex
             else:
+                # pick slidings in second branch 
                 leaf2 = self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                mostables2 = []
+                mostables2 = [] 
                 for comp in nx.strongly_connected_components(leaf2):
                     if len(comp) > 1:
                         subleaf = nx.subgraph(self.DG, list(comp))
                         mostables2.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                # Iterate over most stable nodes for each leaf of the branch 
                 for most2 in mostables2:
                     self.DG.nodes[most2.str]['state'] = 'sliding'
                     pkcond = self.kinetics.pkconduplex(most2)
-                    if pkcond:
-                        print(most2.str,'-->',self.duplex,'pk duplex')
+                    if pkcond: # pseudoknotting towards duplex 
+                        pkrate = self.kinetics.pkrate(most2, Structure(self.duplex))
+                        if verbose: 
+                            print(most2.str,'-->',self.duplex,'pk duplex')
+                            print(f'{pkrate:.3e}')
                         self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'pseudoknotting')
                     else: # inchworming towards duplex
-                        wormdist = abs(brc[1])
-                        most2 = Structure(list(
-                            self.filternodes('fre', min,
-                            self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                            ))[0])
-                        #TODO add rates
-                        if verbose: print(most2.str,'-->',self.duplex,'inchworming duplex', wormdist)
-                        self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'inchworming')  
+                        self.bulge_transition(most2, Structure(self.duplex))
 
+
+    def bulge_transition(self, origin, target):
+
+        willbulge = list(self.DG.neighbors(origin.str))
+        try: willbulge.remove(target)
+        except ValueError: pass 
+        # print(origin.str, target.str)
+        for e in willbulge:
+            if e[0] not in ['.', '(']:
+                willbulge.remove(e)
+        neighs = [Structure(e) for e in willbulge]
+        # inchworming happens from the neighbors of the fully slided state
+        # and not from the slided state itself, so we connect these to the target
+        for wb in neighs:
+            # create an abstract bulged state
+            bulge = f'BULGED_{wb.str}'
+            self.DG.add_node(bulge, 
+                            obj = '',
+                            pairs = origin.totbp, 
+                            state = 'bulgeloop',
+                            dpxdist = f'{origin.register} - {target.register}',
+                            fre = '')
+            
+            kbulging = self.kinetics.bulging(origin, target)
+            self.DG.add_edge(wb.str, bulge, k = kbulging, state='bulging')
+            self.DG.add_edge(bulge, wb.str, k = self.kinetics.avgunzip(), state='bulging')
+            
+            # create a second bulging state, if reached proceed with irreversible bulging transition
+            # The second bulging happens at speed equal to the first bulging kinda 
+            bulging = f'BULGING_{wb.str}'
+            self.DG.add_node(bulging, 
+                            obj = '',
+                            pairs = origin.totbp, 
+                            state = 'bulgeloop',
+                            dpxdist = f'{origin.register} - {target.register}',
+                            fre = '')
+            kbulging = self.kinetics.bulging(origin, target)
+            tau = (1/kbulging) + (1/self.kinetics.avgunzip())
+            self.DG.add_edge(bulge, bulging, k = 1/tau, state = 'bulging')
+
+            kinchworm = self.kinetics.iwrate(origin, target)
+            self.DG.add_edge(bulging, target.str, k = kinchworm, state='inchworming')
 
 ##########################################################################
 
@@ -265,7 +322,8 @@ class Kinetwork(object):
         DGsave = self.DG.copy()
         for n in DGsave.nodes.data():
             n[1]['obj'] = str(type(n[1]['obj']))
-            n[1]['fre'] = f"{n[1]['fre']:.3f}"
+            try: n[1]['fre'] = f"{n[1]['fre']:.3f}"
+            except ValueError: pass
             try: n[1]['tdx'] = str(type(n[1]['tdx']))
             except KeyError: pass
         try: os.makedirs(PATH)
@@ -375,3 +433,47 @@ class FatalError(Exception):
                 #     self.filternodes('fre', min,
                 #     self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
                 #     ))[0])
+
+
+
+                # willbulge = list(self.DG.neighbors(most2.str))
+                        # try: willbulge.remove(self.duplex)
+                        # except ValueError: pass 
+                        # neighs = [Structure(e) for e in willbulge]
+                        # # inchworming happens from the neighbors of the fully slided state
+                        # # and not from the slided state itself, so we connect these to the duplex
+                        # for wb in neighs:
+                        #     # create an abstract bulged state
+                        #     bulge = f'BULGED_{wb.str}'
+                        #     self.DG.add_node(bulge, 
+                        #                     obj = '',
+                        #                     pairs = most2.totbp, 
+                        #                     state = 'bulgeloop',
+                        #                     dpxdist = f'{most2.register} - {0}',
+                        #                     fre = '')
+                            
+                        #     kbulging = self.kinetics.bulging(most2, Structure(self.duplex))
+                        #     self.DG.add_edge(wb.str, bulge, k = kbulging, state='bulging')
+                        #     self.DG.add_edge(bulge, wb.str, k = self.kinetics.avgunzip(), state='bulging')
+                            
+                        #     # create a second bulging state, if reached proceed with irreversible bulging transition
+                        #     # The second bulging happens at speed equal to the first bulging kinda 
+                        #     bulging = f'BULGING_{most2.str}'
+                        #     self.DG.add_node(bulging, 
+                        #                     obj = '',
+                        #                     pairs = most2.totbp, 
+                        #                     state = 'bulgeloop',
+                        #                     dpxdist = most2.register,
+                        #                     fre = '')
+                        #     kbulging = self.kinetics.bulging(most2, Structure(self.duplex))
+                        #     tau = (1/kbulging) + (1/self.kinetics.avgunzip())
+                        #     self.DG.add_edge(bulge, bulging, k = 1/tau, state = 'bulging')
+
+                        #     kinchworm = self.kinetics.iwrate(most2)
+                        #     self.DG.add_edge(bulging, self.duplex, k = kinchworm, state='inchworming')
+                        
+                        
+                        # most2 = Structure(list(
+                        #     self.filternodes('fre', min,
+                        #     self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                        #     ))[0])

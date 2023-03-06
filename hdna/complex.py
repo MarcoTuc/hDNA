@@ -54,7 +54,8 @@ class Complex(object):
                             'on_nucleation',
                             'off_nucleation', 
                             'backfray',
-                            'sliding' ]   
+                            'sliding',
+                            'bulgeloop' ]   
 
     
         if state not in self.possible_states:
@@ -109,7 +110,7 @@ class Complex(object):
         maxl = len(max(l.split('.')))
         maxr = len(max(r.split('.')))
         if maxl == maxr: cons = maxl
-        else: raise BrokenPipeError(f'left and right nucleation should match: {structure}')
+        else: cons = (maxl, maxr)#raise BrokenPipeError(f'left and right nucleation should match: {structure}')
         return cons
         
     def inherit_zipping(self, listofzippings):
