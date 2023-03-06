@@ -44,6 +44,13 @@ class Kinetics(object):
             # bottom nucleation is sterically hindered only by theta 
             self.nucleationbot = self.collisionbulk * self.surfsteric()
 
+    def genboltz(self, dg):
+        return np.exp(-dg/(CONST.R * self.model.kelvin))
+    
+    def localZ(self, *fres):
+        Z = sum(self.genboltz(fre) for fre in fres)
+        return Z
+
     """ ------------- STERIC FACTORS -----------------"""
 
     def bulksteric(self):
@@ -71,13 +78,49 @@ class Kinetics(object):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (CONST.R * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (CONST.R * (self.T))))) #HERTELGAMMASLIDING
 
+    def overlappingspheres(self, d, r1, r2):
+        term1 = (r1+r2-d)**2
+        term2 = (d**2 + 2*d*r1 - 3*(r1**2) + 2*d*r2 + 6*r1*r2 - 3*(r2**2))
+        return np.pi*term1*term2/(12*d)
+
+    def pkcondsphereduplex(self, str1):
+        distance = str1.bulk * DXGEO.MONODIST
+        print('distance', distance)
+        if str1.tail_ll != 0 and str1.tail_rl != 0:
+            r1 = np.sqrt(str1.tail_ll*(SXGEO.MONODIST**2))
+            r2 = np.sqrt(str1.tail_rl*(SXGEO.MONODIST**2))
+            print('r1', r1)
+            print('r2', r2)
+            sphere1  = (4/3)*np.pi*(r1**3)
+            sphere2  = (4/3)*np.pi*(r2**3)
+            overlap1 = self.overlappingspheres(distance, r1, r2)
+            print('overlap1', overlap1)
+            if overlap1 > 0:
+                return True
+
+        if str1.tail_rr != 0 and str1.tail_lr != 0:
+            r3 = np.sqrt(str1.tail_rr*(SXGEO.MONODIST**2))
+            r4 = np.sqrt(str1.tail_lr*(SXGEO.MONODIST**2)) 
+            print('r3', r3)
+            print('r4', r4)
+            sphere3  = (4/3)*np.pi*(r3**3)
+            sphere4  = (4/3)*np.pi*(r4**3)
+            overlap2 = self.overlappingspheres(distance, r3, r4)
+            print('overlap2',overlap2)
+        
+            if overlap2 > 0:
+                return True
+
+
     def pkcond(self, str1, str2):
+
         def overlap(s1, s2):
             for e1, e2 in zip(s1.table, s2.table):
                 if e1 and e2:
                     return True 
             else:
                 return False 
+
         if not overlap(str1, str2) and str2.totbp >= str1.totbp:
             # s1 and s2 are .(+). structures
             (sorig, sdest) = (str1, str2) #if str1.totbp < str2.totbp else (str2, str1)
@@ -107,14 +150,13 @@ class Kinetics(object):
     
     def pkrate(self, strold, strnew):
         #rate for pseudoknotting transitions
-        taudiff = 1/self.nucleationrate #TO scale down with tails somehow 
         tauclosenew = 1/(self.zippingrate/strnew.totbp) # kinda 
         tauopenold  = 1/(self.avgunzip()/strold.totbp) #approximated rate for base pairs to open or close 
-        tau = tauopenold + tauclosenew + taudiff
+        tau = tauopenold + tauclosenew
         return 1/tau
     
     def iwrate(self, strold, strnew):
-        kbulge = self.avgunzip()/2
+        kbulge = self.zippingrate/2 #self.avgunzip()/2
         norm = strold.bulk-2
         if norm != 0:
             kinchworm = kbulge/(strold.bulk-2) #-2 because as things are modeled now two base pairs are already in the new register 
@@ -200,12 +242,15 @@ class Kinetics(object):
                 kbak = kb
         return knuc, kbak
 
-    def kawasaki(self, kind, dgi, dgj):
+    def kawasaki(self, kind, dgi, dgj, rate=None):
         ratesdict = {'zipping':  self.zippingrate,
                      'backfray': self.zippingrate,
                      'duplex':   self.zippingrate,
                      'sliding':  self.slidingrate}
-        ka = ratesdict[kind]
+        if kind != 'any':
+            ka = ratesdict[kind]
+        else:
+            ka = rate
         #kf
         kij = ka*np.exp(-(dgj-dgi)/(2*CONST.R*(self.T)))
         #kb

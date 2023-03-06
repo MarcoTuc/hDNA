@@ -6,10 +6,12 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'kinet?'
+EXPNAME = 'inchpseudo7'
 
 notes = """
-ppi smoluchowski, changed phi to 120 and lowered both zipping and sliding just a bit 
+Nope, the wrong trend is still there. Could be because inchworming is not favoured over pseudoknotting.
+Since pseudoknotting is possible for very unstable two bp slidings, and it is also faster than inchworm, 
+then we're having smaller rates for very connected strands and higher rates for not so well connected ones. 
 """
 
 # Import experimental data from Hertel 
@@ -32,7 +34,7 @@ MOD.alpha = 1
 MOD.gamma = 0
 MOD.kappa = 1
 
-OPT = Options(Nsim=5000)
+OPT = Options(Nsim=1500)
 
 H = HDNA(data, EXPNAME, model=MOD, options=OPT)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]

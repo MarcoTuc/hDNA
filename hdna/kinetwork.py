@@ -165,60 +165,63 @@ class Kinetwork(object):
             # TODO add here a routine to insert missing slidings (due to lack of logic in get graph function)
             
             # connect slidings with eachother 
-            if brc[0] != 0:
-                # pick slidings in first branch
-                leaf1 = self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
-                mostables1 = []
-                for comp in nx.strongly_connected_components(leaf1):
-                    if len(comp) > 1:
-                        subleaf = nx.subgraph(self.DG, list(comp))
-                        mostables1.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
-                # pick slidings in second branch 
-                leaf2 = self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
-                mostables2 = []
-                for comp in nx.strongly_connected_components(leaf2):
-                    if len(comp) > 1:
-                        subleaf = nx.subgraph(self.DG, list(comp))
-                        mostables2.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
-                # iterate over all combinations 
-                for most1 in mostables1:
-                    for most2 in mostables2:
-                        # assign sliding state
-                        self.DG.nodes[most1.str]['state'] = 'sliding'
-                        self.DG.nodes[most2.str]['state'] = 'sliding'
-                        # check pseudoknotting conditions
-                        orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
-                        orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
-                        # assume pseudoknotting dominates over inchworming. 
-                        # e.g. if pseudo -> pseudo and only if not -> inchworm 
+            if brc[0] != 0: 
+                pass
+                # # pick slidings in first branch
+                # leaf1 = self.filternodes('dpxdist', lambda x: x == brc[0], self.DG)
+                # mostables1 = []
+                # for comp in nx.strongly_connected_components(leaf1):
+                #     if len(comp) > 1:
+                #         subleaf = nx.subgraph(self.DG, list(comp))
+                #         mostables1.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                # # pick slidings in second branch 
+                # leaf2 = self.filternodes('dpxdist', lambda x: x == brc[1], self.DG)
+                # mostables2 = []
+                # for comp in nx.strongly_connected_components(leaf2):
+                #     if len(comp) > 1:
+                #         subleaf = nx.subgraph(self.DG, list(comp))
+                #         mostables2.append(Structure(list(self.filternodes('fre', min, subleaf))[0]))
+                # # iterate over all combinations 
+                # for most1 in mostables1:
+                #     for most2 in mostables2:
+                #         # assign sliding state
+                #         self.DG.nodes[most1.str]['state'] = 'sliding'
+                #         self.DG.nodes[most2.str]['state'] = 'sliding'
+                #         # check pseudoknotting conditions
+                #         orig1, dest1, pkcond1 = self.kinetics.pkcond(most1, most2)
+                #         orig2, dest2, pkcond2 = self.kinetics.pkcond(most2, most1)
+                #         # assume pseudoknotting dominates over inchworming. 
+                #         # e.g. if pseudo -> pseudo and only if not -> inchworm 
                         
-                        # TODO add a two-base pair formation routine like I did with the inchworming
-                        # and also weight the pseudoknotting transition tendency by using the relative
-                        # free energy difference since there is base pairing competition going on between
-                        # different registers in a pseudoknot 
+                #         # TODO add a two-base pair formation routine like I did with the inchworming
+                #         # and also weight the pseudoknotting transition tendency by using the relative
+                #         # free energy difference since there is base pairing competition going on between
+                #         # different registers in a pseudoknot 
                         
-                        if pkcond1:
-                            # pseudoknotting routine                     
-                            pkrate = self.kinetics.pkrate(orig1, dest1)
-                            if verbose: 
-                                print(orig1.str,'-->',dest1.str,'pseudoknotting')
-                                print(f'{pkrate:.3e}')
-                            self.DG.add_edge(orig1.str, dest1.str, k = pkrate, state = 'pseudoknotting')
-                        if pkcond2:
-                            if pkcond1:
-                                if orig1.str == orig2.str: continue # don't duplicate 
-                            else:
-                                pkrate = self.kinetics.pkrate(orig2, dest2)
-                                if verbose: 
-                                    print(orig2.str,'-->',dest2.str,'pseudoknotting back')
-                                    print(f'{pkrate:.3e}')
-                                self.DG.add_edge(orig2.str, dest2.str, k = pkrate, state = 'pseudoknotting')                  
-                        if (not pkcond1) and (not pkcond2): 
-                            # inchworming between slidings routine
-                            if most2.totbp > most1.totbp:
-                                if most1.totbp > 2:
-                                    self.bulge_transition(most1, most2)
-                                    if verbose: print(most1.str,'-->',most2.str, 'inchworming')       
+                #         if pkcond1:
+                #             # pseudoknotting routine    
+                #             self.psedoknotting_transition(orig1, dest1)                 
+                #             # pkrate = self.kinetics.pkrate(orig1, dest1)
+                #             if verbose: 
+                #                 print(orig1.str,'-->',dest1.str,'pseudoknotting')
+                #                 # print(f'{pkrate:.3e}')
+                #             # self.DG.add_edge(orig1.str, dest1.str, k = pkrate, state = 'pseudoknotting')
+                #         if pkcond2:
+                #             if pkcond1:
+                #                 if orig1.str == orig2.str: continue # don't duplicate 
+                #             else:
+                #                 self.psedoknotting_transition(orig2, dest2)
+                #                 # pkrate = self.kinetics.pkrate(orig2, dest2)
+                #                 if verbose: 
+                #                     print(orig2.str,'-->',dest2.str,'pseudoknotting back')
+                #                     # print(f'{pkrate:.3e}')
+                #                 # self.DG.add_edge(orig2.str, dest2.str, k = pkrate, state = 'pseudoknotting')                  
+                #         if (not pkcond1) and (not pkcond2): 
+                #             # inchworming between slidings routine
+                #             if most2.totbp > most1.totbp:
+                #                 if most1.totbp > 2:
+                #                     self.bulge_transition(most1, most2)
+                #                     if verbose: print(most1.str,'-->',most2.str, 'inchworming')       
             # Connect slidings with duplex
             else:
                 # pick slidings in second branch 
@@ -231,26 +234,34 @@ class Kinetwork(object):
                 # Iterate over most stable nodes for each leaf of the branch 
                 for most2 in mostables2:
                     self.DG.nodes[most2.str]['state'] = 'sliding'
-                    pkcond = self.kinetics.pkconduplex(most2)
+                    # pkcond = self.kinetics.pkconduplex(most2)
+                    pkcond = self.kinetics.pkcondsphereduplex(most2)
                     if pkcond: # pseudoknotting towards duplex 
-                        pkrate = self.kinetics.pkrate(most2, Structure(self.duplex))
+                        self.psedoknotting_transition(most2, Structure(self.duplex))
+                        # pkrate = self.kinetics.pkrate(most2, Structure(self.duplex))
                         if verbose: 
                             print(most2.str,'-->',self.duplex,'pk duplex')
-                            print(f'{pkrate:.3e}')
-                        self.DG.add_edge(most2.str, self.duplex, k = 0, state = 'pseudoknotting')
+                            # print(f'{pkrate:.3e}')
+                        # self.DG.add_edge(most2.str, self.duplex, k = pkrate, state = 'pseudoknotting')
                     else: # inchworming towards duplex
                         self.bulge_transition(most2, Structure(self.duplex))
 
 
     def bulge_transition(self, origin, target):
-
         willbulge = list(self.DG.neighbors(origin.str))
         try: willbulge.remove(target)
         except ValueError: pass 
-        # print(origin.str, target.str)
-        for e in willbulge:
-            if e[0] not in ['.', '(']:
+
+        for e in willbulge[::-1]:
+            # print(e[0])
+            if e[0] == 'B':
+                # print('yo', e)
                 willbulge.remove(e)
+            elif e[0] == 'P':
+                # print('yo', e)
+                willbulge.remove(e)
+            else: continue
+            
         neighs = [Structure(e) for e in willbulge]
         # inchworming happens from the neighbors of the fully slided state
         # and not from the slided state itself, so we connect these to the target
@@ -263,11 +274,9 @@ class Kinetwork(object):
                             state = 'bulgeloop',
                             dpxdist = f'{origin.register} - {target.register}',
                             fre = '')
-            
-            kbulging = self.kinetics.bulging(origin, target)
-            self.DG.add_edge(wb.str, bulge, k = kbulging, state='bulging')
-            self.DG.add_edge(bulge, wb.str, k = self.kinetics.avgunzip(), state='bulging')
-            
+            kbulged = self.kinetics.bulging(origin, target)
+            self.DG.add_edge(wb.str, bulge, k = kbulged, state='bulging')
+            # self.DG.add_edge(bulge, wb.str, k = self.kinetics.avgunzip(), state='bulging')
             # create a second bulging state, if reached proceed with irreversible bulging transition
             # The second bulging happens at speed equal to the first bulging kinda 
             bulging = f'BULGING_{wb.str}'
@@ -277,12 +286,53 @@ class Kinetwork(object):
                             state = 'bulgeloop',
                             dpxdist = f'{origin.register} - {target.register}',
                             fre = '')
-            kbulging = self.kinetics.bulging(origin, target)
-            tau = (1/kbulging) + (1/self.kinetics.avgunzip())
-            self.DG.add_edge(bulge, bulging, k = 1/tau, state = 'bulging')
-
-            kinchworm = self.kinetics.iwrate(origin, target)
+            kbulging = kbulged #self.kinetics.bulging(origin, target)
+            # tau = (1/kbulging) + (1/self.kinetics.avgunzip())
+            self.DG.add_edge(bulge, bulging, k = kbulging, state = 'bulging')
+            kinchworm = kbulged #self.kinetics.iwrate(origin, target)
+            print('inchworm')
+            print(origin.str, target.str)
+            print('kbulged ', f'{kbulged:.3e}')
+            print('kbulging',f'{kbulging:.3e}')
+            print('inchworm',f'{kinchworm:.3e}')
+            print()
             self.DG.add_edge(bulging, target.str, k = kinchworm, state='inchworming')
+
+    def psedoknotting_transition(self, origin, target):
+        probability = (origin.length-origin.bulk)/target.length #higher for duplex 
+        combinatorics = 1/(2*(origin.tail_ll + origin.tail_lr))
+        print(probability)
+        print(combinatorics)
+        pseudoknot = f'PKCOLL_{origin.str}'
+        self.DG.add_node(pseudoknot, 
+                         obj = '',
+                         pairs = origin.totbp, 
+                         state = 'pseudoknot',
+                         dpxdist = f'{origin.register} - {target.register}',
+                         fre = '')
+        pkcollrate = self.kinetics.nucleationrate * probability * combinatorics
+        self.DG.add_edge(origin.str, pseudoknot, k=pkcollrate, state='pseudoknotting')
+        freorigin = self.DG.nodes[origin.str]['fre']
+        fretarget = self.DG.nodes[target.str]['fre']
+        localZ = self.kinetics.localZ(freorigin, fretarget-freorigin)
+        Zorigin = self.kinetics.genboltz(freorigin)/localZ
+        Ztarget = self.kinetics.genboltz(fretarget-freorigin)/localZ
+        pktransratefwd = self.kinetics.pkrate(origin, target) * abs(Ztarget)
+        pktransratebwd = self.kinetics.pkrate(target, origin) * abs(Zorigin)
+        pktransratefwd = pktransratefwd*self.kinetics.genboltz(freorigin)
+        print('pseudoknot')
+        print(origin.str, target.str)
+        print('collision', f'{pkcollrate:.3e}')
+        print(f'{pktransratefwd:.3e}', f'{pktransratebwd:.3e}')
+        print('fres',freorigin, fretarget)
+        print('zeta',Ztarget, Zorigin)
+        print()
+        # fwd, _ = self.kinetics.kawasaki('any', freorigin, fretarget, rate=pktransratefwd) * frebalance
+        # bwd, _ = self.kinetics.kawasaki('any', fretarget, freorigin, rate=pktransratebwd) / frebalance
+        self.DG.add_edge(pseudoknot, target.str, k = pktransratefwd, state = 'pseudoknotting')
+        self.DG.add_edge(pseudoknot, origin.str, k = pktransratebwd, state = 'pseudoknotting')
+
+
 
 ##########################################################################
 

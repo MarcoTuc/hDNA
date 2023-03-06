@@ -71,7 +71,7 @@ class Structure(object):
         self.length = len(self.left)
         # print(self.str)
         if self.length != len(self.right):
-            raise BrokenPipeError('Left and Right strands should have the same length')
+            raise BrokenPipeError(f'Left and Right strands should have the same length: {self.str}')
         self.totbp = sum(self.table)/2
         if self.totbp != sum([True if i != '.' else False for i in self.right]):
             raise BrokenPipeError('Left and Right base pairs should always match')
