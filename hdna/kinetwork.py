@@ -172,8 +172,9 @@ class Kinetwork(object):
                     dgsliding = self.DG.nodes[mostable.str]['fre']
                     # dgduplex = self.DG.nodes[self.duplex]['fre']
                     fwd, _ = self.smethod('sliding', 0, dgsliding)     
+                    print('initial fwd', f'{fwd:.3e}')
                     if fwd > self.kinetics.zippingrate:
-                        fwd = self.kinetics.zippingrate            
+                        fwd = self.kinetics.zippingrate/3            
                     if mostable.pkoverlap > 0:
                         print('pseudoknotting overlap:',mostable.pkoverlap)
                         fwdpseudoknot = fwd*mostable.pkoverlap
@@ -194,6 +195,8 @@ class Kinetwork(object):
                     fwdinchleft = fwd*mostable.inchwormingbulge
                     fwdinchright = fwd*mostable.inchwormingbulge
                     fwd = sum([fwdpseudoknot, fwdinchleft, fwdinchright])
+                    if mostable.totbp == 2:
+                        fwd = fwd/100
                     # if fwd == 0:
                     #     print('avgunzip',f'{self.kinetics.avgunzip():.3e}')
                     #     print('/register',mostable.inchwormingbulge)

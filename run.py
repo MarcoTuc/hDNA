@@ -7,10 +7,12 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'sumofinchandpk11'
+EXPNAME = 'sumofinchandpk17'
 
 notes = """
-distinguishing between inchworming with a bulge or inchworming with a tail
+
+manually lowered fwd for slidings with only two base pairs by a factor of 100
+
 """
 
 # Import experimental data from Hertel 
@@ -42,7 +44,7 @@ with open(f'results/{EXPNAME}/notes.txt', 'w') as savenote:
     savenote.close()
 
 
-zipping = 7.6e7
-sliding = 1.5e5 #zipping*np.exp(-(2)/(CONST.R*MOD.kelvin))
+zipping = 10e7
+sliding = 2e5 #zipping*np.exp(-(2)/(CONST.R*MOD.kelvin))
 
 H.run([zipping, sliding])

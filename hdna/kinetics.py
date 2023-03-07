@@ -280,6 +280,7 @@ class Kinetics(object):
             else: raise ValueError("need to input a 'p_circular' value in the [0,1] interval")
         else: return forward / ke
     
+    
     def avgunzip(self):
-        return self.zippingrate*np.exp((-1.65)/(CONST.R*self.model.kelvin))
+        return self.zippingrate*np.exp((-2)/(CONST.R*self.model.kelvin))
 
