@@ -83,6 +83,17 @@ class Kinetics(object):
         return self.model.alpha * np.exp( self.model.gamma + (self.model.kappa * ((dgs) / (self.phys['R(kcal/molK)'] * (self.T)))))
         # 1 / ( 1 + np.exp( self.model.gamma + (dgs / (self.phys['R(kcal/molK)'] * (self.T))))) #HERTELGAMMASLIDING
 
+    def overlappingspheres(self, d, r1, r2):
+        separation = r1+r2-d
+        if separation <= 0:
+            return 0
+        else:
+            term1 = separation**2
+            term2 = (d**2 + 2*d*r1 - 3*(r1**2) + 2*d*r2 + 6*r1*r2 - 3*(r2**2))
+            overlap = np.pi*term1*term2/(12*d)
+            sphere1  = (4/3)*np.pi*(r1**3)
+            sphere2  = (4/3)*np.pi*(r2**3)
+            return overlap/(sphere1+sphere2)
 
     """ ------------- KINETICS-THERMODYNAMICS RELATION METHODS -----------------"""
     
@@ -268,4 +279,7 @@ class Kinetics(object):
             if 0 <= p_circular <= 1 : return self.closedconfscaling(p_circular) / ke
             else: raise ValueError("need to input a 'p_circular' value in the [0,1] interval")
         else: return forward / ke
+    
+    def avgunzip(self):
+        return self.zippingrate*np.exp((-1.65)/(CONST.R*self.model.kelvin))
 

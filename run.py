@@ -1,12 +1,17 @@
 
 import pandas as pd 
+import numpy as np 
 
 from hdna import *
 from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = '120theta3'
+EXPNAME = 'sumofinchandpk11'
+
+notes = """
+distinguishing between inchworming with a bulge or inchworming with a tail
+"""
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
@@ -31,10 +36,13 @@ MOD.kappa = 1
 OPT = Options(Nsim=5000)
 
 H = HDNA(data, EXPNAME, model=MOD, options=OPT)
-# bounds = [(2e7, 2e8), (2e6, 2e8)]
-# results = dual_annealing(H.run, bounds, maxiter=5, initial_temp=500)
 
-zipping = 7.5e7
-sliding = 1.5e5
+with open(f'results/{EXPNAME}/notes.txt', 'w') as savenote:
+    savenote.write(notes)
+    savenote.close()
+
+
+zipping = 7.6e7
+sliding = 1.5e5 #zipping*np.exp(-(2)/(CONST.R*MOD.kelvin))
 
 H.run([zipping, sliding])

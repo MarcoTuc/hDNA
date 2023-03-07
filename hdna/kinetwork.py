@@ -6,7 +6,7 @@ from itertools import pairwise, combinations, tee
 
 from .complex import Complex
 from .model import Model
-from .strand import Strand
+from .strand import Strand, Structure
 from .kinetics import Kinetics
  
 class Kinetwork(object):
@@ -167,21 +167,48 @@ class Kinetwork(object):
             for component in components:
                 if len(component) > 1:
                     subleaf = nx.subgraph(self.DG, list(component))
-                    mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
-                    self.DG.nodes[mostable]['state'] = 'sliding'
-                    dgsliding = self.DG.nodes[mostable]['fre']
+                    mostable = Structure(list(self.filternodes('fre', min, subleaf).nodes())[0])
+                    self.DG.nodes[mostable.str]['state'] = 'sliding'
+                    dgsliding = self.DG.nodes[mostable.str]['fre']
                     # dgduplex = self.DG.nodes[self.duplex]['fre']
-                    fwd, _ = self.smethod('sliding', 0, dgsliding)                    
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)     
+                    if fwd > self.kinetics.zippingrate:
+                        fwd = self.kinetics.zippingrate            
+                    if mostable.pkoverlap > 0:
+                        print('pseudoknotting overlap:',mostable.pkoverlap)
+                        fwdpseudoknot = fwd*mostable.pkoverlap
+                        print('fwdpseudoknot', f'{fwdpseudoknot:.3e}')
+                    else: 
+                        print('null pseudoknottingoverlap')
+                        fwdpseudoknot = 0
+                    # if mostable.iw_right > 0: 
+                    #     print('inchworming overlap r', mostable.iw_right)
+                    #     fwdinchright = fwd*mostable.iw_right
+                    #     print('fwdinchright', f'{fwdinchright:.3e}')
+                    # else: fwdinchright = 0
+                    # if mostable.iw_left > 0:
+                    #     print('inchworming overlap l', mostable.iw_left)
+                    #     fwdinchleft  = fwd*mostable.iw_left 
+                    #     print('fwdinchleft', fwdinchleft)
+                    # else: fwdinchleft = 0
+                    fwdinchleft = fwd*mostable.inchwormingbulge
+                    fwdinchright = fwd*mostable.inchwormingbulge
+                    fwd = sum([fwdpseudoknot, fwdinchleft, fwdinchright])
+                    # if fwd == 0:
+                    #     print('avgunzip',f'{self.kinetics.avgunzip():.3e}')
+                    #     print('/register',mostable.inchwormingbulge)
+                    #     fwd = self.kinetics.avgunzip()*mostable.inchwormingbulge
+                    print('sum fwd', fwd)
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
                         fwdformat = '{:.3e}'.format(fwd)
                         bwdformat = '{:.3e}'.format(0)
                         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                        print(mostable, fwdformat, bwdformat, dgstring)
+                        print(mostable.str, fwdformat, bwdformat, dgstring)
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
-                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
-                    self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
+                    self.DG.add_edge(mostable.str, self.duplex, k = fwd, state = 'sliding')
+                    self.DG.add_edge(self.duplex, mostable.str, k = 0, state = 'sliding')
 
 ##########################################################################
 
@@ -197,6 +224,20 @@ class Kinetwork(object):
                     return graph.nodes[node][property] == value
                 except KeyError: pass
         Rgraph = nx.subgraph_view(graph, filter_node=filternode)
+        return Rgraph
+    
+    def filteredges(self, property, function, graph):
+        def filteredge(node1, node2):
+            try: 
+                try:
+                    return function(graph[node1][node2][property])
+                except KeyError: pass
+            except TypeError: 
+                try: 
+                    value = function([e[1][property] for e in list(graph.nodes.data())])
+                    return graph[node1][node2][property] == value
+                except KeyError: pass
+        Rgraph = nx.subgraph_view(graph, filter_edge=filteredge)
         return Rgraph
     
 ##########################################################################
