@@ -245,6 +245,32 @@ class Kinetwork(object):
                         # self.DG.add_edge(most2.str, self.duplex, k = pkrate, state = 'pseudoknotting')
                     else: # inchworming towards duplex
                         self.bulge_transition(most2, Structure(self.duplex))
+    
+    #OLD ROUTINE
+    def connect_slidings(self, verbose=True):
+        self.sldbranches.remove(0)
+        for branch in self.sldbranches:
+            leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
+            components = nx.connected_components(leaf.to_undirected())
+            for component in components:
+                if len(component) > 1:
+                    subleaf = nx.subgraph(self.DG, list(component))
+                    mostable = list(self.filternodes('fre', min, subleaf).nodes())[0]
+                    self.DG.nodes[mostable]['state'] = 'sliding'
+                    dgsliding = self.DG.nodes[mostable]['fre']
+                    # dgduplex = self.DG.nodes[self.duplex]['fre']
+                    fwd, _ = self.smethod('sliding', 0, dgsliding)             
+                    gsl    = self.kinetics.gammasliding(dgsliding)       
+                    if verbose: 
+                        dgstring = '{:.3f}'.format(dgsliding)
+                        fwdformat = '{:.3e}'.format(fwd)
+                        bwdformat = '{:.3e}'.format(0)
+                        # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
+                        print(mostable, fwdformat, bwdformat, dgstring)
+                    #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
+                    #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
+                    self.DG.add_edge(mostable, self.duplex, k = fwd, state = 'sliding')
+                    self.DG.add_edge(self.duplex, mostable, k = 0, state = 'sliding')
 
 
     def bulge_transition(self, origin, target):

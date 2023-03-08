@@ -1,12 +1,14 @@
 
 import pandas as pd 
+import numpy as np 
 
 from hdna import *
 from tqdm import tqdm
 
+
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'inchpseudo8'
+EXPNAME = 'inchpseudo9'
 
 notes = """
 let's see"""
@@ -31,7 +33,7 @@ MOD.alpha = 1
 MOD.gamma = 0
 MOD.kappa = 1
 
-OPT = Options(Nsim=1500)
+OPT = Options(Nsim=2500)
 
 H = HDNA(data, EXPNAME, model=MOD, options=OPT)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]
@@ -40,8 +42,8 @@ with open(f'results/{EXPNAME}/notes.txt', 'w') as savenote:
     savenote.write(notes)
     savenote.close()
 
-zipping = 5e7
-sliding = 9e4
+zipping = 7.5e7
+sliding = zipping*np.exp(-(1.5)/(CONST.R*MOD.kelvin))
 
 H.run([zipping, sliding])
 

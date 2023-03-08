@@ -120,8 +120,6 @@ class Kinetics(object):
             return overlap2, True
         else: 
             return 0, False 
-        
-
 
 
     def pkcond(self, str1, str2):
