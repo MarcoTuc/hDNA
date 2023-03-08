@@ -6,10 +6,13 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'inchpseudo8'
+EXPNAME = 'whatdoesmaster2do'
 
 notes = """
-let's see"""
+
+let's see
+
+"""
 
 # Import experimental data from Hertel 
 expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
@@ -25,13 +28,13 @@ data.set_index(data['sequences'], inplace=True)
 MOD = Model(
     stacking='nostacking',
     min_nucleation=1)
-MOD.setgeometry(theta=90, phi = 120)
+MOD.setgeometry(theta=120, phi = 180)
  
 MOD.alpha = 1
 MOD.gamma = 0
 MOD.kappa = 1
 
-OPT = Options(Nsim=1500)
+OPT = Options(Nsim=3000)
 
 H = HDNA(data, EXPNAME, model=MOD, options=OPT)
 # bounds = [(2e7, 2e8), (2e6, 2e8)]
@@ -40,8 +43,8 @@ with open(f'results/{EXPNAME}/notes.txt', 'w') as savenote:
     savenote.write(notes)
     savenote.close()
 
-zipping = 5e7
-sliding = 9e4
+zipping = 7.5e7
+sliding = 1.5e5
 
 H.run([zipping, sliding])
 
