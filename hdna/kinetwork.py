@@ -166,56 +166,44 @@ class Kinetwork(object):
     def connect_slidings(self, verbose=False):
         for branch in self.sldbranches:
             leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
+            opposite = self.filternodes('dpxdist', lambda x: x == -branch, self.DG)
             components = nx.connected_components(leaf.to_undirected())
+            oppositecomps = nx.connected_components(opposite.to_undirected())
             for component in components:
                 if len(component) > 1:
                     subleaf = nx.subgraph(self.DG, list(component))
                     mostable = Structure(list(self.filternodes('fre', min, subleaf).nodes())[0])
                     self.DG.nodes[mostable.str]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable.str]['fre']
-                    dgduplex = self.DG.nodes[self.duplex]['fre']
                     fwd, _ = self.smethod('sliding', 0, dgsliding)     
-                    # print('initial fwd', f'{fwd:.3e}')
                     if fwd > self.kinetics.zippingrate:
                         fwd = self.kinetics.zippingrate/3            
                     if mostable.pkoverlap > 0:
-                        # print('pseudoknotting overlap:',mostable.pkoverlap)
                         fwdpseudoknot = fwd*mostable.pkoverlap
-                        # print('fwdpseudoknot', f'{fwdpseudoknot:.3e}')
                     else: 
-                        # print('null pseudoknottingoverlap')
                         fwdpseudoknot = 0
-                    # if mostable.iw_right > 0: 
-                    #     print('inchworming overlap r', mostable.iw_right)
-                    #     fwdinchright = fwd*mostable.iw_right
-                    #     print('fwdinchright', f'{fwdinchright:.3e}')
-                    # else: fwdinchright = 0
-                    # if mostable.iw_left > 0:
-                    #     print('inchworming overlap l', mostable.iw_left)
-                    #     fwdinchleft  = fwd*mostable.iw_left 
-                    #     print('fwdinchleft', fwdinchleft)
-                    # else: fwdinchleft = 0
                     fwdinchleft = fwd*mostable.inchwormingbulge
                     fwdinchright = fwd*mostable.inchwormingbulge
                     fwd = sum([fwdpseudoknot, fwdinchleft, fwdinchright])
                     if mostable.totbp == 2:
                         fwd = fwd/100
-                    # if fwd == 0:
-                    #     print('avgunzip',f'{self.kinetics.avgunzip():.3e}')
-                    #     print('/register',mostable.inchwormingbulge)
-                    #     fwd = self.kinetics.avgunzip()*mostable.inchwormingbulge
-                    # print('sum fwd', fwd)
 
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
                         fwdformat = '{:.3e}'.format(fwd)
                         bwdformat = '{:.3e}'.format(0)
-                        # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                        # print(mostable.str, fwdformat, bwdformat, dgstring)
-                    #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
-                    #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
+                        print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
+                        print(mostable.str, fwdformat, bwdformat, dgstring)
+
                     self.DG.add_edge(mostable.str, self.duplex, k = fwd, state = 'sliding')
                     self.DG.add_edge(self.duplex, mostable.str, k = 0, state = 'sliding')
+                    
+                    # for oppo in oppositecomps:
+                    #     if len(oppo) > 1:
+                    #         suboppo = nx.subgraph(self.DG, list(oppo))
+                    #         mostoppo = Structure(list(self.filternodes('fre', min, suboppo).nodes())[0])
+                    #         if 
+
 
 ##########################################################################
 

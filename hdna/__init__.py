@@ -1,4 +1,4 @@
-from .strand import Strand
+from .strand import Strand, Structure
 from .complex import Complex
 from .kinetwork import Kinetwork
 from .kinetics import Kinetics
