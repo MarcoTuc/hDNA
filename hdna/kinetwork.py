@@ -47,7 +47,8 @@ class Kinetwork(object):
             self.zmethod = self.kinetics.metropolis
             self.smethod = self.kinetics.kawasaki
             
-        self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
+        # self.nucnorm = np.power((self.s1.length + self.s2.length - self.model.min_nucleation + 1),2)
+        self.nucnorm = (self.s1.length - self.model.min_nucleation + 1)*(self.s2.length - self.model.min_nucleation + 1)
 
         if not clean: 
 
@@ -95,6 +96,7 @@ class Kinetwork(object):
 ##########################################################################
 
     def get_graph(self, verbose=False):
+        self.etaoff = []
         self.sldbranches = []
         ss = self.simplex.split('+')[0] 
         num = min(self.s1.length, self.s2.length)
@@ -135,6 +137,7 @@ class Kinetwork(object):
                         fwd = fwd / self.nucnorm
                         if self.model.normalizeback: bwd = bwd / self.nucnorm
                         if n == self.model.min_nucleation:
+                            self.etaoff.append(dpxdist)
                             self.DG.add_edge(self.simplex, trap, k = fwd, state = state)
                             self.DG.add_edge(trap, self.simplex, k = bwd, state = state)
                         elif n > self.model.min_nucleation:
@@ -160,7 +163,7 @@ class Kinetwork(object):
 ##########################################################################
 ##########################################################################
 
-    def connect_slidings(self, verbose=True):
+    def connect_slidings(self, verbose=False):
         for branch in self.sldbranches:
             leaf = self.filternodes('dpxdist', lambda x: x == branch, self.DG)
             components = nx.connected_components(leaf.to_undirected())
@@ -170,17 +173,17 @@ class Kinetwork(object):
                     mostable = Structure(list(self.filternodes('fre', min, subleaf).nodes())[0])
                     self.DG.nodes[mostable.str]['state'] = 'sliding'
                     dgsliding = self.DG.nodes[mostable.str]['fre']
-                    # dgduplex = self.DG.nodes[self.duplex]['fre']
+                    dgduplex = self.DG.nodes[self.duplex]['fre']
                     fwd, _ = self.smethod('sliding', 0, dgsliding)     
-                    print('initial fwd', f'{fwd:.3e}')
+                    # print('initial fwd', f'{fwd:.3e}')
                     if fwd > self.kinetics.zippingrate:
                         fwd = self.kinetics.zippingrate/3            
                     if mostable.pkoverlap > 0:
-                        print('pseudoknotting overlap:',mostable.pkoverlap)
+                        # print('pseudoknotting overlap:',mostable.pkoverlap)
                         fwdpseudoknot = fwd*mostable.pkoverlap
-                        print('fwdpseudoknot', f'{fwdpseudoknot:.3e}')
+                        # print('fwdpseudoknot', f'{fwdpseudoknot:.3e}')
                     else: 
-                        print('null pseudoknottingoverlap')
+                        # print('null pseudoknottingoverlap')
                         fwdpseudoknot = 0
                     # if mostable.iw_right > 0: 
                     #     print('inchworming overlap r', mostable.iw_right)
@@ -201,13 +204,14 @@ class Kinetwork(object):
                     #     print('avgunzip',f'{self.kinetics.avgunzip():.3e}')
                     #     print('/register',mostable.inchwormingbulge)
                     #     fwd = self.kinetics.avgunzip()*mostable.inchwormingbulge
-                    print('sum fwd', fwd)
+                    # print('sum fwd', fwd)
+
                     if verbose: 
                         dgstring = '{:.3f}'.format(dgsliding)
                         fwdformat = '{:.3e}'.format(fwd)
                         bwdformat = '{:.3e}'.format(0)
                         # print(mostable, dgstring, self.kinetics.gammasliding(dgsliding))
-                        print(mostable.str, fwdformat, bwdformat, dgstring)
+                        # print(mostable.str, fwdformat, bwdformat, dgstring)
                     #fwd = fwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1)) 
                     #bwd = bwd / self.kinetics.gammasliding(dgsliding)# / abs(np.power(branch,1))
                     self.DG.add_edge(mostable.str, self.duplex, k = fwd, state = 'sliding')

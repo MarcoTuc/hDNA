@@ -15,7 +15,7 @@ def lowerapprox(num):
 def num_ticks(lower, upper, tick_mag):
     return math.ceil((upper - lower + 1) / tick_mag)
 
-def valplot(data, name, writepath = None, theme = 'dark'):
+def valplot(data, name, writepath = None, theme = 'dark', log=False, corr=False):
     
     THM = themetemplates(theme, 'scatter')
 
@@ -24,14 +24,29 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     try: sdata.drop('Unnamed: 0', axis=1)
     except KeyError: pass 
     X = list(sdata['experimental'].astype(float))
-    Y = list(sdata['computational'].astype(float))
+    if corr == False:
+        Y = list(sdata['computational'].astype(float))
+    else: Y = list(sdata['corrected'].astype(float))
     S = list(sdata['sequences'])
     I = list(sdata['index'])
 
-    lowbound = lowerapprox(min(Y))
-    topbound = upperapprox(max(Y))
+    if log == True:
+        X = [np.log10(x) for x in X]
+        Y = [np.log10(y) for y in Y]
+        lowbound = lowerapprox(min(Y))
+        topbound = upperapprox(max(Y))
+        nticks = 20
+        spacing = (topbound-lowbound)/(nticks/2 +.5)
+        xtitle = r'$log_\text{10}(k_{exp}(seq)$'
+        ytitle = r'$log_\text{10}(k_{mod}(seq)$'
+    else: 
+        lowbound = 0
+        topbound = upperapprox(max(Y))
+        spacing = 1e6
+        xtitle = r'$k_{exp}(seq)$'
+        ytitle = r'$k_{mod}(seq)$'
 
-    XLINE = np.linspace(0, topbound)
+    XLINE = np.linspace(lowbound, topbound)
 
     trace1 = go.Scatter(
         x = X, # My list of values for 'x'
@@ -55,8 +70,8 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     layout = go.Layout(
         template=THM['template'],
         title = f'Scatterplot for {name}',
-        xaxis_title="empirical rates ",
-        yaxis_title="computed rates",
+        xaxis_title=xtitle,
+        yaxis_title=ytitle,
         showlegend=False,
         autosize = False,
         width = 600,
@@ -70,12 +85,12 @@ def valplot(data, name, writepath = None, theme = 'dark'):
         ),
         xaxis = dict(
             tickmode = 'array',
-            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, 1e6)),
+            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, spacing)),
             showgrid = True
             ),
         yaxis = dict(
             tickmode = 'array',
-            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, 1e6)),
+            tickvals = np.linspace(lowbound, topbound, num_ticks(lowbound, topbound, spacing)),
             showgrid = True
         )
     )
@@ -85,8 +100,8 @@ def valplot(data, name, writepath = None, theme = 'dark'):
     fig.update_xaxes(exponentformat="e", titlefont={'size': 22})
     fig.update_yaxes(exponentformat="e", titlefont={'size': 22})
     
-    fig.update_layout(xaxis_range=[0,topbound])
-    fig.update_layout(yaxis_range=[0,topbound])
+    fig.update_layout(xaxis_range=[lowbound,topbound])
+    fig.update_layout(yaxis_range=[lowbound,topbound])
 
     if writepath == None:
         fig.show()

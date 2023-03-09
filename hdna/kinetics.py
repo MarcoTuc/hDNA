@@ -1,7 +1,5 @@
 import numpy as np 
 
-from typing import NamedTuple
-
 from .model import Model
 from .strand import Strand
 from .params import *

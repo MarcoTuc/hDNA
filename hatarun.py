@@ -7,19 +7,20 @@ from tqdm import tqdm
 
 from scipy.optimize import dual_annealing
 
-EXPNAME = 'sumofinchandpk33'
+EXPNAME = 'HATA1'
 
 notes = """
 
-Lower angles
+HATA DATA 
 
 """
 
 # Import experimental data from Hertel 
-expdata = pd.read_csv('./data/herteldata.csv', names=['sequences', 'experimental'])
+expdata = pd.read_csv('./data/hatadata.csv')
 # Clean the dataframe 
-expdata = expdata.drop(0)
-expdata['experimental'] = ['{:e}'.format(float(e)) for e in expdata['experimental']]
+expdata = expdata[['rate 10^5 /M /s', 'sequence1']]
+expdata = expdata.rename(columns={'rate 10^5 /M /s':'experimental','sequence1': 'sequences'})
+expdata['experimental'] = ['{:3e}'.format(float(e*1e5)) for e in expdata['experimental']]
 
 limit = len(expdata)
 data = expdata.copy().iloc[:limit]
